@@ -1,0 +1,53 @@
+name: Hesus Garcia Cobos
+location: Puebla, Mexico
+
+summary: >
+  Educador en Inteligencia Artificial y Tecnología, y científico de datos.
+  Combina experiencia técnica en programación e IA con metodologías pedagógicas
+  (modelo ABCD, ADDIE). Desarrolla currículo global de IA para DeepLearning.AI
+  y enseña a nivel universitario.
+
+education:
+  - degree: Maestría en Pedagogía
+    status: En curso (2024-2026)
+  - degree: Maestría en Ciencias - Planeación Estratégica y Gestión de Tecnología
+    years: 2016-2018
+  - degree: Ingeniería en Tecnologías Computacionales
+    years: 2011-2016
+
+technical_skills:
+  - Python
+  - SQL
+  - R
+  - RAG
+  - LLMs
+  - Vector Search
+  - Data Analysis
+  - Docker
+  - JupyterLab
+  - Azure DevOps
+  - Elasticsearch
+
+pedagogical_skills:
+  - Diseño de experiencias de aprendizaje
+  - Evaluación por competencias
+  - Laboratorios técnicos reproducibles
+
+priority_interests:
+  - Intersección de Educación e Inteligencia Artificial
+  - Agentic AI
+  - Context Engineering
+  - RAG
+  - Escuelas de verano/invierno
+  - Estancias en el extranjero
+  - Posiciones PhD (Tech + Education)
+  - Becas y apoyos financieros
+
+languages:
+  - Español (Nativo)
+  - Inglés (Avanzado)
+
+certifications:
+  - Oracle Certified Professional: Generative AI (2024)
+  - Huawei HCI-AI Associate (2024)
+  - Microsoft Azure certifications

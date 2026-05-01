@@ -1,0 +1,46 @@
+# RSS Feeds organized by topic
+# Each entry: {url: "...", name: "Source Name"}
+
+ai_news:
+  - url: "https://blog.google/technology/ai/rss/"
+    name: "Google AI Blog"
+  - url: "https://openai.com/blog/rss.xml"
+    name: "OpenAI Blog"
+  - url: "https://www.anthropic.com/feed.xml"
+    name: "Anthropic Blog"
+  - url: "https://huggingface.co/blog/feed.xml"
+    name: "Hugging Face Blog"
+  - url: "https://ai.meta.com/blog/rss/"
+    name: "Meta AI Blog"
+  - url: "https://blogs.microsoft.com/ai/feed/"
+    name: "Microsoft AI Blog"
+
+ai_research:
+  - url: "http://arxiv.org/rss/cs.AI"
+    name: "arXiv CS.AI"
+  - url: "http://arxiv.org/rss/cs.CL"
+    name: "arXiv CS.CL (NLP)"
+  - url: "http://arxiv.org/rss/cs.LG"
+    name: "arXiv CS.LG (ML)"
+
+edtech:
+  - url: "https://www.edsurge.com/feeds/rss"
+    name: "EdSurge"
+  - url: "https://thejournal.com/rss-feeds/all-articles.aspx"
+    name: "THE Journal"
+
+llm_tools:
+  - url: "https://simonwillison.net/atom/everything/"
+    name: "Simon Willison"
+  - url: "https://lilianweng.github.io/index.xml"
+    name: "Lilian Weng"
+
+scholarships:
+  - url: "https://www.scholars4dev.com/feed/"
+    name: "Scholars4Dev"
+  - url: "https://www.opportunitiesforafricans.com/feed/"
+    name: "Opportunities for Africans"
+
+context_engineering:
+  - url: "https://www.latent.space/feed"
+    name: "Latent Space"

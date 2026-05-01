@@ -1,0 +1,62 @@
+services:
+  observatory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: observatory
+    restart: unless-stopped
+    ports:
+      - "8400:8400"
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://localhost:11434}
+      - OBSIDIAN_VAULT_PATH=/vault
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - APP_PORT=8400
+    env_file:
+      - .env
+    volumes:
+      - observatory-data:/data
+      - ${OBSIDIAN_VAULT_PATH:-./vault}:/vault
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    networks:
+      - observatory-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8400/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - chroma-data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    networks:
+      - observatory-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+volumes:
+  observatory-data:
+  chroma-data:
+
+networks:
+  observatory-net:
+    driver: bridge
