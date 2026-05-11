@@ -7,10 +7,18 @@ class CollectedItem(BaseModel):
     url: str
     title: str
     source: str
-    source_type: str  # rss | scraper | changedetection | gmail
+    source_type: str  # rss | wordpress | playwright
     raw_text: str
     collected_at: datetime = Field(default_factory=datetime.utcnow)
     metadata: dict = Field(default_factory=dict)
+
+
+class EvaluationResult(BaseModel):
+    affinity_score: int = 0
+    is_free_or_funded: bool = False
+    category: str = "general"
+    summary: str = ""
+    reasoning: str = ""
 
 
 class EvaluatedItem(BaseModel):
@@ -22,11 +30,13 @@ class EvaluatedItem(BaseModel):
     collected_at: datetime
     processed_at: datetime = Field(default_factory=datetime.utcnow)
 
-    embedding: Optional[list[float]] = None
+    evaluation: Optional[EvaluationResult] = None
+
     topics: list[str] = Field(default_factory=list)
     sentiment: str = "neutral"
     affinity_score: int = 0
     is_free_or_funded: bool = False
+    category: str = "general"
     summary: str = ""
     reasoning: str = ""
 
