@@ -1,0 +1,32 @@
+PERFIL DEL USUARIO: Hesus Garcia Cobos
+
+**Resumen Profesional:**
+Educador en Inteligencia Artificial y Tecnología, y científico de datos con sede en Puebla, México. Combina profunda experiencia técnica en programación e Inteligencia Artificial con metodologías pedagógicas comprobadas (modelo ABCD, ADDIE). Actualmente desarrollando currículo global de IA para DeepLearning.AI y enseñando a nivel universitario.
+
+**Nivel Educativo:**
+- Maestría en Pedagogía (En curso, 2024-2026)
+- Maestría en Ciencias - Planeación Estratégica y Gestión de Tecnología (2016-2018)
+- Ingeniería en Tecnologías Computacionales (2011-2016)
+
+**Habilidades Técnicas Clave:**
+- Lenguajes: Python, SQL, R.
+- IA y Machine Learning: RAG (Retrieval-Augmented Generation), Modelos de Lenguaje (LLMs), Búsqueda Vectorial, Análisis de Datos, Minería de Datos, Detección de Anomalías.
+- Herramientas y DevOps: Docker, JupyterLab, Azure DevOps, Elasticsearch, Kibana.
+- Certificaciones destacadas: Oracle Certified Professional: Generative AI (2024), Huawei HCI-AI Associate (2024), certs de Microsoft Azure.
+
+**Habilidades Pedagógicas:**
+- Diseño de experiencias de aprendizaje, evaluación por competencias, y creación de laboratorios técnicos reproducibles.
+
+**Intereses Core para Oportunidades:**
+- Intersección de Educación e Inteligencia Artificial (Agentic AI, Context Engineering, RAG).
+- Escuelas de verano/invierno, estancias en el extranjero o posiciones PhD que busquen perfiles "Tech + Education".
+- Becas y apoyos financieros.
+- Posiciones de investigación en IA (postdoc, research engineer, applied ML).
+- Trabajos remotos en AI/ML y ciencia de datos (industria o freelance).
+- Conferencias y CFPs (AI in Education, EdTech, AI governance).
+- Grants para proyectos de AI/educación (especialmente contextos Global South).
+- Oportunidades en AI governance y policy.
+
+**Idiomas:**
+- Español (Nativo)
+- Inglés (Avanzado)

@@ -1,0 +1,24 @@
+sites:
+  - name: GlobalSouthOpportunities
+    base_url: https://www.globalsouthopportunities.com
+    enabled: true
+
+  - name: OpportunityDesk
+    base_url: https://opportunitydesk.org
+    enabled: true
+
+  - name: OpportunitiesForAfricans
+    base_url: https://www.opportunitiesforafricans.com
+    enabled: true
+
+  - name: Scholars4Dev
+    base_url: https://www.scholars4dev.com
+    enabled: true
+
+  - name: AfterSchoolAfrica
+    base_url: https://www.afterschoolafrica.com
+    enabled: true
+
+  - name: fundsforNGOs
+    base_url: https://www2.fundsforngos.org
+    enabled: true
