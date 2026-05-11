@@ -144,3 +144,40 @@ def get_recent_items(since: datetime, min_affinity: int = 0) -> list[dict]:
 def get_item_count() -> int:
     collection = get_items_collection()
     return collection.count()
+
+
+def url_exists(url: str) -> bool:
+    collection = get_items_collection()
+    doc_id = url_to_id(url)
+    results = collection.get(ids=[doc_id])
+    return bool(results["ids"])
+
+
+def update_item_evaluation(
+    url: str,
+    affinity_score: int,
+    category: str = "general",
+    summary: str = "",
+    reasoning: str = "",
+    is_free_or_funded: bool = False,
+):
+    collection = get_items_collection()
+    doc_id = url_to_id(url)
+
+    existing = collection.get(ids=[doc_id])
+    if not existing["ids"]:
+        logger.warning(f"Cannot update evaluation for unknown URL: {url[:60]}")
+        return
+
+    metadata = existing["metadatas"][0] if existing["metadatas"] else {}
+    metadata.update({
+        "affinity_score": affinity_score,
+        "category": category,
+        "summary": summary,
+        "reasoning": reasoning,
+        "is_free_or_funded": is_free_or_funded,
+        "processed_at": datetime.utcnow().isoformat(),
+    })
+
+    collection.update(ids=[doc_id], metadatas=[metadata])
+    logger.info(f"Updated evaluation for {doc_id[:12]}... (score={affinity_score}, cat={category})")
