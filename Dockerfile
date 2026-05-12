@@ -6,9 +6,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 COPY pyproject.toml ./
-RUN pip install --no-cache-dir -e "."
+RUN pip install --no-cache-dir -e ".[notifications]"
 
 COPY . .
 
+RUN mkdir -p /data
+
 EXPOSE 8400
-CMD ["python", "-m", "observatory.app"]
+CMD ["python", "-m", "observatory.cli", "serve"]

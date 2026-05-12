@@ -11,14 +11,19 @@ services:
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://localhost:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.1:8b}
       - OBSIDIAN_VAULT_PATH=/vault
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - APP_PORT=8400
+      - STATE_DB_PATH=/data/state.db
+      - USER_PROFILE_PATH=/app/config/profiles/user_profile.txt
+      - WORDPRESS_CONFIG_PATH=/app/config/sources/wordpress_sites.yaml
     env_file:
       - .env
     volumes:
       - observatory-data:/data
       - ${OBSIDIAN_VAULT_PATH:-./vault}:/vault
+      - ${GOOGLE_CREDENTIALS_PATH:-./credentials.json}:/app/credentials.json:ro
     depends_on:
       chromadb:
         condition: service_healthy
