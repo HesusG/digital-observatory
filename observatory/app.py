@@ -8,7 +8,9 @@ from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from config.settings import settings
 from observatory.collectors.rss import RSSCollector
+from observatory.pipeline import run_pipeline, PipelineResult
 from observatory.storage import chromadb_store
+from observatory.storage.state import PipelineState
 from observatory.processing.deduplicator import is_duplicate
 from observatory.processing.embedder import clean_for_embedding
 from observatory.monitoring import metrics
@@ -97,6 +99,42 @@ async def trigger_collection(source: str = Query(default="rss")):
             "duplicates": dup_count,
         }
 
+    elif source == "wordpress":
+        from observatory.collectors.wordpress import WordPressCollector
+        collector = WordPressCollector()
+        items = await collector.collect()
+
+        new_count = 0
+        dup_count = 0
+
+        for item in items:
+            metrics.items_collected.labels(source=item.source, source_type=item.source_type).inc()
+
+            cleaned = clean_for_embedding(item.raw_text)
+            dup, dup_of = is_duplicate(cleaned, item.url)
+
+            if dup:
+                metrics.items_deduplicated.labels(source=item.source).inc()
+                dup_count += 1
+                continue
+
+            chromadb_store.upsert_item(
+                url=item.url,
+                title=item.title,
+                source=item.source,
+                source_type=item.source_type,
+                raw_text=item.raw_text,
+            )
+            new_count += 1
+
+        return {
+            "status": "ok",
+            "source": source,
+            "collected": len(items),
+            "new": new_count,
+            "duplicates": dup_count,
+        }
+
     return JSONResponse(status_code=400, content={"error": f"Unknown source: {source}"})
 
 
@@ -122,6 +160,54 @@ async def stats():
     return {
         "total_items": chromadb_store.get_item_count(),
         "chromadb_host": f"{settings.chroma_host}:{settings.chroma_port}",
+    }
+
+
+@app.post("/api/pipeline/run")
+async def api_pipeline_run(
+    http_only: bool = Query(default=False),
+    sources: str = Query(default=""),
+    keywords: str = Query(default=""),
+):
+    """Trigger the full opportunity pipeline. Used by n8n / cron."""
+    source_list = [s.strip() for s in sources.split(",") if s.strip()] or None
+    keyword_list = [k.strip() for k in keywords.split(",") if k.strip()] or None
+
+    enable_rss = source_list is None or "rss" in source_list
+    enable_wordpress = source_list is None or "wordpress" in source_list
+    enable_playwright = not http_only and (source_list is None or "playwright" in source_list)
+
+    result = await run_pipeline(
+        enable_rss=enable_rss,
+        enable_wordpress=enable_wordpress,
+        enable_playwright=enable_playwright,
+        keywords=keyword_list,
+        source_filter=source_list,
+    )
+
+    state = PipelineState(settings.state_db_path)
+    state.set("last_pipeline_run", result.started_at.isoformat())
+
+    return {
+        "status": "ok",
+        "collected": result.collected,
+        "duplicates": result.duplicates,
+        "new_items": result.new_items,
+        "evaluated": result.evaluated,
+        "high_affinity": result.high_affinity,
+        "notifications_sent": result.notifications_sent,
+        "duration_seconds": (result.finished_at - result.started_at).total_seconds()
+        if result.finished_at
+        else None,
+    }
+
+
+@app.get("/api/pipeline/status")
+async def api_pipeline_status():
+    state = PipelineState(settings.state_db_path)
+    return {
+        "last_run": state.get("last_pipeline_run"),
+        "last_weekly_email": state.get("last_weekly_email"),
     }
 
 
