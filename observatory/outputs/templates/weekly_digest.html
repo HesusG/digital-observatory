@@ -1,0 +1,24 @@
+<html>
+<body style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
+  <h2 style="color: #2c3e50;">Weekly Opportunity Radar Summary</h2>
+  <p>Found <strong>{{ items | length }}</strong> opportunities this week.</p>
+  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+    <tr style="background: #2c3e50; color: white;">
+      <th>Title</th>
+      <th>Source</th>
+      <th>Type</th>
+      <th>Score</th>
+      <th>Link</th>
+    </tr>
+    {% for item in items %}
+    <tr style="background: {{ '#e8f5e9' if item.score >= 8 else '#ffffff' }};">
+      <td>{{ item.title }}</td>
+      <td>{{ item.source }}</td>
+      <td>{{ item.category }}</td>
+      <td>{{ item.score }}/10</td>
+      <td><a href="{{ item.url }}">View</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
