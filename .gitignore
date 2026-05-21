@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 .env
+credentials.json
 *.db
 .ruff_cache/
 dist/

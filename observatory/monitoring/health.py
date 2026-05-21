@@ -11,7 +11,7 @@ async def check_chromadb() -> bool:
     try:
         async with httpx.AsyncClient() as client:
             r = await client.get(
-                f"http://{settings.chroma_host}:{settings.chroma_port}/api/v1/heartbeat",
+                f"http://{settings.chroma_host}:{settings.chroma_port}/api/v2/heartbeat",
                 timeout=5.0,
             )
             return r.status_code == 200

@@ -36,7 +36,7 @@ services:
       retries: 3
 
   chromadb:
-    image: chromadb/chroma:latest
+    image: chromadb/chroma@sha256:1e0b73a187a28757c572acba508c46f48c9e8b0acaf5c20e6d95cdedce1acdf6
     container_name: chromadb
     restart: unless-stopped
     ports:
@@ -49,7 +49,7 @@ services:
     networks:
       - observatory-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      test: ["CMD", "bash", "-c", "</dev/tcp/localhost/8000"]
       interval: 30s
       timeout: 5s
       retries: 3
