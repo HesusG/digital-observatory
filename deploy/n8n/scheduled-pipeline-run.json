@@ -1,0 +1,143 @@
+{
+  "name": "Digital Observatory — Scheduled Pipeline Run",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "53b2c4f2-1b9f-4c1f-9b3d-1e1e1e1e1e01",
+      "name": "Every 6 hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://100.84.156.15:8400/api/pipeline/run",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "http_only",
+              "value": "true"
+            },
+            {
+              "name": "sources",
+              "value": "rss,wordpress"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 900000,
+          "response": {
+            "response": {
+              "neverError": false,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "53b2c4f2-1b9f-4c1f-9b3d-1e1e1e1e1e02",
+      "name": "Trigger pipeline",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "high-affinity-check",
+              "leftValue": "={{ $json.high_affinity }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "53b2c4f2-1b9f-4c1f-9b3d-1e1e1e1e1e03",
+      "name": "Any high-affinity?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "content": "=📡 *Digital Observatory*\nRun finished\n\n• Collected: {{ $json.collected }}\n• New: {{ $json.new_items }}\n• Evaluated: {{ $json.evaluated }}\n• High-affinity (≥8): *{{ $json.high_affinity }}*\n• Notifications sent: {{ $json.notifications_sent }}\n• Duration: {{ Math.round($json.duration_seconds) }}s",
+        "options": {}
+      },
+      "id": "53b2c4f2-1b9f-4c1f-9b3d-1e1e1e1e1e04",
+      "name": "Format summary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [900, 200],
+      "notes": "Replace with a Telegram node if you want push notifications on every high-affinity run. As-is, this just builds a string you can wire to anything."
+    }
+  ],
+  "connections": {
+    "Every 6 hours": {
+      "main": [
+        [
+          {
+            "node": "Trigger pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger pipeline": {
+      "main": [
+        [
+          {
+            "node": "Any high-affinity?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Any high-affinity?": {
+      "main": [
+        [
+          {
+            "node": "Format summary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  },
+  "versionId": "1",
+  "meta": {
+    "description": "Triggers the digital-observatory pipeline every 6 hours over Tailscale. If the run returns any high-affinity items (>=8), formats a summary string ready to be wired to a downstream notifier (Telegram, Discord, email, etc.). Edit the Schedule node to change cadence; edit the HTTP query params to change sources or keywords."
+  }
+}

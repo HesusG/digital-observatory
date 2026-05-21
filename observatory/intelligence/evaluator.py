@@ -73,8 +73,18 @@ def parse_llm_response(raw: str) -> EvaluationResult:
         )
 
 
+# Cloud fallback is intentionally disabled — d3r-ser/Ollama is the sanctioned
+# evaluator. Flip to True only if you've decided to accept hosted-inference cost.
+ENABLE_CLOUD_FALLBACK = False
+
+
 async def _get_provider():
-    """Returns an LLM provider in priority order: Ollama -> OpenAI -> Gemini."""
+    """Returns the configured LLM provider, or None if unavailable.
+
+    With ENABLE_CLOUD_FALLBACK=False, only Ollama is used; the function returns
+    None (with a loud error log) when d3r-ser is unreachable, and the pipeline
+    skips evaluation rather than silently spending money on OpenAI/Gemini.
+    """
     if await check_ollama():
         try:
             from langchain_ollama import ChatOllama
@@ -84,7 +94,15 @@ async def _get_provider():
                 temperature=0,
             )
         except Exception as e:
-            logger.warning(f"Ollama provider failed to initialize: {e}")
+            logger.error(f"Ollama provider failed to initialize: {e}")
+    else:
+        logger.error(
+            f"Ollama unreachable at {settings.ollama_base_url} — d3r-ser likely asleep. "
+            "Wake it (WOL) to restore evaluation."
+        )
+
+    if not ENABLE_CLOUD_FALLBACK:
+        return None
 
     if settings.openai_api_key:
         try:
