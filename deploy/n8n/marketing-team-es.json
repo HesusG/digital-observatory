@@ -3,27 +3,19 @@
   "nodes": [
     {
       "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "cronExpression",
-              "expression": "0 9,21 * * *"
-            }
-          ]
-        }
+        "rule": {"interval": [{"field": "cronExpression", "expression": "0 9,21 * * *"}]}
       },
       "id": "mt-es-trigger-001",
       "name": "Twice daily (09:00 / 21:00 CST)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [240, 300],
-      "notes": "CST timezone — adjust offsets if n8n runs in a different TZ. Daytime offsets so drafts land when you can review them."
+      "position": [240, 300]
     },
     {
       "parameters": {
         "method": "POST",
         "url": "http://100.84.156.15:8400/api/wake-ollama",
-        "options": { "timeout": 60000 }
+        "options": {"timeout": 60000}
       },
       "id": "mt-es-wake-010",
       "name": "Wake d3r-ser (Ollama)",
@@ -34,57 +26,54 @@
     {
       "parameters": {
         "method": "GET",
-        "url": "http://100.84.156.15:8400/api/items/recent",
+        "url": "http://100.84.156.15:8400/api/drafts",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
-            { "name": "kind", "value": "article" },
-            { "name": "lang", "value": "es" },
-            { "name": "since_hours", "value": "24" },
-            { "name": "min_relevance", "value": "7" }
+            {"name": "status", "value": "awaiting-user"},
+            {"name": "limit", "value": "50"}
           ]
         },
-        "options": { "timeout": 30000 }
+        "options": {"timeout": 30000}
       },
       "id": "mt-es-fetch-002",
-      "name": "Fetch ES articles",
+      "name": "Fetch awaiting-user drafts",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [460, 300]
+      "position": [480, 300]
     },
     {
-      "parameters": {
-        "fieldToSplitOut": "items",
-        "options": {}
-      },
+      "parameters": {"fieldToSplitOut": "items", "options": {}},
       "id": "mt-es-split-003",
-      "name": "Split items",
+      "name": "Split drafts",
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
-      "position": [680, 300]
+      "position": [700, 300]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "http://100.84.156.15:8400/api/content/draft",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"url\": \"{{ $json.metadata.url }}\",\n  \"platforms\": [\"x\", \"linkedin\", \"bluesky\"],\n  \"lang\": \"es\",\n  \"include_course_cta\": false\n}",
-        "options": { "timeout": 120000 }
+        "conditions": {
+          "options": {"caseSensitive": true, "typeValidation": "loose"},
+          "conditions": [
+            {"leftValue": "={{ $json.metadata.lang }}", "rightValue": "es", "operator": {"type": "string", "operation": "equals"}}
+          ],
+          "combinator": "and"
+        },
+        "options": {}
       },
-      "id": "mt-es-draft-004",
-      "name": "Generate ES drafts",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "id": "mt-es-filter-004",
+      "name": "Only lang=es",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
       "position": [900, 300]
     },
     {
       "parameters": {
         "chatId": "={{ $env.TELEGRAM_CHAT_ID_ES }}",
-        "text": "=📝 *Borrador ES — {{ $('Split items').item.json.metadata.title }}*\n\n*Relevancia:* {{ $('Split items').item.json.metadata.teacher_relevance }}/10\n*Fuente:* {{ $('Split items').item.json.metadata.source }}\n*URL:* {{ $('Split items').item.json.metadata.url }}\n\n*X / Twitter:*\n```\n{{ JSON.stringify($json.drafts.x) }}\n```\n\n*LinkedIn:*\n```\n{{ $json.drafts.linkedin }}\n```\n\n*Bluesky:*\n```\n{{ JSON.stringify($json.drafts.bluesky) }}\n```\n\n`approve_{{ $('Split items').item.json.id }}` · `skip_{{ $('Split items').item.json.id }}`",
+        "text": "=📝 *Borrador ES — {{ $json.metadata.platform.toUpperCase() }}*\n\n*Fuente:* {{ $json.metadata.item_source }}\n*Veredicto:* {{ $json.metadata.edu_verdict }}\n*Notas Edu:* _{{ $json.metadata.edu_reasoning }}_\n\n```\n{{ $json.document }}\n```",
         "additionalFields": {
           "parse_mode": "Markdown",
-          "reply_markup": "={\n  \"inline_keyboard\": [[\n    { \"text\": \"✅ Approve\", \"callback_data\": \"approve_{{ $('Split items').item.json.id }}\" },\n    { \"text\": \"✏️ Edit\", \"callback_data\": \"edit_{{ $('Split items').item.json.id }}\" },\n    { \"text\": \"⏭️ Skip\", \"callback_data\": \"skip_{{ $('Split items').item.json.id }}\" }\n  ]]\n}"
+          "reply_markup": "={\n  \"inline_keyboard\": [[\n    { \"text\": \"✅ Approve\", \"callback_data\": \"approve_{{ $json.id }}\" },\n    { \"text\": \"✏️ Edit\", \"callback_data\": \"edit_{{ $json.id }}\" },\n    { \"text\": \"⏭️ Skip\", \"callback_data\": \"skip_{{ $json.id }}\" }\n  ]]\n}"
         }
       },
       "id": "mt-es-tg-005",
@@ -93,40 +82,19 @@
       "typeVersion": 1.2,
       "position": [1140, 300],
       "credentials": {
-        "telegramApi": {
-          "id": "PLACEHOLDER_TELEGRAM_CRED_ID",
-          "name": "Telegram Marketing Bot"
-        }
-      },
-      "notes": "Uses env var TELEGRAM_CHAT_ID_ES. Set in n8n container env. Callback buttons fire the marketing-team-callback workflow."
+        "telegramApi": {"id": "PLACEHOLDER_TELEGRAM_CRED_ID", "name": "Telegram Marketing Bot"}
+      }
     }
   ],
   "connections": {
-    "Twice daily (09:00 / 21:00 CST)": {
-      "main": [[{ "node": "Wake d3r-ser (Ollama)", "type": "main", "index": 0 }]]
-    },
-    "Wake d3r-ser (Ollama)": {
-      "main": [[{ "node": "Fetch ES articles", "type": "main", "index": 0 }]]
-    },
-    "Fetch ES articles": {
-      "main": [[{ "node": "Split items", "type": "main", "index": 0 }]]
-    },
-    "Split items": {
-      "main": [[{ "node": "Generate ES drafts", "type": "main", "index": 0 }]]
-    },
-    "Generate ES drafts": {
-      "main": [[{ "node": "Send to ES Telegram inbox", "type": "main", "index": 0 }]]
-    }
+    "Twice daily (09:00 / 21:00 CST)": {"main": [[{"node": "Wake d3r-ser (Ollama)", "type": "main", "index": 0}]]},
+    "Wake d3r-ser (Ollama)": {"main": [[{"node": "Fetch awaiting-user drafts", "type": "main", "index": 0}]]},
+    "Fetch awaiting-user drafts": {"main": [[{"node": "Split drafts", "type": "main", "index": 0}]]},
+    "Split drafts": {"main": [[{"node": "Only lang=es", "type": "main", "index": 0}]]},
+    "Only lang=es": {"main": [[{"node": "Send to ES Telegram inbox", "type": "main", "index": 0}]]}
   },
   "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "saveDataErrorExecution": "all",
-    "saveDataSuccessExecution": "all",
-    "saveManualExecutions": true
-  },
-  "versionId": "1",
-  "meta": {
-    "description": "Spanish-language marketing pipeline. Twice a day, fetches ES-targeted articles with teacher_relevance >= 7 from the digital-observatory, generates per-platform drafts via Ollama, and pushes them to a dedicated ES Telegram chat with Approve/Edit/Skip inline buttons. Callback buttons are handled by the marketing-team-callback workflow."
-  }
+  "settings": {"executionOrder": "v1", "saveDataErrorExecution": "all", "saveDataSuccessExecution": "all", "saveManualExecutions": true},
+  "versionId": "2",
+  "meta": {"description": "ES stream — surfaces drafts that Edu approved-for-review to a dedicated Telegram chat. Buttons call observatory's draft-lifecycle endpoints."}
 }
