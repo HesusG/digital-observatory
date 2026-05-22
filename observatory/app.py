@@ -219,6 +219,9 @@ async def content_draft(payload: dict = Body(...)):
         angles=angles,
         platforms=list(platforms),
         lang=lang,
+        item_url=url,
+        item_title=meta.get("title", ""),
+        item_source=meta.get("source", ""),
         include_course_cta=include_course_cta,
         tone=tone,
     )
