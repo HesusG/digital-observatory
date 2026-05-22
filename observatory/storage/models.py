@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import Optional
+from typing import Literal, Optional
+
+
+ItemKind = Literal["opportunity", "article"]
 
 
 class CollectedItem(BaseModel):
@@ -10,6 +13,14 @@ class CollectedItem(BaseModel):
     source_type: str  # rss | wordpress | playwright
     raw_text: str
     collected_at: datetime = Field(default_factory=datetime.utcnow)
+    # opportunity = jobs/grants/scholarships/CFPs (existing radar)
+    # article = AI/edtech news + research the user might post about
+    kind: ItemKind = "opportunity"
+    # finer-grained source group: opportunities | ai_news | ai_research | llm_tools | edtech
+    source_group: str = "opportunities"
+    # ISO-639-1 hint for the article's original language; the evaluator decides
+    # which audiences (es / en) should actually see it
+    lang_hint: str = "en"
     metadata: dict = Field(default_factory=dict)
 
 

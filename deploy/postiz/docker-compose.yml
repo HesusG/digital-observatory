@@ -1,0 +1,83 @@
+# Postiz — self-hosted social-media publisher
+#
+# Deploys on nano-spud alongside the observatory but as its own stack:
+# Postiz brings its own Postgres + Redis, so isolating the compose keeps the
+# observatory's DB out of the blast radius.
+#
+# Usage on nano-spud:
+#   cd /home/d3r/repos/digital-observatory/deploy/postiz
+#   cp .env.example .env  # then fill in passwords + JWT secret
+#   docker compose up -d
+#
+# Then open http://100.84.156.15:5000 over Tailscale, create the admin user,
+# and connect Bluesky first (instant), then X, then start the LinkedIn app
+# review process in parallel.
+
+services:
+  postiz:
+    image: ghcr.io/gitroomhq/postiz-app:latest
+    container_name: postiz
+    restart: unless-stopped
+    environment:
+      MAIN_URL: "http://100.84.156.15:5000"
+      FRONTEND_URL: "http://100.84.156.15:5000"
+      NEXT_PUBLIC_BACKEND_URL: "http://100.84.156.15:5000/api"
+      JWT_SECRET: "${POSTIZ_JWT_SECRET}"
+      DATABASE_URL: "postgresql://postiz:${POSTIZ_DB_PASSWORD}@postiz-db:5432/postiz"
+      REDIS_URL: "redis://postiz-redis:6379"
+      BACKEND_INTERNAL_URL: "http://localhost:3000"
+      IS_GENERAL: "true"
+      STORAGE_PROVIDER: "local"
+      UPLOAD_DIRECTORY: "/uploads"
+      NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
+    ports:
+      - "127.0.0.1:5000:5000"   # bind to loopback only; reach via Tailscale ssh-tunnel or nginx
+    volumes:
+      - postiz-config:/config
+      - postiz-uploads:/uploads
+    depends_on:
+      postiz-db:
+        condition: service_healthy
+      postiz-redis:
+        condition: service_healthy
+    networks: [postiz-net]
+
+  postiz-db:
+    image: postgres:17-alpine
+    container_name: postiz-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postiz
+      POSTGRES_PASSWORD: "${POSTIZ_DB_PASSWORD}"
+      POSTGRES_DB: postiz
+    volumes:
+      - postiz-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postiz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [postiz-net]
+
+  postiz-redis:
+    image: redis:7-alpine
+    container_name: postiz-redis
+    restart: unless-stopped
+    volumes:
+      - postiz-redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [postiz-net]
+
+volumes:
+  postiz-config:
+  postiz-uploads:
+  postiz-pgdata:
+  postiz-redisdata:
+
+networks:
+  postiz-net:
+    driver: bridge

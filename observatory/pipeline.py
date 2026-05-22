@@ -7,6 +7,7 @@ from config.settings import settings
 from observatory.collectors.rss import RSSCollector
 from observatory.collectors.wordpress import WordPressCollector
 from observatory.intelligence.evaluator import evaluate_opportunity
+from observatory.intelligence.ai_evaluator import evaluate_ai_signal
 from observatory.processing.deduplicator import is_duplicate
 from observatory.processing.embedder import clean_for_embedding
 from observatory.storage import chromadb_store
@@ -15,6 +16,7 @@ from observatory.storage.state import PipelineState
 from observatory.outputs.telegram import send_telegram_alert
 from observatory.outputs.email import send_weekly_email
 from observatory.outputs.sheets import SheetsOutput
+from observatory.outputs.vault import write_article_drafts
 from observatory.monitoring import metrics
 
 logger = logging.getLogger(__name__)
@@ -29,6 +31,7 @@ class PipelineResult:
     eval_failures: int = 0
     high_affinity: int = 0
     notifications_sent: int = 0
+    articles_drafted: int = 0
     started_at: datetime = field(default_factory=datetime.utcnow)
     finished_at: datetime | None = None
 
@@ -70,7 +73,14 @@ async def run_pipeline(
             source=item.source,
             source_type=item.source_type,
             raw_text=item.raw_text,
+            kind=item.kind,
+            source_group=item.source_group,
+            lang_hint=item.lang_hint,
         )
+
+        if item.kind == "article":
+            await _process_article(item, result)
+            continue
 
         evaluation = await evaluate_opportunity(item.raw_text)
 
@@ -124,6 +134,40 @@ async def run_pipeline(
         f"{result.evaluated} evaluated, {result.high_affinity} high-affinity"
     )
     return result
+
+
+async def _process_article(item: CollectedItem, result: PipelineResult) -> None:
+    """Article kind: teacher-lens AI evaluator, then vault drafts. Never touches
+    the opportunity Telegram channel or the opportunities Sheets log."""
+    evaluation = await evaluate_ai_signal(item.raw_text)
+    if evaluation is None:
+        result.eval_failures += 1
+        metrics.llm_errors.labels(provider="unknown").inc()
+        return
+
+    result.evaluated += 1
+    metrics.items_evaluated.labels(source=item.source).inc()
+
+    chromadb_store.update_item_ai_evaluation(
+        url=item.url,
+        teacher_relevance=evaluation.teacher_relevance,
+        audience_fit=evaluation.audience_fit,
+        lang_targets=evaluation.lang_targets,
+        topic_tags=evaluation.topic_tags,
+        post_angles=evaluation.post_angles,
+        suggested_platforms=evaluation.suggested_platforms,
+        one_line_hook=evaluation.one_line_hook,
+        summary=evaluation.summary,
+        course_tie_in=evaluation.course_tie_in or "",
+        skip_reason=evaluation.skip_reason or "",
+    )
+
+    if evaluation.skip_reason:
+        return
+
+    if evaluation.teacher_relevance >= settings.ai_article_min_relevance:
+        written = await write_article_drafts(item, evaluation)
+        result.articles_drafted += len(written)
 
 
 async def _collect(

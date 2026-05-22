@@ -59,6 +59,9 @@ def upsert_item(
     obsidian_path: str = "",
     is_duplicate: bool = False,
     duplicate_of: str | None = None,
+    kind: str = "opportunity",
+    source_group: str = "opportunities",
+    lang_hint: str = "en",
 ) -> str:
     collection = get_items_collection()
     doc_id = url_to_id(url)
@@ -78,6 +81,9 @@ def upsert_item(
         "obsidian_path": obsidian_path,
         "is_duplicate": is_duplicate,
         "duplicate_of": duplicate_of or "",
+        "kind": kind,
+        "source_group": source_group,
+        "lang_hint": lang_hint,
         "processed_at": datetime.utcnow().isoformat(),
     }
 
@@ -113,32 +119,94 @@ def find_nearest(text: str) -> tuple[float | None, dict | None]:
     return results[0]["distance"], results[0]["metadata"]
 
 
-def get_recent_items(since: datetime, min_affinity: int = 0) -> list[dict]:
+def get_recent_items(
+    since: datetime,
+    min_affinity: int = 0,
+    kind: str | None = None,
+    lang: str | None = None,
+    min_relevance: int = 0,
+) -> list[dict]:
+    """Recent items, filtered. Filtering is done in Python to handle ChromaDB
+    metadata fields that don't always exist (older entries missing kind etc.).
+
+    - kind: "opportunity" | "article" | None (any)
+    - lang: ISO-639 code; matches when present in metadata.lang_targets list
+    - min_relevance: applied to teacher_relevance for articles, affinity_score
+      for opportunities (so callers can use one knob across both)
+    """
     collection = get_items_collection()
-    where_filter = {"$and": [
-        {"collected_at": {"$gte": since.isoformat()}},
-        {"affinity_score": {"$gte": min_affinity}},
-    ]}
-
     try:
-        results = collection.get(where=where_filter, include=["metadatas", "documents"])
-    except Exception:
-        # Fallback: get all and filter in Python
         results = collection.get(include=["metadatas", "documents"])
+    except Exception as e:
+        logger.error(f"ChromaDB get failed: {e}")
+        return []
 
-    items = []
-    if results["ids"]:
-        for i, doc_id in enumerate(results["ids"]):
-            meta = results["metadatas"][i] if results["metadatas"] else {}
-            collected = meta.get("collected_at", "")
-            score = meta.get("affinity_score", 0)
-            if collected >= since.isoformat() and score >= min_affinity:
-                items.append({
-                    "id": doc_id,
-                    "metadata": meta,
-                    "document": results["documents"][i] if results["documents"] else "",
-                })
+    items: list[dict] = []
+    since_iso = since.isoformat()
+    if not results["ids"]:
+        return items
+
+    for i, doc_id in enumerate(results["ids"]):
+        meta = results["metadatas"][i] if results["metadatas"] else {}
+        if meta.get("collected_at", "") < since_iso:
+            continue
+
+        item_kind = meta.get("kind", "opportunity")  # legacy items default to opportunity
+        if kind is not None and item_kind != kind:
+            continue
+
+        if item_kind == "article":
+            score = int(meta.get("teacher_relevance", 0) or 0)
+        else:
+            score = int(meta.get("affinity_score", 0) or 0)
+
+        # Backwards-compatible: callers using min_affinity get the same
+        # semantics for opportunities; new callers use min_relevance.
+        threshold = max(min_affinity, min_relevance)
+        if score < threshold:
+            continue
+
+        if lang is not None:
+            targets = (meta.get("lang_targets") or "").split(",")
+            targets = [t for t in (s.strip() for s in targets) if t]
+            if lang not in targets:
+                continue
+
+        items.append({
+            "id": doc_id,
+            "metadata": meta,
+            "document": results["documents"][i] if results["documents"] else "",
+        })
     return items
+
+
+def get_item_by_url(url: str) -> dict | None:
+    collection = get_items_collection()
+    doc_id = url_to_id(url)
+    res = collection.get(ids=[doc_id], include=["metadatas", "documents"])
+    if not res["ids"]:
+        return None
+    meta = res["metadatas"][0] if res["metadatas"] else {}
+    doc = res["documents"][0] if res["documents"] else ""
+    return {"id": res["ids"][0], "metadata": meta, "document": doc}
+
+
+def mark_item_skipped(item_id: str, reason: str = "user-skip") -> bool:
+    """Mark an item as skipped (user pressed Skip in the marketing inbox).
+    Returns True if the item existed and was updated."""
+    collection = get_items_collection()
+    existing = collection.get(ids=[item_id])
+    if not existing["ids"]:
+        return False
+    metadata = existing["metadatas"][0] if existing["metadatas"] else {}
+    metadata.update({
+        "skip_reason": reason,
+        "status": "skipped",
+        "processed_at": datetime.utcnow().isoformat(),
+    })
+    collection.update(ids=[item_id], metadatas=[metadata])
+    logger.info(f"Marked {item_id[:12]}... as skipped (reason={reason})")
+    return True
 
 
 def get_item_count() -> int:
@@ -181,3 +249,48 @@ def update_item_evaluation(
 
     collection.update(ids=[doc_id], metadatas=[metadata])
     logger.info(f"Updated evaluation for {doc_id[:12]}... (score={affinity_score}, cat={category})")
+
+
+def update_item_ai_evaluation(
+    url: str,
+    teacher_relevance: int,
+    audience_fit: list[str],
+    lang_targets: list[str],
+    topic_tags: list[str],
+    post_angles: list[dict] | None = None,
+    suggested_platforms: list[str] | None = None,
+    one_line_hook: str = "",
+    summary: str = "",
+    course_tie_in: str = "",
+    skip_reason: str = "",
+):
+    import json as _json
+
+    collection = get_items_collection()
+    doc_id = url_to_id(url)
+
+    existing = collection.get(ids=[doc_id])
+    if not existing["ids"]:
+        logger.warning(f"Cannot update AI evaluation for unknown URL: {url[:60]}")
+        return
+
+    metadata = existing["metadatas"][0] if existing["metadatas"] else {}
+    metadata.update({
+        "teacher_relevance": teacher_relevance,
+        "audience_fit": ",".join(audience_fit or []),
+        "lang_targets": ",".join(lang_targets or []),
+        "topic_tags": ",".join(topic_tags or []),
+        "post_angles_json": _json.dumps(post_angles or []),
+        "suggested_platforms": ",".join(suggested_platforms or []),
+        "one_line_hook": one_line_hook,
+        "summary": summary,
+        "course_tie_in": course_tie_in,
+        "skip_reason": skip_reason,
+        "processed_at": datetime.utcnow().isoformat(),
+    })
+
+    collection.update(ids=[doc_id], metadatas=[metadata])
+    logger.info(
+        f"Updated AI eval for {doc_id[:12]}... "
+        f"(relevance={teacher_relevance}, langs={lang_targets})"
+    )

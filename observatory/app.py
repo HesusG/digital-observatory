@@ -2,12 +2,13 @@ import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Query
+from fastapi import Body, FastAPI, Query
 from fastapi.responses import JSONResponse
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from config.settings import settings
 from observatory.collectors.rss import RSSCollector
+from observatory.intelligence.drafter import draft_for_platforms
 from observatory.pipeline import run_pipeline, PipelineResult
 from observatory.storage import chromadb_store
 from observatory.storage.state import PipelineState
@@ -88,6 +89,9 @@ async def trigger_collection(source: str = Query(default="rss")):
                 source=item.source,
                 source_type=item.source_type,
                 raw_text=item.raw_text,
+                kind=item.kind,
+                source_group=item.source_group,
+                lang_hint=item.lang_hint,
             )
             new_count += 1
 
@@ -124,6 +128,9 @@ async def trigger_collection(source: str = Query(default="rss")):
                 source=item.source,
                 source_type=item.source_type,
                 raw_text=item.raw_text,
+                kind=item.kind,
+                source_group=item.source_group,
+                lang_hint=item.lang_hint,
             )
             new_count += 1
 
@@ -149,10 +156,87 @@ async def semantic_search(q: str = Query(...), limit: int = Query(default=10)):
 async def recent_items(
     since_hours: int = Query(default=24),
     min_affinity: int = Query(default=0),
+    kind: str | None = Query(default=None, pattern="^(opportunity|article)$"),
+    lang: str | None = Query(default=None, pattern="^(es|en)$"),
+    min_relevance: int = Query(default=0),
 ):
     since = datetime.utcnow() - timedelta(hours=since_hours)
-    items = chromadb_store.get_recent_items(since=since, min_affinity=min_affinity)
+    items = chromadb_store.get_recent_items(
+        since=since,
+        min_affinity=min_affinity,
+        kind=kind,
+        lang=lang,
+        min_relevance=min_relevance,
+    )
     return {"count": len(items), "items": items}
+
+
+@app.post("/api/content/draft")
+async def content_draft(payload: dict = Body(...)):
+    """Generate per-platform per-language draft text for an already-stored
+    article. n8n's marketing-team workflow calls this."""
+    url = payload.get("url", "")
+    if not url:
+        return JSONResponse(status_code=400, content={"error": "url required"})
+
+    item = chromadb_store.get_item_by_url(url)
+    if not item:
+        return JSONResponse(status_code=404, content={"error": f"unknown url: {url}"})
+
+    meta = item.get("metadata", {})
+    if meta.get("kind") != "article":
+        return JSONResponse(
+            status_code=400,
+            content={"error": "drafter only handles kind=article"},
+        )
+
+    platforms = payload.get("platforms") or settings.ai_default_platforms
+    lang = payload.get("lang") or "en"
+    if lang not in settings.ai_supported_langs:
+        return JSONResponse(
+            status_code=400,
+            content={"error": f"unsupported lang: {lang}"},
+        )
+
+    include_course_cta = bool(payload.get("include_course_cta", False))
+    tone = str(payload.get("tone", ""))
+
+    # post_angles came from the AI evaluator and was stored as JSON-ish; we
+    # accept a fallback if the metadata only kept tag-lists.
+    angles_meta = meta.get("post_angles_json") or ""
+    angles: list[dict] = []
+    if angles_meta:
+        try:
+            import json as _json
+            angles = _json.loads(angles_meta)
+        except Exception:
+            angles = []
+
+    drafts = await draft_for_platforms(
+        hook=meta.get("one_line_hook", "") or meta.get("title", ""),
+        summary=meta.get("summary", ""),
+        angles=angles,
+        platforms=list(platforms),
+        lang=lang,
+        include_course_cta=include_course_cta,
+        tone=tone,
+    )
+
+    return {
+        "url": url,
+        "lang": lang,
+        "platforms": list(platforms),
+        "drafts": drafts,
+    }
+
+
+@app.post("/api/items/skip")
+async def skip_item(item_id: str = Query(...), reason: str = Query(default="user-skip")):
+    ok = chromadb_store.mark_item_skipped(item_id, reason=reason)
+    return JSONResponse(
+        status_code=200 if ok else 404,
+        content={"status": "ok" if ok else "not-found", "item_id": item_id},
+    )
 
 
 @app.get("/api/stats")
@@ -196,6 +280,7 @@ async def api_pipeline_run(
         "evaluated": result.evaluated,
         "high_affinity": result.high_affinity,
         "notifications_sent": result.notifications_sent,
+        "articles_drafted": result.articles_drafted,
         "duration_seconds": (result.finished_at - result.started_at).total_seconds()
         if result.finished_at
         else None,

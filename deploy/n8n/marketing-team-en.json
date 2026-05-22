@@ -1,0 +1,116 @@
+{
+  "name": "Marketing Team — EN Stream",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10,22 * * *"
+            }
+          ]
+        }
+      },
+      "id": "mt-en-trigger-001",
+      "name": "Twice daily (10:00 / 22:00 CST)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300],
+      "notes": "Offset 1h from the ES stream so the two queues don't clobber each other."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://100.84.156.15:8400/api/items/recent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "kind", "value": "article" },
+            { "name": "lang", "value": "en" },
+            { "name": "since_hours", "value": "24" },
+            { "name": "min_relevance", "value": "7" }
+          ]
+        },
+        "options": { "timeout": 30000 }
+      },
+      "id": "mt-en-fetch-002",
+      "name": "Fetch EN articles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "items",
+        "options": {}
+      },
+      "id": "mt-en-split-003",
+      "name": "Split items",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://100.84.156.15:8400/api/content/draft",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.metadata.url }}\",\n  \"platforms\": [\"x\", \"linkedin\", \"bluesky\"],\n  \"lang\": \"en\",\n  \"include_course_cta\": false\n}",
+        "options": { "timeout": 120000 }
+      },
+      "id": "mt-en-draft-004",
+      "name": "Generate EN drafts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID_EN }}",
+        "text": "=📝 *Draft EN — {{ $('Split items').item.json.metadata.title }}*\n\n*Relevance:* {{ $('Split items').item.json.metadata.teacher_relevance }}/10\n*Source:* {{ $('Split items').item.json.metadata.source }}\n*URL:* {{ $('Split items').item.json.metadata.url }}\n\n*X / Twitter:*\n```\n{{ JSON.stringify($json.drafts.x) }}\n```\n\n*LinkedIn:*\n```\n{{ $json.drafts.linkedin }}\n```\n\n*Bluesky:*\n```\n{{ JSON.stringify($json.drafts.bluesky) }}\n```\n\n`approve_{{ $('Split items').item.json.id }}` · `skip_{{ $('Split items').item.json.id }}`",
+        "additionalFields": {
+          "parse_mode": "Markdown",
+          "reply_markup": "={\n  \"inline_keyboard\": [[\n    { \"text\": \"✅ Approve\", \"callback_data\": \"approve_{{ $('Split items').item.json.id }}\" },\n    { \"text\": \"✏️ Edit\", \"callback_data\": \"edit_{{ $('Split items').item.json.id }}\" },\n    { \"text\": \"⏭️ Skip\", \"callback_data\": \"skip_{{ $('Split items').item.json.id }}\" }\n  ]]\n}"
+        }
+      },
+      "id": "mt-en-tg-005",
+      "name": "Send to EN Telegram inbox",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1140, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "PLACEHOLDER_TELEGRAM_CRED_ID",
+          "name": "Telegram Marketing Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Twice daily (10:00 / 22:00 CST)": {
+      "main": [[{ "node": "Fetch EN articles", "type": "main", "index": 0 }]]
+    },
+    "Fetch EN articles": {
+      "main": [[{ "node": "Split items", "type": "main", "index": 0 }]]
+    },
+    "Split items": {
+      "main": [[{ "node": "Generate EN drafts", "type": "main", "index": 0 }]]
+    },
+    "Generate EN drafts": {
+      "main": [[{ "node": "Send to EN Telegram inbox", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  },
+  "versionId": "1",
+  "meta": {
+    "description": "English-language marketing pipeline. Mirror of marketing-team-es.json with lang=en and an EN-only Telegram chat. Twice daily."
+  }
+}

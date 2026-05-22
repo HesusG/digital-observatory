@@ -1,0 +1,203 @@
+{
+  "name": "Marketing Team — Telegram Callback Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["callback_query"],
+        "additionalFields": {}
+      },
+      "id": "mt-cb-trigger-001",
+      "name": "Telegram callback trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "PLACEHOLDER_TELEGRAM_CRED_ID",
+          "name": "Telegram Marketing Bot"
+        }
+      },
+      "notes": "Fires on inline-button taps from marketing-team-es and -en. callback_data shape: approve_<id> | edit_<id> | skip_<id>."
+    },
+    {
+      "parameters": {
+        "jsCode": "const cb = $input.first().json.callback_query;\nconst data = (cb && cb.data) || '';\nconst [action, ...rest] = data.split('_');\nconst id = rest.join('_');\nreturn [{ json: { action, item_id: id, chat_id: cb.message.chat.id, callback_query_id: cb.id, original_message_id: cb.message.message_id, original_text: cb.message.text } }];"
+      },
+      "id": "mt-cb-parse-002",
+      "name": "Parse callback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "typeValidation": "loose" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "approve",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "outputKey": "approve"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "typeValidation": "loose" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "skip",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "outputKey": "skip"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "typeValidation": "loose" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "edit",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "outputKey": "edit"
+            }
+          ]
+        },
+        "options": { "allMatchingOutputs": false }
+      },
+      "id": "mt-cb-switch-003",
+      "name": "Route by action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://postiz:3000/api/public/v1/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{ $env.POSTIZ_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"now\",\n  \"shortLink\": false,\n  \"posts\": [\n    {\n      \"integration\": { \"id\": \"PLACEHOLDER_POSTIZ_INTEGRATION_ID\" },\n      \"value\": [ { \"content\": \"{{ $('Parse callback').item.json.original_text }}\" } ]\n    }\n  ]\n}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "mt-cb-postiz-004",
+      "name": "Schedule in Postiz",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 200],
+      "notes": "TODO: pull each platform's draft from a stored draft cache. Today, original_text contains all three drafts; you'll want to split per platform. Wire one HTTP call per platform integration ID."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://100.84.156.15:8400/api/items/skip",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "item_id", "value": "={{ $json.item_id }}" }
+          ]
+        },
+        "options": { "timeout": 15000 }
+      },
+      "id": "mt-cb-skip-005",
+      "name": "Mark item skipped",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 360]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Parse callback').item.json.chat_id }}",
+        "text": "=✏️ Edit mode: reply to this message with the replacement post text. (Not wired in v1 — open the matching draft in Obsidian, edit there, then re-approve.)"
+      },
+      "id": "mt-cb-edit-006",
+      "name": "Edit notice",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [900, 500],
+      "credentials": {
+        "telegramApi": {
+          "id": "PLACEHOLDER_TELEGRAM_CRED_ID",
+          "name": "Telegram Marketing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "answerCallback",
+        "callbackQueryId": "={{ $('Parse callback').item.json.callback_query_id }}",
+        "additionalFields": {
+          "text": "Got it",
+          "show_alert": false
+        }
+      },
+      "id": "mt-cb-ack-007",
+      "name": "Acknowledge callback",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1140, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "PLACEHOLDER_TELEGRAM_CRED_ID",
+          "name": "Telegram Marketing Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram callback trigger": {
+      "main": [[{ "node": "Parse callback", "type": "main", "index": 0 }]]
+    },
+    "Parse callback": {
+      "main": [[{ "node": "Route by action", "type": "main", "index": 0 }]]
+    },
+    "Route by action": {
+      "main": [
+        [{ "node": "Schedule in Postiz", "type": "main", "index": 0 }],
+        [{ "node": "Mark item skipped", "type": "main", "index": 0 }],
+        [{ "node": "Edit notice", "type": "main", "index": 0 }]
+      ]
+    },
+    "Schedule in Postiz": {
+      "main": [[{ "node": "Acknowledge callback", "type": "main", "index": 0 }]]
+    },
+    "Mark item skipped": {
+      "main": [[{ "node": "Acknowledge callback", "type": "main", "index": 0 }]]
+    },
+    "Edit notice": {
+      "main": [[{ "node": "Acknowledge callback", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  },
+  "versionId": "1",
+  "meta": {
+    "description": "Handles Approve / Edit / Skip callbacks from the marketing-team ES + EN workflows. Approve → Postiz; Skip → observatory /api/items/skip; Edit → notice (manual flow until v2). Postiz integration IDs and POSTIZ_API_KEY env var must be set in n8n once Postiz is up (Phase 6)."
+  }
+}
