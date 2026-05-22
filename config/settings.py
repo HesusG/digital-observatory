@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     high_affinity_threshold: int = 8
     weekly_email_interval_days: int = 7
 
+    # AI-article (marketing) pipeline
+    ai_article_min_relevance: int = 6   # drafts only written above this
+    ai_supported_langs: list[str] = ["es", "en"]
+    ai_default_platforms: list[str] = ["x", "linkedin", "bluesky"]
+
     # WordPress scraping
     wp_default_keywords: list[str] = [
         "artificial intelligence",

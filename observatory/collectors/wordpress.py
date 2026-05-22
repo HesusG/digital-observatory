@@ -139,6 +139,9 @@ class WordPressCollector(BaseCollector):
             source_type="wordpress",
             raw_text=raw_text,
             collected_at=datetime.utcnow(),
+            kind="opportunity",
+            source_group="opportunities",
+            lang_hint="en",
             metadata={"search_source": "wordpress_rest_api"},
         )
 

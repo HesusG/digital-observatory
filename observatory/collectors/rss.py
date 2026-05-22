@@ -12,6 +12,19 @@ logger = logging.getLogger(__name__)
 
 FEEDS_CONFIG = Path(__file__).parent.parent.parent / "config" / "sources" / "rss_feeds.yaml"
 
+# Maps the YAML category key to (kind, normalized source_group).
+# Anything not listed here defaults to article / <category>, which keeps new
+# AI-side feed additions auto-route correctly.
+CATEGORY_ROUTING: dict[str, tuple[str, str]] = {
+    "scholarships": ("opportunity", "opportunities"),
+    "opportunities": ("opportunity", "opportunities"),
+    "ai_news": ("article", "ai_news"),
+    "ai_research": ("article", "ai_research"),
+    "edtech": ("article", "edtech"),
+    "llm_tools": ("article", "llm_tools"),
+    "context_engineering": ("article", "llm_tools"),
+}
+
 
 class RSSCollector(BaseCollector):
     name = "rss"
@@ -47,6 +60,8 @@ class RSSCollector(BaseCollector):
         parsed = feedparser.parse(feed_url)
         items = []
 
+        kind, source_group = CATEGORY_ROUTING.get(category, ("article", category))
+
         for entry in parsed.entries[:10]:
             title = entry.get("title", "Sin título")
             link = entry.get("link", "")
@@ -69,6 +84,9 @@ class RSSCollector(BaseCollector):
                 source_type="rss",
                 raw_text=raw_text,
                 collected_at=collected_at,
+                kind=kind,
+                source_group=source_group,
+                lang_hint="en",
                 metadata={"category": category, "feed_url": feed_url},
             ))
         return items
