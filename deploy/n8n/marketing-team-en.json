@@ -21,6 +21,18 @@
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "http://100.84.156.15:8400/api/wake-ollama",
+        "options": { "timeout": 60000 }
+      },
+      "id": "mt-en-wake-010",
+      "name": "Wake d3r-ser (Ollama)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [360, 300]
+    },
+    {
+      "parameters": {
         "method": "GET",
         "url": "http://100.84.156.15:8400/api/items/recent",
         "sendQuery": true,
@@ -90,6 +102,9 @@
   ],
   "connections": {
     "Twice daily (10:00 / 22:00 CST)": {
+      "main": [[{ "node": "Wake d3r-ser (Ollama)", "type": "main", "index": 0 }]]
+    },
+    "Wake d3r-ser (Ollama)": {
       "main": [[{ "node": "Fetch EN articles", "type": "main", "index": 0 }]]
     },
     "Fetch EN articles": {

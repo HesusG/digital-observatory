@@ -1,24 +1,72 @@
+<!DOCTYPE html>
 <html>
-<body style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
-  <h2 style="color: #2c3e50;">Weekly Opportunity Radar Summary</h2>
-  <p>Found <strong>{{ items | length }}</strong> opportunities this week.</p>
-  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-    <tr style="background: #2c3e50; color: white;">
-      <th>Title</th>
-      <th>Source</th>
-      <th>Type</th>
-      <th>Score</th>
-      <th>Link</th>
-    </tr>
-    {% for item in items %}
-    <tr style="background: {{ '#e8f5e9' if item.score >= 8 else '#ffffff' }};">
-      <td>{{ item.title }}</td>
-      <td>{{ item.source }}</td>
-      <td>{{ item.category }}</td>
-      <td>{{ item.score }}/10</td>
-      <td><a href="{{ item.url }}">View</a></td>
-    </tr>
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Opportunity Radar</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; max-width: 760px; margin: 0 auto; background: #f7f7f8; color: #1c1c1f; padding: 24px;">
+
+  <div style="background:#ffffff; border-radius:14px; padding:28px 28px 20px 28px; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <h1 style="margin:0 0 6px 0; color:#1a3a5e; font-size:22px;">Weekly Opportunity Radar</h1>
+    <p style="margin:0; color:#5d6470; font-size:14px;">
+      <strong>{{ total }}</strong> opportunities scanned in the last 7 days · highlighting top <strong>{{ top_count }}</strong>
+      {% if rest_count > 0 %}· {{ rest_count }} more below{% endif %}
+    </p>
+  </div>
+
+  <!-- ────────────────  TOP 10 HIGHLIGHTS  ──────────────── -->
+  {% if top %}
+  <h2 style="margin:28px 0 12px 4px; color:#1a3a5e; font-size:16px; text-transform:uppercase; letter-spacing:0.08em;">Top {{ top_count }} this week</h2>
+  {% for item in top %}
+  <div style="background:#ffffff; border-radius:12px; padding:18px 20px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,0.05); border-left:5px solid {% if item.score >= 8 %}#16a34a{% elif item.score >= 5 %}#eab308{% else %}#9ca3af{% endif %};">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+      <div style="flex:1; min-width:0;">
+        <a href="{{ item.url }}" style="font-size:16px; font-weight:600; color:#1c1c1f; text-decoration:none;">{{ item.title }}</a>
+        <p style="margin:6px 0 0 0; font-size:13px; color:#5d6470;">
+          <span style="background:#eef2ff; color:#3b3f73; padding:2px 8px; border-radius:8px; font-weight:500;">{{ item.category }}</span>
+          &nbsp;·&nbsp; {{ item.source }}
+        </p>
+      </div>
+      <div style="background:{% if item.score >= 8 %}#16a34a{% elif item.score >= 5 %}#eab308{% else %}#9ca3af{% endif %}; color:white; font-weight:700; font-size:15px; padding:6px 12px; border-radius:8px; white-space:nowrap;">
+        {{ item.score }}/10
+      </div>
+    </div>
+    {% if item.summary %}
+    <p style="margin:12px 0 0 0; font-size:14px; line-height:1.5; color:#3a3f4a;">{{ item.summary }}</p>
+    {% endif %}
+    <p style="margin:10px 0 0 0;"><a href="{{ item.url }}" style="display:inline-block; padding:8px 14px; background:#1a3a5e; color:white; text-decoration:none; border-radius:8px; font-size:13px; font-weight:500;">Open →</a></p>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!-- ────────────────  LONG-TAIL ROW LIST  ──────────────── -->
+  {% if rest %}
+  <h2 style="margin:32px 0 8px 4px; color:#5d6470; font-size:13px; text-transform:uppercase; letter-spacing:0.08em;">Also scanned — {{ rest_count }} more</h2>
+  <div style="background:#ffffff; border-radius:10px; padding:6px 0; box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+    {% for item in rest %}
+    <div style="padding:10px 18px; border-bottom:1px solid #ececef;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#f3f4f6; color:#5d6470; font-weight:600; font-size:11px; padding:2px 7px; border-radius:6px; min-width:32px; text-align:center;">{{ item.score }}/10</span>
+        <a href="{{ item.url }}" style="flex:1; min-width:0; font-size:13px; color:#1c1c1f; text-decoration:none; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ item.title }}</a>
+        <span style="font-size:11px; color:#9ca3af; white-space:nowrap;">{{ item.source }}</span>
+      </div>
+      {% if item.why %}
+      <p style="margin:4px 0 0 44px; font-size:12px; color:#6b7280; line-height:1.4;"><em>why:</em> {{ item.why }}</p>
+      {% endif %}
+    </div>
     {% endfor %}
-  </table>
+  </div>
+  {% endif %}
+
+  {% if overflow_count and overflow_count > 0 %}
+  <p style="margin:14px 4px 0 4px; font-size:12px; color:#6b7280;">
+    + {{ overflow_count }} more lower-scored items not shown — full list in Google Sheets.
+  </p>
+  {% endif %}
+
+  <p style="margin:32px 0 0 0; text-align:center; font-size:12px; color:#9ca3af;">
+    Digital Observatory · {{ total }} items scanned · top {{ top_count }} highlighted{% if rest_count %} · {{ rest_count }} in tail{% endif %}
+  </p>
+
 </body>
 </html>

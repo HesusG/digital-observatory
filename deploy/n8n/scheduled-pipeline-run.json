@@ -21,6 +21,19 @@
     {
       "parameters": {
         "method": "POST",
+        "url": "http://100.84.156.15:8400/api/wake-ollama",
+        "options": { "timeout": 60000 }
+      },
+      "id": "53b2c4f2-1b9f-4c1f-9b3d-1e1e1e1e1e10",
+      "name": "Wake d3r-ser (Ollama)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [360, 300],
+      "notes": "Calls observatory's wake endpoint, which sends a magic packet via the wol-service sidecar and polls Ollama until it responds (~15s on cold boot)."
+    },
+    {
+      "parameters": {
+        "method": "POST",
         "url": "http://100.84.156.15:8400/api/pipeline/run",
         "sendQuery": true,
         "queryParameters": {
@@ -95,6 +108,17 @@
   ],
   "connections": {
     "Every 6 hours": {
+      "main": [
+        [
+          {
+            "node": "Wake d3r-ser (Ollama)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wake d3r-ser (Ollama)": {
       "main": [
         [
           {

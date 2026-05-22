@@ -227,12 +227,17 @@ async def _maybe_send_weekly_email():
     items = []
     for r in recent:
         meta = r.get("metadata", {})
+        # Articles belong to the marketing pipeline, not the opportunity digest.
+        if meta.get("kind") == "article":
+            continue
         items.append({
             "title": meta.get("title", ""),
             "url": meta.get("url", ""),
             "source": meta.get("source", ""),
             "category": meta.get("category", "general"),
-            "score": meta.get("affinity_score", 0),
+            "score": int(meta.get("affinity_score", 0) or 0),
+            "summary": meta.get("summary", "") or "",
+            "reasoning": meta.get("reasoning", "") or "",
         })
 
     sent = await send_weekly_email(items)
