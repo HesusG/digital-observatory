@@ -7,55 +7,25 @@ article useful to my audience this week, and how would I post about it?"
 import json
 import logging
 import textwrap
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
 from config.settings import settings
+from observatory.agents.persona import Persona, load_persona
 from observatory.monitoring.health import check_ollama
 
 logger = logging.getLogger(__name__)
 
 
-PROMPT_TEMPLATE = """You are the editorial brain of a marketing pipeline for an
-"AI for Teachers" course. The audience is high-school and university teachers
-(ES and EN speakers, two separate streams), plus AI-curious general public.
+PERSONA_PATH = Path(__file__).resolve().parents[2] / "agents" / "tess.md"
 
-Your job: read a recently published AI / tech / edtech article and decide
-whether it's worth turning into social-media content for that audience — and if
-so, how.
 
---- USER / COURSE OWNER PROFILE ---
-{user_profile}
-
---- ARTICLE ---
-{article_text}
-
---- INSTRUCTIONS ---
-1. teacher_relevance (1-10): how useful is this article to a classroom teacher
-   in the next 1-2 weeks? Score generously for anything with a clear classroom
-   angle; harshly for pure research with no obvious teaching application.
-2. audience_fit: any subset of ["k12", "highered", "ai_curious_public"].
-3. lang_targets: ["es"], ["en"], or ["es", "en"]. Be honest — many AI news
-   items only matter in EN. Cross-language only if the underlying point lands
-   for both audiences without translation friction.
-4. topic_tags: 2-6 short tags (e.g., "llm", "agents", "rag", "classroom-tool",
-   "edtech-policy", "evals").
-5. one_line_hook: ≤140 chars. This is the most important field — it must work
-   as the opening line of a post a teacher would actually click.
-6. post_angles: 3-5 angles, each {{"angle": "...", "for": "<audience>-<lang>"}},
-   e.g. "for": "k12-es". Mix audiences and languages from lang_targets.
-7. suggested_platforms: any subset of ["x", "linkedin", "bluesky"].
-8. summary: 2 sentences in the article's original language.
-9. course_tie_in: null OR a short sentence describing a natural way to soft-pitch
-   the "AI for Teachers" course alongside this article. Leave null when forced.
-10. skip_reason: null when the article is worth posting; otherwise one of:
-    "research-only-no-classroom-angle", "duplicate-of-recent", "too-niche",
-    "low-signal".
-
-Return ONLY valid JSON with this exact structure, no extra text:
-{{"teacher_relevance": <int 1-10>, "audience_fit": [<str>], "lang_targets": [<str>], "topic_tags": [<str>], "one_line_hook": <str>, "post_angles": [{{"angle": <str>, "for": <str>}}], "suggested_platforms": [<str>], "summary": <str>, "course_tie_in": <str|null>, "skip_reason": <str|null>}}"""
+@lru_cache(maxsize=1)
+def _tess_persona() -> Persona:
+    return load_persona(PERSONA_PATH)
 
 
 class PostAngle(BaseModel):
@@ -87,8 +57,15 @@ def _load_user_profile() -> str:
 
 
 def build_ai_prompt(user_profile: str, article_text: str) -> str:
+    persona = _tess_persona()
     truncated = textwrap.shorten(article_text, width=6000, placeholder="... [truncated]")
-    return PROMPT_TEMPLATE.format(user_profile=user_profile, article_text=truncated)
+    return (
+        f"{persona.body}\n\n"
+        f"--- USER / COURSE OWNER PROFILE ---\n{user_profile}\n\n"
+        f"--- ARTICLE ---\n{truncated}\n\n"
+        f"Return ONLY the JSON described in the output schema above. "
+        f"No commentary, no markdown fences."
+    )
 
 
 def parse_ai_response(raw: str) -> AIEvaluationResult:
