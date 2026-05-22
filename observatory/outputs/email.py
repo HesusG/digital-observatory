@@ -14,10 +14,52 @@ logger = logging.getLogger(__name__)
 TEMPLATE_DIR = Path(__file__).parent / "templates"
 
 
+TOP_HIGHLIGHT_COUNT = 10
+LONG_TAIL_MAX = 90           # extra rows after the top — keeps total HTML well under Gmail clip
+WHY_SNIPPET_CHARS = 140
+
+
+def _why_snippet(item: dict) -> str:
+    """Short blurb explaining the score, for the long-tail list."""
+    src = item.get("reasoning") or item.get("summary") or ""
+    src = " ".join(src.split())  # collapse whitespace
+    if len(src) <= WHY_SNIPPET_CHARS:
+        return src
+    return src[: WHY_SNIPPET_CHARS - 1].rstrip() + "…"
+
+
 def render_weekly_digest(items: list[dict]) -> str:
+    """Sort items by score desc, split into highlighted top and compact tail.
+    The tail items each get a short 'why' snippet derived from the LLM's
+    reasoning / summary fields so the user can skim them without clicking."""
+    sorted_items = sorted(
+        items,
+        key=lambda it: (int(it.get("score", 0) or 0), it.get("title", "")),
+        reverse=True,
+    )
+    top = sorted_items[:TOP_HIGHLIGHT_COUNT]
+    # Long tail: skip zero-score (unevaluated noise) then cap by count so the
+    # whole email stays under Gmail's 102KB clip threshold.
+    long_tail_candidates = [
+        it for it in sorted_items[TOP_HIGHLIGHT_COUNT:]
+        if int(it.get("score", 0) or 0) > 0
+    ]
+    rest = long_tail_candidates[:LONG_TAIL_MAX]
+    for it in rest:
+        it["why"] = _why_snippet(it)
+    overflow = max(0, len(long_tail_candidates) - len(rest))
+
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
     template = env.get_template("weekly_digest.html")
-    return template.render(items=items)
+    return template.render(
+        items=sorted_items,
+        top=top,
+        rest=rest,
+        total=len(sorted_items),
+        top_count=len(top),
+        rest_count=len(rest),
+        overflow_count=overflow,
+    )
 
 
 async def send_weekly_email(
@@ -40,11 +82,29 @@ async def send_weekly_email(
 
     html = render_weekly_digest(items)
 
+    # Also build a plain-text fallback for clients that can't render HTML.
+    sorted_items = sorted(
+        items, key=lambda it: int(it.get("score", 0) or 0), reverse=True
+    )
+    plain_lines = [
+        f"Weekly Opportunity Radar — {len(items)} items in last 7 days.",
+        "",
+        "TOP HIGHLIGHTS:",
+    ]
+    for it in sorted_items[:TOP_HIGHLIGHT_COUNT]:
+        plain_lines.append(
+            f"  [{it.get('score', 0)}/10] {it.get('title', '')}  ({it.get('source','')})"
+        )
+        plain_lines.append(f"    {it.get('url', '')}")
+    plain_text = "\n".join(plain_lines)
+
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Weekly Opportunity Radar: {len(items)} opportunities found"
+    msg["Subject"] = f"Weekly Opportunity Radar: top {min(len(items), TOP_HIGHLIGHT_COUNT)} of {len(items)} this week"
     msg["From"] = sender
     msg["To"] = receiver
-    msg.attach(MIMEText(html, "html"))
+    # Order matters in multipart/alternative — last attached = preferred by client.
+    msg.attach(MIMEText(plain_text, "plain", "utf-8"))
+    msg.attach(MIMEText(html, "html", "utf-8"))
 
     def _send():
         with smtplib.SMTP(smtp_server, smtp_port) as server:
