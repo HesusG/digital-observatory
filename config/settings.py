@@ -51,6 +51,12 @@ class Settings(BaseSettings):
     ai_supported_langs: list[str] = ["es", "en"]
     ai_default_platforms: list[str] = ["x", "linkedin", "bluesky"]
 
+    # Wake-on-LAN sidecar (see deploy/wol-service/). The observatory hits this
+    # service when Ollama is unreachable, then polls until Ollama responds.
+    wol_service_url: str = "http://host.docker.internal:9999"
+    wol_wait_max_seconds: int = 30
+    wol_poll_interval_seconds: float = 2.0
+
     # WordPress scraping
     wp_default_keywords: list[str] = [
         "artificial intelligence",

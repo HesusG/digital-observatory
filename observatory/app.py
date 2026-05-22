@@ -16,6 +16,7 @@ from observatory.processing.deduplicator import is_duplicate
 from observatory.processing.embedder import clean_for_embedding
 from observatory.monitoring import metrics
 from observatory.monitoring.health import check_chromadb, check_ollama
+from observatory.monitoring.wake import wake_ollama_if_needed
 
 logging.basicConfig(level=settings.log_level)
 logger = logging.getLogger(__name__)
@@ -228,6 +229,16 @@ async def content_draft(payload: dict = Body(...)):
         "platforms": list(platforms),
         "drafts": drafts,
     }
+
+
+@app.post("/api/wake-ollama")
+async def api_wake_ollama():
+    """Call before any Ollama-touching workflow. No-op if Ollama is already
+    awake; otherwise sends WOL via the sidecar and polls until Ollama responds
+    (or the timeout elapses)."""
+    result = await wake_ollama_if_needed()
+    status_code = 200 if result.get("status") == "ok" else 504
+    return JSONResponse(status_code=status_code, content=result)
 
 
 @app.post("/api/items/skip")
