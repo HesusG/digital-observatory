@@ -3,9 +3,11 @@ import json
 import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from fastapi import Body, FastAPI, Query, Request
 from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from config.settings import settings
@@ -32,6 +34,12 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Digital Observatory", version="0.1.0", lifespan=lifespan)
+
+# Serve the 8-bit "agent room" (built pixel-agents fork) at /room if present.
+_ROOM_DIST = Path(__file__).resolve().parent.parent / "room" / "dist" / "webview"
+if _ROOM_DIST.is_dir():
+    app.mount("/room", StaticFiles(directory=str(_ROOM_DIST), html=True), name="room")
+    logger.info("Serving agent room at /room from %s", _ROOM_DIST)
 
 
 @app.get("/healthz")
