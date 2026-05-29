@@ -78,6 +78,7 @@ async def test_pipeline_article_path_invokes_edu_per_draft(monkeypatch):
 
     edu_calls: list[dict] = []
     verdict_calls: list[dict] = []
+    events: list[tuple] = []
 
     eval_obj = type("E", (), dict(
         teacher_relevance=8,
@@ -96,7 +97,7 @@ async def test_pipeline_article_path_invokes_edu_per_draft(monkeypatch):
     monkeypatch.setattr(pipeline, "write_article_drafts", AsyncMock(return_value=[]))
     monkeypatch.setattr(pipeline.chromadb_store, "update_item_ai_evaluation", lambda **kw: None)
 
-    async def fake_carla(item, evaluation):
+    async def fake_carla(item, evaluation, run_id=None):
         return [
             {"id": "draft-x", "platform": "x", "lang": "en", "content": "x text"},
             {"id": "draft-li", "platform": "linkedin", "lang": "en", "content": "li text"},
@@ -112,6 +113,10 @@ async def test_pipeline_article_path_invokes_edu_per_draft(monkeypatch):
     monkeypatch.setattr(
         pipeline, "drafts_update_verdict",
         lambda **kw: verdict_calls.append(kw),
+    )
+    monkeypatch.setattr(
+        pipeline.event_log, "append_event",
+        lambda agent, event_type, **kw: events.append((agent, event_type)),
     )
 
     item = CollectedItem(
@@ -130,3 +135,8 @@ async def test_pipeline_article_path_invokes_edu_per_draft(monkeypatch):
     assert len(edu_calls) == 2
     assert {c["platform"] for c in edu_calls} == {"x", "linkedin"}
     assert len(verdict_calls) == 2
+
+    # Event log captures the agent interactions, not just final state.
+    event_types = [et for _, et in events]
+    assert "tess.scored" in event_types
+    assert event_types.count("edu.approved") == 2

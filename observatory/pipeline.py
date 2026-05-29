@@ -2,6 +2,7 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from uuid import uuid4
 
 from config.settings import settings
 from observatory.collectors.rss import RSSCollector
@@ -10,6 +11,7 @@ from observatory.intelligence.evaluator import evaluate_opportunity
 from observatory.agents.edu import review_draft as edu_review_draft
 from observatory.intelligence.ai_evaluator import evaluate_ai_signal
 from observatory.storage import drafts_store
+from observatory.storage import event_log
 from observatory.storage.drafts_store import EduVerdict
 from observatory.processing.deduplicator import is_duplicate
 from observatory.processing.embedder import clean_for_embedding
@@ -39,6 +41,13 @@ class PipelineResult:
     finished_at: datetime | None = None
 
 
+EDU_EVENT = {
+    EduVerdict.APPROVED_FOR_REVIEW: "edu.approved",
+    EduVerdict.REVISE: "edu.revise",
+    EduVerdict.REJECT: "edu.reject",
+}
+
+
 async def run_pipeline(
     enable_rss: bool = True,
     enable_wordpress: bool = True,
@@ -47,6 +56,7 @@ async def run_pipeline(
     source_filter: list[str] | None = None,
 ) -> PipelineResult:
     result = PipelineResult()
+    run_id = uuid4().hex
     logger.info("Starting opportunity pipeline...")
 
     items = await _collect(
@@ -82,7 +92,7 @@ async def run_pipeline(
         )
 
         if item.kind == "article":
-            await _process_article(item, result)
+            await _process_article(item, result, run_id=run_id)
             continue
 
         evaluation = await evaluate_opportunity(item.raw_text)
@@ -139,7 +149,9 @@ async def run_pipeline(
     return result
 
 
-async def _process_article(item: CollectedItem, result: PipelineResult) -> None:
+async def _process_article(
+    item: CollectedItem, result: PipelineResult, run_id: str | None = None
+) -> None:
     """Article kind: teacher-lens AI evaluator, then vault drafts. Never touches
     the opportunity Telegram channel or the opportunities Sheets log."""
     evaluation = await evaluate_ai_signal(item.raw_text)
@@ -165,7 +177,25 @@ async def _process_article(item: CollectedItem, result: PipelineResult) -> None:
         skip_reason=evaluation.skip_reason or "",
     )
 
+    event_log.append_event(
+        "tess", "tess.scored",
+        item_url=item.url, run_id=run_id,
+        payload={
+            "title": item.title,
+            "teacher_relevance": evaluation.teacher_relevance,
+            "audience_fit": evaluation.audience_fit,
+            "lang_targets": evaluation.lang_targets,
+            "suggested_platforms": evaluation.suggested_platforms,
+            "skip_reason": evaluation.skip_reason or None,
+        },
+    )
+
     if evaluation.skip_reason:
+        event_log.append_event(
+            "tess", "tess.skipped",
+            item_url=item.url, run_id=run_id,
+            payload={"title": item.title, "skip_reason": evaluation.skip_reason},
+        )
         return
 
     if evaluation.teacher_relevance >= settings.ai_article_min_relevance:
@@ -174,7 +204,7 @@ async def _process_article(item: CollectedItem, result: PipelineResult) -> None:
         result.articles_drafted += len(written)
 
         # Carla → Edu per draft.
-        drafts = await carla_draft_for_item(item, evaluation)
+        drafts = await carla_draft_for_item(item, evaluation, run_id=run_id)
         for draft in drafts:
             content = draft["content"]
             draft_text = content if isinstance(content, str) else "\n".join(content)
@@ -196,17 +226,39 @@ async def _process_article(item: CollectedItem, result: PipelineResult) -> None:
                 verdict=mapped,
                 reasoning=verdict.reasoning,
             )
+            event_log.append_event(
+                "edu", EDU_EVENT[mapped],
+                item_url=item.url, draft_id=draft["id"],
+                platform=draft["platform"], lang=draft["lang"], run_id=run_id,
+                payload={
+                    "verdict": verdict.verdict,
+                    "reasoning": verdict.reasoning,
+                    "fail_categories": getattr(verdict, "fail_categories", None),
+                },
+            )
             logger.info(
                 "Edu %s draft %s (%s/%s): %s",
                 verdict.verdict, draft["id"][:12], draft["platform"], draft["lang"],
                 verdict.reasoning[:80],
             )
+    else:
+        event_log.append_event(
+            "tess", "tess.skipped",
+            item_url=item.url, run_id=run_id,
+            payload={
+                "title": item.title,
+                "skip_reason": "below-min-relevance",
+                "teacher_relevance": evaluation.teacher_relevance,
+            },
+        )
 
 
 # ---- Indirection layer so tests can monkey-patch these entry points ----
 
 
-async def carla_draft_for_item(item: CollectedItem, evaluation) -> list[dict]:
+async def carla_draft_for_item(
+    item: CollectedItem, evaluation, run_id: str | None = None
+) -> list[dict]:
     """Generate per-platform drafts for `item` across all evaluation.lang_targets,
     persist them to drafts_store, and return [{id, platform, lang, content}, ...]."""
     from observatory.intelligence.drafter import draft_for_platforms
@@ -230,6 +282,12 @@ async def carla_draft_for_item(item: CollectedItem, evaluation) -> list[dict]:
             if content and draft_id:
                 out.append(
                     {"id": draft_id, "platform": platform, "lang": lang, "content": content}
+                )
+                event_log.append_event(
+                    "carla", "carla.drafted",
+                    item_url=item.url, draft_id=draft_id,
+                    platform=platform, lang=lang, run_id=run_id,
+                    payload={"title": item.title},
                 )
     return out
 

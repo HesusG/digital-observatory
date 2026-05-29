@@ -1,9 +1,11 @@
+import asyncio
+import json
 import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 
-from fastapi import Body, FastAPI, Query
-from fastapi.responses import JSONResponse
+from fastapi import Body, FastAPI, Query, Request
+from fastapi.responses import JSONResponse, StreamingResponse
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from config.settings import settings
@@ -246,6 +248,7 @@ async def api_wake_ollama():
 
 from observatory.agents import pablo as pablo_agent
 from observatory.storage import drafts_store
+from observatory.storage import event_log
 
 
 @app.get("/api/drafts")
@@ -263,12 +266,18 @@ async def approve_draft(draft_id: str):
     result = await pablo_agent.publish_draft(draft_id)
     if not result.ok:
         return JSONResponse(status_code=502, content={"error": result.error or "unknown"})
+    event_log.append_event(
+        "user", "user.approved",
+        draft_id=draft_id,
+        payload={"postiz_post_id": result.postiz_post_id},
+    )
     return {"status": "ok", "draft_id": draft_id, "postiz_post_id": result.postiz_post_id}
 
 
 @app.post("/api/drafts/{draft_id}/skip")
 async def skip_draft(draft_id: str, reason: str = Query(default="user-skip")):
     drafts_store.mark_skipped(draft_id=draft_id, reason=reason)
+    event_log.append_event("user", "user.skipped", draft_id=draft_id, payload={"reason": reason})
     return {"status": "ok", "draft_id": draft_id}
 
 
@@ -295,7 +304,66 @@ async def edit_draft(draft_id: str, payload: dict = Body(...)):
     result = await pablo_agent.publish_draft(draft_id)
     if not result.ok:
         return JSONResponse(status_code=502, content={"error": result.error or "unknown"})
+    event_log.append_event(
+        "user", "user.edited",
+        draft_id=draft_id,
+        payload={"postiz_post_id": result.postiz_post_id},
+    )
     return {"status": "ok", "draft_id": draft_id, "postiz_post_id": result.postiz_post_id}
+
+
+@app.get("/api/events")
+async def list_events_endpoint(
+    since_seq: int = Query(default=0),
+    limit: int = Query(default=200),
+    agent: str = Query(default="", pattern="^(tess|carla|edu|pablo|user|)$"),
+    run_id: str = Query(default=""),
+):
+    """History / replay feed for the 8-bit room and any consumer."""
+    events = event_log.list_events(
+        since_seq=since_seq, limit=limit,
+        agent=agent or None, run_id=run_id or None,
+    )
+    return {"count": len(events), "latest_seq": event_log.latest_seq(), "events": events}
+
+
+def _sse(event: dict) -> str:
+    return f"id: {event['seq']}\ndata: {json.dumps(event)}\n\n"
+
+
+async def _event_stream(request: Request, since_seq: int):
+    """Replay the backlog after since_seq, then stream new events from the
+    in-process bus. Exits when the client disconnects."""
+    last = since_seq
+    for ev in event_log.list_events(since_seq=last, limit=1000):
+        last = ev["seq"]
+        yield _sse(ev)
+    queue = event_log.bus().subscribe()
+    try:
+        while True:
+            if await request.is_disconnected():
+                break
+            try:
+                ev = await asyncio.wait_for(queue.get(), timeout=15.0)
+            except asyncio.TimeoutError:
+                yield ": keepalive\n\n"
+                continue
+            if ev["seq"] <= last:
+                continue
+            last = ev["seq"]
+            yield _sse(ev)
+    finally:
+        event_log.bus().unsubscribe(queue)
+
+
+@app.get("/api/events/stream")
+async def events_stream(request: Request, since_seq: int = Query(default=0)):
+    """Live SSE feed. The `id:` lines let EventSource resume via Last-Event-ID;
+    SQLite remains the source of truth for any gaps."""
+    resume = request.headers.get("Last-Event-ID")
+    if resume and resume.isdigit():
+        since_seq = max(since_seq, int(resume))
+    return StreamingResponse(_event_stream(request, since_seq), media_type="text/event-stream")
 
 
 @app.post("/api/items/skip")
