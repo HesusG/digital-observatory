@@ -6,6 +6,7 @@ developer accounts clear.
 """
 import logging
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Optional
 
 import httpx
@@ -47,13 +48,18 @@ async def publish_draft(draft_id: str) -> PabloResult:
     if not integration_id or not settings.postiz_api_key:
         return PabloResult(ok=False, error="Postiz not configured (api key / integration id missing)")
 
+    # Postiz public API (v2.11.x) requires date + tags, and each value entry
+    # must carry an image array (empty for text-only posts).
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
     payload = {
         "type": "now",
         "shortLink": False,
+        "date": now_iso,
+        "tags": [],
         "posts": [
             {
                 "integration": {"id": integration_id},
-                "value": [{"content": content}],
+                "value": [{"content": content, "image": []}],
             }
         ],
     }
@@ -77,8 +83,14 @@ async def publish_draft(draft_id: str) -> PabloResult:
         logger.error("Pablo: unexpected: %s", e)
         return PabloResult(ok=False, error=f"unexpected: {e}")
 
-    posts = data.get("posts") or []
-    postiz_post_id = posts[0].get("id") if posts else None
+    # Postiz v2.11.x returns a list: [{"postId": "...", "integration": "..."}].
+    # Older shapes used {"posts": [{"id": "..."}]}; handle both defensively.
+    postiz_post_id = None
+    if isinstance(data, list) and data:
+        postiz_post_id = data[0].get("postId") or data[0].get("id")
+    elif isinstance(data, dict):
+        posts = data.get("posts") or []
+        postiz_post_id = posts[0].get("id") if posts else None
     if not postiz_post_id:
         return PabloResult(ok=False, error=f"postiz returned no post id: {data}")
 
