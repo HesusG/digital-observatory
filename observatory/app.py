@@ -219,6 +219,9 @@ async def content_draft(payload: dict = Body(...)):
         angles=angles,
         platforms=list(platforms),
         lang=lang,
+        item_url=url,
+        item_title=meta.get("title", ""),
+        item_source=meta.get("source", ""),
         include_course_cta=include_course_cta,
         tone=tone,
     )
@@ -239,6 +242,60 @@ async def api_wake_ollama():
     result = await wake_ollama_if_needed()
     status_code = 200 if result.get("status") == "ok" else 504
     return JSONResponse(status_code=status_code, content=result)
+
+
+from observatory.agents import pablo as pablo_agent
+from observatory.storage import drafts_store
+
+
+@app.get("/api/drafts")
+async def list_drafts(
+    status: str = Query(default="awaiting-user", pattern="^(draft|awaiting-user|scheduled|published|skipped|rejected)$"),
+    limit: int = Query(default=50),
+):
+    items = drafts_store.list_drafts_by_status(status, limit=limit)
+    return {"count": len(items), "items": items}
+
+
+@app.post("/api/drafts/{draft_id}/approve")
+async def approve_draft(draft_id: str):
+    """Hand off to Pablo to publish via Postiz."""
+    result = await pablo_agent.publish_draft(draft_id)
+    if not result.ok:
+        return JSONResponse(status_code=502, content={"error": result.error or "unknown"})
+    return {"status": "ok", "draft_id": draft_id, "postiz_post_id": result.postiz_post_id}
+
+
+@app.post("/api/drafts/{draft_id}/skip")
+async def skip_draft(draft_id: str, reason: str = Query(default="user-skip")):
+    drafts_store.mark_skipped(draft_id=draft_id, reason=reason)
+    return {"status": "ok", "draft_id": draft_id}
+
+
+@app.post("/api/drafts/{draft_id}/edit")
+async def edit_draft(draft_id: str, payload: dict = Body(...)):
+    """Replace the draft content, then publish."""
+    new_content = payload.get("content", "")
+    if not new_content:
+        return JSONResponse(status_code=400, content={"error": "content required"})
+
+    existing = drafts_store.get_draft(draft_id)
+    if not existing:
+        return JSONResponse(status_code=404, content={"error": "draft not found"})
+
+    meta = existing["metadata"]
+    drafts_store.upsert_draft(
+        item_url=meta.get("item_url", ""),
+        platform=meta.get("platform", ""),
+        lang=meta.get("lang", ""),
+        content=new_content,
+        item_title=meta.get("item_title", ""),
+        item_source=meta.get("item_source", ""),
+    )
+    result = await pablo_agent.publish_draft(draft_id)
+    if not result.ok:
+        return JSONResponse(status_code=502, content={"error": result.error or "unknown"})
+    return {"status": "ok", "draft_id": draft_id, "postiz_post_id": result.postiz_post_id}
 
 
 @app.post("/api/items/skip")

@@ -7,7 +7,10 @@ from config.settings import settings
 from observatory.collectors.rss import RSSCollector
 from observatory.collectors.wordpress import WordPressCollector
 from observatory.intelligence.evaluator import evaluate_opportunity
+from observatory.agents.edu import review_draft as edu_review_draft
 from observatory.intelligence.ai_evaluator import evaluate_ai_signal
+from observatory.storage import drafts_store
+from observatory.storage.drafts_store import EduVerdict
 from observatory.processing.deduplicator import is_duplicate
 from observatory.processing.embedder import clean_for_embedding
 from observatory.storage import chromadb_store
@@ -166,8 +169,77 @@ async def _process_article(item: CollectedItem, result: PipelineResult) -> None:
         return
 
     if evaluation.teacher_relevance >= settings.ai_article_min_relevance:
+        # Vault drafts for the human-readable inbox (existing behavior).
         written = await write_article_drafts(item, evaluation)
         result.articles_drafted += len(written)
+
+        # Carla → Edu per draft.
+        drafts = await carla_draft_for_item(item, evaluation)
+        for draft in drafts:
+            content = draft["content"]
+            draft_text = content if isinstance(content, str) else "\n".join(content)
+            verdict = await edu_review_draft(
+                draft_text=draft_text,
+                platform=draft["platform"],
+                lang=draft["lang"],
+                hook=evaluation.one_line_hook,
+                summary=evaluation.summary,
+                recent_posts=[],  # Slice 1: empty; Slice 2 will populate from ChromaDB
+            )
+            mapped = (
+                EduVerdict(verdict.verdict)
+                if verdict.verdict in {v.value for v in EduVerdict}
+                else EduVerdict.REVISE
+            )
+            drafts_update_verdict(
+                draft_id=draft["id"],
+                verdict=mapped,
+                reasoning=verdict.reasoning,
+            )
+            logger.info(
+                "Edu %s draft %s (%s/%s): %s",
+                verdict.verdict, draft["id"][:12], draft["platform"], draft["lang"],
+                verdict.reasoning[:80],
+            )
+
+
+# ---- Indirection layer so tests can monkey-patch these entry points ----
+
+
+async def carla_draft_for_item(item: CollectedItem, evaluation) -> list[dict]:
+    """Generate per-platform drafts for `item` across all evaluation.lang_targets,
+    persist them to drafts_store, and return [{id, platform, lang, content}, ...]."""
+    from observatory.intelligence.drafter import draft_for_platforms
+    out: list[dict] = []
+    for lang in evaluation.lang_targets:
+        platforms = evaluation.suggested_platforms or settings.ai_default_platforms
+        result = await draft_for_platforms(
+            hook=evaluation.one_line_hook,
+            summary=evaluation.summary,
+            angles=evaluation.post_angles,
+            platforms=platforms,
+            lang=lang,
+            item_url=item.url,
+            item_title=item.title,
+            item_source=item.source,
+            include_course_cta=False,
+        )
+        for platform in platforms:
+            content = result.get(platform)
+            draft_id = result.get("draft_ids", {}).get(platform)
+            if content and draft_id:
+                out.append(
+                    {"id": draft_id, "platform": platform, "lang": lang, "content": content}
+                )
+    return out
+
+
+def drafts_update_verdict(draft_id, verdict, reasoning):
+    drafts_store.update_edu_verdict(
+        draft_id=draft_id,
+        verdict=verdict,
+        reasoning=reasoning,
+    )
 
 
 async def _collect(

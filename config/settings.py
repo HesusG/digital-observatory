@@ -57,6 +57,11 @@ class Settings(BaseSettings):
     wol_wait_max_seconds: int = 30
     wol_poll_interval_seconds: float = 2.0
 
+    # Postiz publisher (see deploy/postiz/). Slice 1 only wires Bluesky.
+    postiz_base_url: str = "http://100.84.156.15:5000"
+    postiz_api_key: str = ""
+    postiz_bluesky_integration_id: str = ""
+
     # WordPress scraping
     wp_default_keywords: list[str] = [
         "artificial intelligence",
