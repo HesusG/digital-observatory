@@ -1,0 +1,97 @@
+/**
+ * Translate digital-observatory agent events (from /api/events) into the
+ * ServerMessages the pixel-office renderer already understands.
+ *
+ * The renderer animates "typing" vs "reading" by tool NAME (reading tools =
+ * Read/Grep/Glob/WebFetch/WebSearch). We borrow that: Tess/Edu read, Carla/
+ * Pablo write. Each agent maps to a fixed character id.
+ */
+import type { ServerMessage } from '../../../core/src/messages.js';
+
+export const AGENT_IDS: Record<string, number> = {
+  tess: 1,
+  carla: 2,
+  edu: 3,
+  pablo: 4,
+};
+
+export const AGENT_ORDER = ['tess', 'carla', 'edu', 'pablo'] as const;
+
+const READ_TOOL = 'Read'; // → reading animation
+const WRITE_TOOL = 'Write'; // → typing animation
+
+export interface ApiEvent {
+  seq: number;
+  agent: string;
+  event_type: string;
+  payload?: Record<string, unknown> | null;
+  platform?: string | null;
+  lang?: string | null;
+  item_url?: string | null;
+}
+
+function clip(v: unknown, n = 48): string {
+  return String(v ?? '').slice(0, n);
+}
+
+function label(ev: ApiEvent): string {
+  const p = ev.payload ?? {};
+  const title = p.title ? ` — ${clip(p.title, 40)}` : '';
+  const pl = ev.platform ? ` ${ev.platform}` : '';
+  switch (ev.event_type) {
+    case 'tess.scored':
+      return `Scoring${title}`;
+    case 'tess.skipped':
+      return `Skip: ${clip(p.skip_reason)}`;
+    case 'carla.drafted':
+      return `Drafting${pl}/${ev.lang ?? ''}`;
+    case 'edu.approved':
+      return `Approved${pl}`;
+    case 'edu.revise':
+      return `Revise: ${clip(p.reasoning)}`;
+    case 'edu.reject':
+      return `Reject: ${clip(p.reasoning)}`;
+    case 'pablo.published':
+      return `Published${pl} ✅`;
+    case 'pablo.failed':
+      return `Failed: ${clip(p.error)}`;
+    default:
+      return ev.event_type;
+  }
+}
+
+export interface Translated {
+  /** Messages to apply immediately (status + tool start, plus terminal status). */
+  start: ServerMessage[];
+  /** The matching tool-done message, applied after a delay (live) or at once (replay). */
+  done: ServerMessage | null;
+}
+
+/** Translate one API event into renderer messages. Returns empty start/done for
+ *  events with no visual (e.g. user.skipped). */
+export function translateEvent(ev: ApiEvent): Translated {
+  // User actions: attribute the "approve" to Pablo (the publisher) waking up.
+  if (ev.agent === 'user') {
+    if (ev.event_type === 'user.approved') {
+      return { start: [{ type: 'agentStatus', id: AGENT_IDS.pablo, status: 'active' }], done: null };
+    }
+    return { start: [], done: null };
+  }
+
+  const id = AGENT_IDS[ev.agent];
+  if (!id) return { start: [], done: null };
+
+  const readLike = ev.agent === 'tess' || ev.agent === 'edu';
+  const toolName = readLike ? READ_TOOL : WRITE_TOOL;
+  const toolId = `e${ev.seq}`;
+
+  const start: ServerMessage[] = [
+    { type: 'agentStatus', id, status: 'active' },
+    { type: 'agentToolStart', id, toolId, status: label(ev), toolName },
+  ];
+  if (ev.event_type === 'pablo.published') {
+    start.push({ type: 'agentStatus', id, status: 'waiting' });
+  }
+
+  return { start, done: { type: 'agentToolDone', id, toolId } };
+}

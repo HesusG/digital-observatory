@@ -1,0 +1,9 @@
+# Node deps — never commit (145MB). Rebuild with: cd webview-ui && npm install
+webview-ui/node_modules/
+core/node_modules/
+
+# TypeScript incremental build info
+**/*.tsbuildinfo
+
+# The built bundle (room/dist/webview) IS committed so FastAPI can serve it
+# without a Node toolchain on the Pi. Rebuild with: cd webview-ui && npm run build
