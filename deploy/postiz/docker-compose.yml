@@ -15,7 +15,7 @@
 
 services:
   postiz:
-    image: ghcr.io/gitroomhq/postiz-app:latest
+    image: ghcr.io/gitroomhq/postiz-app:v2.11.3
     container_name: postiz
     restart: unless-stopped
     environment:
@@ -27,11 +27,12 @@ services:
       REDIS_URL: "redis://postiz-redis:6379"
       BACKEND_INTERNAL_URL: "http://localhost:3000"
       IS_GENERAL: "true"
+      NOT_SECURED: "true"   # serve cookies over HTTP (we reach Postiz over Tailscale/WireGuard, not TLS)
       STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
     ports:
-      - "127.0.0.1:5000:5000"   # bind to loopback only; reach via Tailscale ssh-tunnel or nginx
+      - "100.84.156.15:5000:5000"   # bind to the Tailscale IP; reachable on the tailnet
     volumes:
       - postiz-config:/config
       - postiz-uploads:/uploads

@@ -60,7 +60,8 @@ async def publish_draft(draft_id: str) -> PabloResult:
 
     url = settings.postiz_base_url.rstrip("/") + "/api/public/v1/posts"
     headers = {
-        "Authorization": f"Bearer {settings.postiz_api_key}",
+        # Postiz public API expects the raw API key (no "Bearer " prefix).
+        "Authorization": settings.postiz_api_key,
         "Content-Type": "application/json",
     }
 
