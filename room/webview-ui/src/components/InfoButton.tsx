@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Modal } from './ui/Modal.js';
 
-// Small "ℹ️" button (bottom-left of the office) that explains the project.
+// Small "ℹ️" button (top-left of the office) that explains the project.
 export function InfoButton() {
   const [open, setOpen] = useState(false);
 
@@ -10,7 +10,7 @@ export function InfoButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="absolute bottom-10 left-10 z-30 pixel-panel w-14 h-14 flex items-center justify-center text-2xl cursor-pointer hover:text-accent-bright"
+        className="absolute top-10 left-10 z-30 pixel-panel w-16 h-16 flex items-center justify-center text-2xl cursor-pointer hover:text-accent-bright"
         title="¿Qué es esto?"
       >
         ℹ️

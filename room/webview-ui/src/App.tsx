@@ -174,8 +174,8 @@ function App() {
   }
 
   return (
-    <div className="w-full h-full flex overflow-hidden">
-      <div ref={containerRef} className="flex-1 min-w-0 relative overflow-hidden">
+    <div className="w-full h-full relative overflow-hidden">
+      <div ref={containerRef} className="absolute top-0 left-0 bottom-0 right-80 overflow-hidden">
       <InfoButton />
       <OfficeCanvas
         officeState={officeState}
