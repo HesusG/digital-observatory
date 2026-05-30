@@ -100,6 +100,11 @@ async def run_pipeline(
         if evaluation is None:
             result.eval_failures += 1
             metrics.llm_errors.labels(provider="unknown").inc()
+            event_log.append_event(
+                "tess", "tess.skipped",
+                item_url=item.url, run_id=run_id,
+                payload={"title": item.title, "skip_reason": "eval-failed"},
+            )
             continue
 
         result.evaluated += 1
@@ -112,6 +117,16 @@ async def run_pipeline(
             summary=evaluation.summary,
             reasoning=evaluation.reasoning,
             is_free_or_funded=evaluation.is_free_or_funded,
+        )
+
+        event_log.append_event(
+            "tess", "tess.scored",
+            item_url=item.url, run_id=run_id,
+            payload={
+                "title": item.title,
+                "affinity_score": evaluation.affinity_score,
+                "category": evaluation.category,
+            },
         )
 
         sheets.append_row(
