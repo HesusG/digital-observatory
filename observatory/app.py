@@ -35,10 +35,24 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Digital Observatory", version="0.1.0", lifespan=lifespan)
 
+
+class NoCacheStaticFiles(StaticFiles):
+    """Serve the room with no browser caching, so a redeploy is picked up on the
+    next load — a cached index.html would keep pointing at an old JS bundle."""
+
+    def is_not_modified(self, response_headers, request_headers) -> bool:
+        return False  # never answer 304
+
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        return response
+
+
 # Serve the 8-bit "agent room" (built pixel-agents fork) at /room if present.
 _ROOM_DIST = Path(__file__).resolve().parent.parent / "room" / "dist" / "webview"
 if _ROOM_DIST.is_dir():
-    app.mount("/room", StaticFiles(directory=str(_ROOM_DIST), html=True), name="room")
+    app.mount("/room", NoCacheStaticFiles(directory=str(_ROOM_DIST), html=True), name="room")
     logger.info("Serving agent room at /room from %s", _ROOM_DIST)
 
 
