@@ -217,6 +217,14 @@ def get_item_count() -> int:
     return collection.count()
 
 
+def get_item_count_fast() -> int:
+    """Count items without instantiating the SentenceTransformer embedding model
+    (which is what made /api/stats time out on first call)."""
+    client = _get_client()
+    col = client.get_collection(name="items")
+    return col.count()
+
+
 def url_exists(url: str) -> bool:
     collection = get_items_collection()
     doc_id = url_to_id(url)
