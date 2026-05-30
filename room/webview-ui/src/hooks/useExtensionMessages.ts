@@ -188,11 +188,19 @@ export function useExtensionMessages(
             ch.agentName = teammateName;
           }
         } else {
-          os.addAgent(id, undefined, undefined, undefined, undefined, folderName);
+          os.addAgent(
+            id,
+            msg.palette as number | undefined,
+            msg.hueShift as number | undefined,
+            undefined,
+            undefined,
+            folderName,
+          );
           os.setAgentIdentity(id, {
             displayName: msg.displayName as string | undefined,
             isBoss: msg.isBoss as boolean | undefined,
             isPlayer: msg.isPlayer as boolean | undefined,
+            chatLines: msg.chatLines as string[] | undefined,
           });
         }
         saveAgentSeats(os);
