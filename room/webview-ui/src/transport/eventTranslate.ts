@@ -36,7 +36,7 @@ export interface SeedAgent {
 export const SEED_AGENTS: SeedAgent[] = [
   { name: 'tess', id: 1, displayName: 'tess', palette: 4 },
   { name: 'carla', id: 2, displayName: 'carla', palette: 1 },
-  { name: 'edu', id: 3, displayName: 'edu', palette: 2 },
+  { name: 'edu', id: 3, displayName: 'edu', palette: 5 },
   { name: 'pablo', id: 4, displayName: 'pablo', palette: 3 },
   {
     name: 'moreno',
@@ -53,7 +53,7 @@ export const SEED_AGENTS: SeedAgent[] = [
     displayName: 'Hesus',
     isBoss: true,
     isPlayer: true,
-    palette: 5,
+    palette: 2,
     chatLines: HESUS_LINES,
   },
 ];
