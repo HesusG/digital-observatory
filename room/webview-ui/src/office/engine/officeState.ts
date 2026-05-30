@@ -580,6 +580,18 @@ export class OfficeState {
     }
   }
 
+  // First free seat that belongs to a sofa/bench-type furniture, or null.
+  findFreeSofaSeat(): string | null {
+    const SOFA_TYPES = new Set(['SOFA', 'CUSHIONED_BENCH', 'WOODEN_BENCH', 'CUSHIONED_CHAIR']);
+    for (const [seatId, seat] of this.seats) {
+      if (seat.assigned) continue;
+      const furnitureUid = seatId.split(':')[0];
+      const item = this.layout.furniture.find((f) => f.uid === furnitureUid);
+      if (item && SOFA_TYPES.has(item.type)) return seatId;
+    }
+    return null;
+  }
+
   setAgentIdentity(
     id: number,
     opts: { displayName?: string; isBoss?: boolean; isPlayer?: boolean; chatLines?: string[] },
