@@ -7,7 +7,7 @@
  * Pablo write. Each agent maps to a fixed character id.
  */
 import type { ServerMessage } from '../../../core/src/messages.js';
-import { HESUS_LINES, MORENO_LINES } from '../office/engine/chatLines.js';
+import { HESUS_LINES, MORENO_LINES, PACO_LINES } from '../office/engine/chatLines.js';
 
 export const AGENT_IDS: Record<string, number> = {
   tess: 1,
@@ -16,6 +16,7 @@ export const AGENT_IDS: Record<string, number> = {
   pablo: 4,
   moreno: 5,
   hesus: 6,
+  paco: 7,
 };
 
 export const AGENT_ORDER = ['tess', 'carla', 'edu', 'pablo'] as const;
@@ -31,10 +32,11 @@ export interface SeedAgent {
   palette?: number;
   hueShift?: number;
   chatLines?: string[];
+  preferSofa?: boolean;
 }
 
 export const SEED_AGENTS: SeedAgent[] = [
-  { name: 'tess', id: 1, displayName: 'tess', palette: 4 },
+  { name: 'tess', id: 1, displayName: 'tess', palette: 0 },
   { name: 'carla', id: 2, displayName: 'carla', palette: 1 },
   { name: 'edu', id: 3, displayName: 'edu', palette: 5 },
   { name: 'pablo', id: 4, displayName: 'pablo', palette: 3 },
@@ -43,8 +45,7 @@ export const SEED_AGENTS: SeedAgent[] = [
     id: 5,
     displayName: 'Moreno',
     isBoss: true,
-    palette: 0,
-    hueShift: 35,
+    palette: 2,
     chatLines: MORENO_LINES,
   },
   {
@@ -53,8 +54,18 @@ export const SEED_AGENTS: SeedAgent[] = [
     displayName: 'Hesus',
     isBoss: true,
     isPlayer: true,
-    palette: 2,
+    palette: 4,
     chatLines: HESUS_LINES,
+  },
+  {
+    name: 'paco',
+    id: 7,
+    displayName: 'Paco',
+    isBoss: true,
+    palette: 3,
+    hueShift: 200,
+    chatLines: PACO_LINES,
+    preferSofa: true,
   },
 ];
 

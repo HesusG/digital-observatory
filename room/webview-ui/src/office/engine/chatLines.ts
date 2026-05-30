@@ -23,6 +23,17 @@ export const MORENO_LINES: string[] = [
   'los amateurs venden, yo acumulo',
 ];
 
+export const PACO_LINES: string[] = [
+  'ya fue',
+  'el unabomber tenía razón',
+  'todo está conectado, ¿no lo ves?',
+  'mi peor decisión financiera fue existir',
+  'nos están observando',
+  'ya nada tiene sentido',
+  'debí vender en el pico',
+  'el sistema está diseñado para que pierdas',
+];
+
 // Pick a random phrase, avoiding an immediate repeat of prevIndex when possible.
 export function pickPhrase(
   lines: string[],

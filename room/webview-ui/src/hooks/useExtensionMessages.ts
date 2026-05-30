@@ -188,11 +188,14 @@ export function useExtensionMessages(
             ch.agentName = teammateName;
           }
         } else {
+          const preferredSeatId = (msg.preferSofa as boolean | undefined)
+            ? (os.findFreeSofaSeat() ?? undefined)
+            : undefined;
           os.addAgent(
             id,
             msg.palette as number | undefined,
             msg.hueShift as number | undefined,
-            undefined,
+            preferredSeatId,
             undefined,
             folderName,
           );

@@ -72,6 +72,7 @@ export interface AgentCreated {
   palette?: number;
   hueShift?: number;
   chatLines?: string[];
+  preferSofa?: boolean;
 }
 
 export interface AgentClosed {

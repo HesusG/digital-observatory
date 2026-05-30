@@ -1,11 +1,15 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { HESUS_LINES, MORENO_LINES, pickPhrase } from '../src/office/engine/chatLines.ts';
+import { HESUS_LINES, MORENO_LINES, PACO_LINES, pickPhrase } from '../src/office/engine/chatLines.ts';
 
 test('both lists have at least 8 phrases', () => {
   assert.ok(HESUS_LINES.length >= 8);
   assert.ok(MORENO_LINES.length >= 8);
+});
+
+test('PACO_LINES has at least 8 phrases', () => {
+  assert.ok(PACO_LINES.length >= 8);
 });
 
 test('pickPhrase never repeats the previous index (list >= 2)', () => {
