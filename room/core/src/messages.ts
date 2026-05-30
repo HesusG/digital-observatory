@@ -66,6 +66,9 @@ export interface AgentCreated {
   id: number;
   folderName?: string;
   isExternal?: boolean;
+  displayName?: string;
+  isBoss?: boolean;
+  isPlayer?: boolean;
 }
 
 export interface AgentClosed {
@@ -98,7 +101,7 @@ export interface AgentStatus {
   status: AgentActivityStatus;
 }
 
-export type AgentActivityStatus = 'active' | 'waiting';
+export type AgentActivityStatus = 'active' | 'waiting' | 'idle';
 
 export interface AgentToolStart {
   type: 'agentToolStart';

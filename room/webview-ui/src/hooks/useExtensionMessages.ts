@@ -189,6 +189,11 @@ export function useExtensionMessages(
           }
         } else {
           os.addAgent(id, undefined, undefined, undefined, undefined, folderName);
+          os.setAgentIdentity(id, {
+            displayName: msg.displayName as string | undefined,
+            isBoss: msg.isBoss as boolean | undefined,
+            isPlayer: msg.isPlayer as boolean | undefined,
+          });
         }
         saveAgentSeats(os);
       } else if (msg.type === 'agentClosed') {

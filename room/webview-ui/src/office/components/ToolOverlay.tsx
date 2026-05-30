@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '../../components/ui/Button.js';
 import {
+  BOSS_NAME_COLOR,
+  BOSS_NAME_GLOW,
   CHARACTER_SITTING_OFFSET_PX,
   FUEL_COLOR_CRITICAL,
   FUEL_COLOR_DANGER,
@@ -11,8 +13,6 @@ import {
   FUEL_GAUGE_HEIGHT_PX,
   FUEL_GAUGE_WIDTH_PX,
   MAX_CONTEXT_TOKENS,
-  TEAM_LEAD_COLOR,
-  TEAM_ROLE_COLOR,
   TOKEN_CRITICAL_THRESHOLD,
   TOKEN_DANGER_THRESHOLD,
   TOKEN_WARN_THRESHOLD,
@@ -116,8 +116,9 @@ export function ToolOverlay({
         const isHovered = hoveredId === id;
         const isSub = ch.isSubagent;
 
-        // Only show for hovered or selected agents (unless always-show is on)
-        if (!alwaysShowOverlay && !isSelected && !isHovered) return null;
+        // The name label shows for everyone, always. The rich activity panel
+        // (status + close button + token gauge) only shows on hover/select.
+        const showRichPanel = alwaysShowOverlay || isSelected || isHovered;
 
         // Position above character
         const sittingOffset = ch.state === CharacterState.TYPE ? CHARACTER_SITTING_OFFSET_PX : 0;
@@ -154,10 +155,9 @@ export function ToolOverlay({
 
         // Team info
         const isTeamAgent = !!ch.teamName;
-        const teamRoleLabel = ch.isTeamLead ? 'LEAD' : ch.agentName || null;
+        const displayName = ch.agentName ?? ch.folderName ?? (ch.isTeamLead ? 'LEAD' : null);
         const totalTokens = ch.inputTokens + ch.outputTokens;
         const tokenRatio = totalTokens / MAX_CONTEXT_TOKENS;
-        const hasExtraLines = !!(ch.folderName || teamRoleLabel);
 
         return (
           <div
@@ -165,80 +165,80 @@ export function ToolOverlay({
             className="absolute flex flex-col items-center -translate-x-1/2"
             style={{
               left: screenX,
-              top: screenY - (hasExtraLines ? 34 : 28),
+              top: screenY - (showRichPanel ? 34 : 24),
               pointerEvents: isSelected ? 'auto' : 'none',
               opacity: alwaysShowOverlay && !isSelected && !isHovered ? (isSub ? 0.5 : 0.75) : 1,
               zIndex: isSelected ? 42 : 41,
             }}
           >
-            <div className="flex items-center border-border px-8 pt-2 pb-4 gap-5 pixel-panel whitespace-nowrap max-w-2xs">
-              {dotColor && (
-                <span
-                  className={`w-6 h-6 rounded-full shrink-0 ${isActive && !hasPermission ? 'pixel-pulse' : ''}`}
-                  style={{ background: dotColor }}
-                />
-              )}
-              <div className="flex flex-col gap-0 overflow-hidden">
-                {teamRoleLabel && (
-                  <span
-                    className="overflow-hidden text-ellipsis block leading-none"
-                    style={{
-                      fontSize: '18px',
-                      color: ch.isTeamLead ? TEAM_LEAD_COLOR : TEAM_ROLE_COLOR,
-                      fontWeight: ch.isTeamLead ? 'bold' : undefined,
-                    }}
-                  >
-                    {teamRoleLabel}
-                  </span>
-                )}
-                <span
-                  className="overflow-hidden text-ellipsis block leading-none"
-                  style={{
-                    fontSize: isSub ? '20px' : '22px',
-                    fontStyle: isSub ? 'italic' : undefined,
-                  }}
-                >
-                  {activityText}
-                </span>
-                {ch.folderName && (
-                  <span className="text-2xs leading-none overflow-hidden text-ellipsis block">
-                    {ch.folderName}
-                  </span>
-                )}
-              </div>
-              {isSelected && !isSub && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onCloseAgent(id);
-                  }}
-                  title="Close agent"
-                  className="ml-2 shrink-0 leading-none"
-                >
-                  ×
-                </Button>
-              )}
-            </div>
-            {isTeamAgent && totalTokens > 0 && (
-              <div
+            {displayName && (
+              <span
+                className="leading-none whitespace-nowrap mb-1"
                 style={{
-                  width: FUEL_GAUGE_WIDTH_PX,
-                  height: FUEL_GAUGE_HEIGHT_PX,
-                  background: FUEL_GAUGE_BG,
-                  marginTop: 2,
+                  fontSize: ch.isBoss ? '20px' : '16px',
+                  fontWeight: ch.isBoss ? 'bold' : undefined,
+                  color: ch.isBoss ? BOSS_NAME_COLOR : 'var(--color-text)',
+                  textShadow: ch.isBoss ? BOSS_NAME_GLOW : undefined,
                 }}
-                title={`${Math.round(tokenRatio * 100)}% context used (${(totalTokens / 1000).toFixed(0)}k tokens)`}
               >
-                <div
-                  style={{
-                    width: `${Math.min(tokenRatio * 100, 100)}%`,
-                    height: '100%',
-                    background: getFuelColor(tokenRatio),
-                  }}
-                />
-              </div>
+                {ch.isBoss ? `👑 ${displayName}` : displayName}
+              </span>
+            )}
+            {showRichPanel && (
+              <>
+                <div className="flex items-center border-border px-8 pt-2 pb-4 gap-5 pixel-panel whitespace-nowrap max-w-2xs">
+                  {dotColor && (
+                    <span
+                      className={`w-6 h-6 rounded-full shrink-0 ${isActive && !hasPermission ? 'pixel-pulse' : ''}`}
+                      style={{ background: dotColor }}
+                    />
+                  )}
+                  <div className="flex flex-col gap-0 overflow-hidden">
+                    <span
+                      className="overflow-hidden text-ellipsis block leading-none"
+                      style={{
+                        fontSize: isSub ? '20px' : '22px',
+                        fontStyle: isSub ? 'italic' : undefined,
+                      }}
+                    >
+                      {activityText}
+                    </span>
+                  </div>
+                  {isSelected && !isSub && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onCloseAgent(id);
+                      }}
+                      title="Close agent"
+                      className="ml-2 shrink-0 leading-none"
+                    >
+                      ×
+                    </Button>
+                  )}
+                </div>
+                {isTeamAgent && totalTokens > 0 && (
+                  <div
+                    style={{
+                      width: FUEL_GAUGE_WIDTH_PX,
+                      height: FUEL_GAUGE_HEIGHT_PX,
+                      background: FUEL_GAUGE_BG,
+                      marginTop: 2,
+                    }}
+                    title={`${Math.round(tokenRatio * 100)}% context used (${(totalTokens / 1000).toFixed(0)}k tokens)`}
+                  >
+                    <div
+                      style={{
+                        width: `${Math.min(tokenRatio * 100, 100)}%`,
+                        height: '100%',
+                        background: getFuelColor(tokenRatio),
+                      }}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
         );

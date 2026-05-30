@@ -16,6 +16,7 @@ import { ZoomControls } from './components/ZoomControls.js';
 import { useEditorActions } from './hooks/useEditorActions.js';
 import { useEditorKeyboard } from './hooks/useEditorKeyboard.js';
 import { useExtensionMessages } from './hooks/useExtensionMessages.js';
+import { usePlayerControls } from './hooks/usePlayerControls.js';
 import { OfficeCanvas } from './office/components/OfficeCanvas.js';
 import { ToolOverlay } from './office/components/ToolOverlay.js';
 import { EditorState } from './office/editor/editorState.js';
@@ -50,6 +51,8 @@ function App() {
   }, []);
 
   const editor = useEditorActions(getOfficeState, editorState);
+
+  usePlayerControls(getOfficeState, editor.isEditMode);
 
   const isEditDirty = useCallback(
     () => editor.isEditMode && editor.isDirty,
