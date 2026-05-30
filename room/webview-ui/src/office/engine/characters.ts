@@ -83,6 +83,9 @@ export function createCharacter(
     matrixEffect: null,
     matrixEffectTimer: 0,
     matrixEffectSeeds: [],
+    chatText: null,
+    chatTimer: 0,
+    chatPrevIndex: -1,
     inputTokens: 0,
     outputTokens: 0,
   };

@@ -150,3 +150,6 @@ export const TEAM_LEAD_COLOR = '#ffd700';
 export const TEAM_ROLE_COLOR = '#66aaff';
 export const BOSS_NAME_COLOR = '#ffd700';
 export const BOSS_NAME_GLOW = '0 0 6px rgba(255,215,0,0.9), 0 0 14px rgba(255,170,0,0.5)';
+export const CHAT_BUBBLE_VISIBLE_SEC = 3;
+export const CHAT_BUBBLE_GAP_MIN_SEC = 7;
+export const CHAT_BUBBLE_GAP_MAX_SEC = 10;
