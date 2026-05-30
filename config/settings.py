@@ -48,6 +48,7 @@ class Settings(BaseSettings):
     dedup_distance_threshold: float = 0.05
     embedding_model: str = "all-MiniLM-L6-v2"
     high_affinity_threshold: int = 8
+    daily_digest_top_n: int = 5
     weekly_email_interval_days: int = 7
 
     # AI-article (marketing) pipeline

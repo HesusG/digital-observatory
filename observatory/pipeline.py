@@ -154,6 +154,7 @@ async def run_pipeline(
                 result.notifications_sent += 1
                 metrics.notifications_sent.labels(channel="telegram").inc()
 
+    await _maybe_send_daily_digest()
     await _maybe_send_weekly_email()
 
     result.finished_at = datetime.utcnow()
@@ -352,6 +353,34 @@ async def _collect(
             items.extend(r)
 
     return items
+
+
+async def _maybe_send_daily_digest():
+    from observatory.outputs.digest import send_daily_opportunity_digest
+
+    state = PipelineState(settings.state_db_path)
+    if not state.should_send_daily_digest():
+        return
+
+    since = datetime.utcnow() - timedelta(hours=24)
+    try:
+        recent = chromadb_store.get_recent_items(since=since, kind="opportunity")
+    except Exception as exc:
+        logger.warning(f"daily digest: recent fetch failed: {exc}")
+        return
+
+    items = [
+        {
+            "title": r.get("metadata", {}).get("title", ""),
+            "url": r.get("metadata", {}).get("url", ""),
+            "score": int(r.get("metadata", {}).get("affinity_score", 0) or 0),
+        }
+        for r in recent
+    ]
+    sent = await send_daily_opportunity_digest(items)
+    if sent:
+        state.mark_daily_digest_sent()
+        metrics.notifications_sent.labels(channel="telegram").inc()
 
 
 async def _maybe_send_weekly_email():
