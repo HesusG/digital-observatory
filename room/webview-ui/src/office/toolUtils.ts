@@ -21,10 +21,11 @@ export function extractToolName(status: string): string | null {
   return first || null;
 }
 
-/** Compute a default integer zoom level (device pixels per sprite pixel) */
+/** Compute a default integer zoom level (device pixels per sprite pixel).
+ *  Biased a couple steps higher so the office opens zoomed-in by default. */
 export function defaultZoom(): number {
   const dpr = window.devicePixelRatio || 1;
-  return Math.max(ZOOM_MIN, Math.round(ZOOM_DEFAULT_DPR_FACTOR * dpr));
+  return Math.max(ZOOM_MIN, Math.min(8, Math.round(ZOOM_DEFAULT_DPR_FACTOR * dpr) + 2));
 }
 
 // ── Provider capabilities (tool taxonomy for rendering decisions) ────────────
