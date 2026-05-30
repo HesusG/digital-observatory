@@ -148,3 +148,5 @@ export const FUEL_COLOR_CRITICAL = '#ff2222';
 export const FUEL_GAUGE_BG = '#222';
 export const TEAM_LEAD_COLOR = '#ffd700';
 export const TEAM_ROLE_COLOR = '#66aaff';
+export const BOSS_NAME_COLOR = '#ffd700';
+export const BOSS_NAME_GLOW = '0 0 6px rgba(255,215,0,0.9), 0 0 14px rgba(255,170,0,0.5)';

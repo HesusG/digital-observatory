@@ -576,6 +576,51 @@ export class OfficeState {
     }
   }
 
+  setAgentIdentity(
+    id: number,
+    opts: { displayName?: string; isBoss?: boolean; isPlayer?: boolean },
+  ): void {
+    const ch = this.characters.get(id);
+    if (!ch) return;
+    if (opts.displayName) ch.agentName = opts.displayName;
+    if (opts.isBoss) ch.isBoss = true;
+    if (opts.isPlayer) {
+      ch.isPlayer = true;
+      // Player roams freely and the camera follows it.
+      if (ch.seatId) {
+        const seat = this.seats.get(ch.seatId);
+        if (seat) seat.assigned = false;
+        ch.seatId = null;
+      }
+      ch.isActive = false;
+      this.cameraFollowId = id;
+    }
+  }
+
+  private updatePlayer(ch: Character, dt: number): void {
+    // If mid-step, let the existing WALK lerp run via updateCharacter.
+    if (ch.state === CharacterState.WALK && ch.path.length > 0) {
+      updateCharacter(ch, dt, this.walkableTiles, this.seats, this.tileMap, this.blockedTiles);
+      return;
+    }
+    const dir = inputDirection(this.playerInput);
+    if (dir === null) {
+      ch.state = CharacterState.IDLE;
+      ch.frame = 0;
+      return;
+    }
+    ch.dir = dir;
+    const next = stepTile(ch.tileCol, ch.tileRow, dir);
+    if (isWalkable(next.col, next.row, this.tileMap, this.blockedTiles)) {
+      ch.path = [next];
+      ch.moveProgress = 0;
+      ch.state = CharacterState.WALK;
+    } else {
+      ch.state = CharacterState.IDLE;
+      ch.frame = 0;
+    }
+  }
+
   /** Rebuild furniture instances with auto-state applied (active agents turn electronics ON) */
   private rebuildFurnitureInstances(): void {
     // Collect tiles where active agents face desks
@@ -740,6 +785,12 @@ export class OfficeState {
           }
         }
         continue; // skip normal FSM while effect is active
+      }
+
+      // Player character: WASD movement instead of wander AI
+      if (ch.isPlayer) {
+        this.updatePlayer(ch, dt);
+        continue;
       }
 
       // Player character: WASD movement instead of wander AI
