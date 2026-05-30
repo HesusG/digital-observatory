@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Modal } from './ui/Modal.js';
 
-// Small "ℹ️" button (top-left of the office) that explains the project.
+// Small "ℹ️" button (top-right of the office) that explains the project.
 export function InfoButton() {
   const [open, setOpen] = useState(false);
 
@@ -10,10 +10,10 @@ export function InfoButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        // Explicit px: this app's Tailwind sets --spacing:1px, so w-16 would be
-        // a 16px box behind a 24px emoji. Size + position in real pixels.
+        // Explicit px: this app's Tailwind sets --spacing:1px. Top-right of the
+        // office area so it doesn't collide with the zoom controls (top-left).
         className="absolute z-30 pixel-panel flex items-center justify-center text-2xl cursor-pointer hover:text-accent-bright"
-        style={{ top: 16, left: 16, width: 44, height: 44 }}
+        style={{ top: 16, right: 16, width: 44, height: 44 }}
         title="¿Qué es esto?"
       >
         ℹ️
