@@ -6,6 +6,7 @@ import { ChangelogModal } from './components/ChangelogModal.js';
 import { DebugView } from './components/DebugView.js';
 import { EditActionBar } from './components/EditActionBar.js';
 import { HistoryLog } from './components/HistoryLog.js';
+import { InfoButton } from './components/InfoButton.js';
 import { MigrationNotice } from './components/MigrationNotice.js';
 import { SettingsModal } from './components/SettingsModal.js';
 import { Tooltip } from './components/Tooltip.js';
@@ -173,8 +174,9 @@ function App() {
   }
 
   return (
-    <div ref={containerRef} className="w-full h-full relative overflow-hidden">
-      <HistoryLog />
+    <div className="w-full h-full flex overflow-hidden">
+      <div ref={containerRef} className="flex-1 relative overflow-hidden">
+      <InfoButton />
       <OfficeCanvas
         officeState={officeState}
         onClick={handleClick}
@@ -371,6 +373,8 @@ function App() {
       {showMigrationNotice && (
         <MigrationNotice onDismiss={() => setMigrationNoticeDismissed(true)} />
       )}
+      </div>
+      <HistoryLog />
     </div>
   );
 }

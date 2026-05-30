@@ -116,7 +116,7 @@ export function HistoryLog() {
   let lastDay = '';
 
   return (
-    <div className="absolute top-0 right-0 h-full w-80 max-w-[40vw] z-20 pixel-panel flex flex-col">
+    <div className="h-full w-80 shrink-0 z-20 pixel-panel flex flex-col border-l-2 border-border">
       <div className="px-12 py-8 text-lg text-accent-bright border-b border-border shrink-0">
         📋 Historial del día
       </div>
