@@ -5,7 +5,7 @@ import { BottomToolbar } from './components/BottomToolbar.js';
 import { ChangelogModal } from './components/ChangelogModal.js';
 import { DebugView } from './components/DebugView.js';
 import { EditActionBar } from './components/EditActionBar.js';
-import { HistoryLog } from './components/HistoryLog.js';
+import { HistoryLog, HISTORY_PANEL_WIDTH } from './components/HistoryLog.js';
 import { InfoButton } from './components/InfoButton.js';
 import { MigrationNotice } from './components/MigrationNotice.js';
 import { SettingsModal } from './components/SettingsModal.js';
@@ -175,7 +175,11 @@ function App() {
 
   return (
     <div className="w-full h-full relative overflow-hidden">
-      <div ref={containerRef} className="absolute top-0 left-0 bottom-0 right-80 overflow-hidden">
+      <div
+        ref={containerRef}
+        className="absolute top-0 left-0 bottom-0 overflow-hidden"
+        style={{ right: HISTORY_PANEL_WIDTH }}
+      >
       <InfoButton />
       <OfficeCanvas
         officeState={officeState}

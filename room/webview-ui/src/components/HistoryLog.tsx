@@ -3,6 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 // Always-visible right-side panel showing the day's agent activity, read
 // straight from the observatory event log (GET /api/events + SSE stream).
 // Independent of the office renderer — it just narrates what happened.
+//
+// NOTE: this app's Tailwind (v4) sets `--spacing: 1px` in index.css, so a class
+// like `w-80` is 80px, NOT 320px. To avoid that trap, the panel's structural
+// width is an explicit pixel constant used by inline style here AND by App.tsx
+// to inset the office region by the same amount.
+export const HISTORY_PANEL_WIDTH = 320;
 
 interface ApiEvent {
   seq: number;
@@ -116,7 +122,10 @@ export function HistoryLog() {
   let lastDay = '';
 
   return (
-    <div className="absolute top-0 right-0 bottom-0 w-80 z-20 pixel-panel flex flex-col border-l-2 border-border">
+    <div
+      className="absolute top-0 right-0 bottom-0 z-20 pixel-panel flex flex-col border-l-2 border-border"
+      style={{ width: HISTORY_PANEL_WIDTH }}
+    >
       <div className="px-12 py-8 text-lg text-accent-bright border-b border-border shrink-0">
         📋 Historial del día
       </div>
