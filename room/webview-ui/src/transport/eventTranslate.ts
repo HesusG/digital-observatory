@@ -7,6 +7,7 @@
  * Pablo write. Each agent maps to a fixed character id.
  */
 import type { ServerMessage } from '../../../core/src/messages.js';
+import { HESUS_LINES, MORENO_LINES } from '../office/engine/chatLines.js';
 
 export const AGENT_IDS: Record<string, number> = {
   tess: 1,
@@ -27,15 +28,34 @@ export interface SeedAgent {
   displayName: string;
   isBoss?: boolean;
   isPlayer?: boolean;
+  palette?: number;
+  hueShift?: number;
+  chatLines?: string[];
 }
 
 export const SEED_AGENTS: SeedAgent[] = [
-  { name: 'tess', id: 1, displayName: 'tess' },
-  { name: 'carla', id: 2, displayName: 'carla' },
-  { name: 'edu', id: 3, displayName: 'edu' },
-  { name: 'pablo', id: 4, displayName: 'pablo' },
-  { name: 'moreno', id: 5, displayName: 'Moreno', isBoss: true },
-  { name: 'hesus', id: 6, displayName: 'Hesus', isBoss: true, isPlayer: true },
+  { name: 'tess', id: 1, displayName: 'tess', palette: 4 },
+  { name: 'carla', id: 2, displayName: 'carla', palette: 1 },
+  { name: 'edu', id: 3, displayName: 'edu', palette: 2 },
+  { name: 'pablo', id: 4, displayName: 'pablo', palette: 3 },
+  {
+    name: 'moreno',
+    id: 5,
+    displayName: 'Moreno',
+    isBoss: true,
+    palette: 0,
+    hueShift: 35,
+    chatLines: MORENO_LINES,
+  },
+  {
+    name: 'hesus',
+    id: 6,
+    displayName: 'Hesus',
+    isBoss: true,
+    isPlayer: true,
+    palette: 5,
+    chatLines: HESUS_LINES,
+  },
 ];
 
 const READ_TOOL = 'Read'; // → reading animation
