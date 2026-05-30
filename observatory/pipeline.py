@@ -72,7 +72,7 @@ async def run_pipeline(
     sheets = SheetsOutput()
 
     for item in items:
-        dup, dup_of = is_duplicate(item.raw_text, item.url)
+        dup, dup_of = is_duplicate(item.raw_text, item.url, item.title)
         if dup:
             result.duplicates += 1
             metrics.items_deduplicated.labels(source=item.source).inc()

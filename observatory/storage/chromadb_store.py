@@ -87,10 +87,13 @@ def upsert_item(
         "processed_at": datetime.utcnow().isoformat(),
     }
 
-    # Truncate raw_text for embedding (MiniLM handles ~256 word pieces)
-    truncated = raw_text[:2000]
+    # Embed title + body so items sharing boilerplate body text still embed
+    # distinctly (MiniLM handles ~256 word pieces).
+    from observatory.processing.embedder import build_embedding_text
 
-    collection.upsert(ids=[doc_id], documents=[truncated], metadatas=[metadata])
+    document = build_embedding_text(title, raw_text)
+
+    collection.upsert(ids=[doc_id], documents=[document], metadatas=[metadata])
     logger.info(f"Upserted item {doc_id[:12]}... ({title[:50]})")
     return doc_id
 
