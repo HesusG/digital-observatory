@@ -25,7 +25,7 @@ export function extractToolName(status: string): string | null {
  *  Biased a couple steps higher so the office opens zoomed-in by default. */
 export function defaultZoom(): number {
   const dpr = window.devicePixelRatio || 1;
-  return Math.max(ZOOM_MIN, Math.min(8, Math.round(ZOOM_DEFAULT_DPR_FACTOR * dpr) + 2));
+  return Math.max(ZOOM_MIN, Math.min(7, Math.round(ZOOM_DEFAULT_DPR_FACTOR * dpr) + 1));
 }
 
 // ── Provider capabilities (tool taxonomy for rendering decisions) ────────────
