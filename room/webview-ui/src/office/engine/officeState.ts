@@ -742,6 +742,12 @@ export class OfficeState {
         continue; // skip normal FSM while effect is active
       }
 
+      // Player character: WASD movement instead of wander AI
+      if (ch.isPlayer) {
+        this.updatePlayer(ch, dt);
+        continue;
+      }
+
       // Temporarily unblock own seat so character can pathfind to it
       this.withOwnSeatUnblocked(ch, () =>
         updateCharacter(ch, dt, this.walkableTiles, this.seats, this.tileMap, this.blockedTiles),

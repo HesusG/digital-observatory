@@ -13,7 +13,7 @@
  */
 import type { ClientMessage, ServerMessage } from '../../../core/src/messages.js';
 import { assetLoadMessages, loadAssets } from '../browserMock.js';
-import { AGENT_IDS, AGENT_ORDER, type ApiEvent, translateEvent } from './eventTranslate.js';
+import { SEED_AGENTS, type ApiEvent, translateEvent } from './eventTranslate.js';
 import type { MessageTransport } from './types.js';
 
 const LIVE_DONE_DELAY_MS = 2500; // how long a character animates per live event
@@ -64,9 +64,20 @@ export class SseTransport implements MessageTransport {
     }
     if (this.disposed) return;
 
-    // 2. Fixed cast.
-    for (const name of AGENT_ORDER) {
-      this.emit({ type: 'agentCreated', id: AGENT_IDS[name], folderName: name });
+    // 2. Fixed cast (workers + bosses), then mark everyone but the player idle
+    //    so workers and Moreno wander on their own; events reactivate workers.
+    for (const a of SEED_AGENTS) {
+      this.emit({
+        type: 'agentCreated',
+        id: a.id,
+        folderName: a.displayName,
+        displayName: a.displayName,
+        isBoss: a.isBoss,
+        isPlayer: a.isPlayer,
+      });
+    }
+    for (const a of SEED_AGENTS) {
+      if (!a.isPlayer) this.emit({ type: 'agentStatus', id: a.id, status: 'idle' });
     }
 
     // 3. History (replay): apply start + done at once so agents settle idle.
