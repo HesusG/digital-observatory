@@ -13,9 +13,30 @@ export const AGENT_IDS: Record<string, number> = {
   carla: 2,
   edu: 3,
   pablo: 4,
+  moreno: 5,
+  hesus: 6,
 };
 
 export const AGENT_ORDER = ['tess', 'carla', 'edu', 'pablo'] as const;
+
+// Full cast seeded on connect (workers + bosses). Bosses get gold glow + crown;
+// Hesus is WASD-controlled. displayName is shown above every character.
+export interface SeedAgent {
+  name: string;
+  id: number;
+  displayName: string;
+  isBoss?: boolean;
+  isPlayer?: boolean;
+}
+
+export const SEED_AGENTS: SeedAgent[] = [
+  { name: 'tess', id: 1, displayName: 'tess' },
+  { name: 'carla', id: 2, displayName: 'carla' },
+  { name: 'edu', id: 3, displayName: 'edu' },
+  { name: 'pablo', id: 4, displayName: 'pablo' },
+  { name: 'moreno', id: 5, displayName: 'Moreno', isBoss: true },
+  { name: 'hesus', id: 6, displayName: 'Hesus', isBoss: true, isPlayer: true },
+];
 
 const READ_TOOL = 'Read'; // → reading animation
 const WRITE_TOOL = 'Write'; // → typing animation
