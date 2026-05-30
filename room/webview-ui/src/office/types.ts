@@ -176,6 +176,14 @@ export interface Character {
   isBoss?: boolean;
   /** WASD-controlled player character (skips wander AI) */
   isPlayer?: boolean;
+  /** Ambient chat phrases for this character (only bosses) */
+  chatLines?: string[];
+  /** Currently-visible chat phrase, or null */
+  chatText: string | null;
+  /** Countdown: visible-time while chatText set, else cooldown until next phrase */
+  chatTimer: number;
+  /** Index of the last shown phrase (avoid immediate repeat) */
+  chatPrevIndex: number;
   /** Active matrix spawn/despawn effect, or null */
   matrixEffect: 'spawn' | 'despawn' | null;
   /** Timer counting up from 0 to MATRIX_EFFECT_DURATION */

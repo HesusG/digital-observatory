@@ -74,6 +74,9 @@ export class SseTransport implements MessageTransport {
         displayName: a.displayName,
         isBoss: a.isBoss,
         isPlayer: a.isPlayer,
+        palette: a.palette,
+        hueShift: a.hueShift,
+        chatLines: a.chatLines,
       });
     }
     for (const a of SEED_AGENTS) {

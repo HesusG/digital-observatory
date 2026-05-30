@@ -69,6 +69,9 @@ export interface AgentCreated {
   displayName?: string;
   isBoss?: boolean;
   isPlayer?: boolean;
+  palette?: number;
+  hueShift?: number;
+  chatLines?: string[];
 }
 
 export interface AgentClosed {

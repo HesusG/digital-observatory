@@ -4,6 +4,9 @@ import {
   CHARACTER_HIT_HALF_WIDTH,
   CHARACTER_HIT_HEIGHT,
   CHARACTER_SITTING_OFFSET_PX,
+  CHAT_BUBBLE_GAP_MAX_SEC,
+  CHAT_BUBBLE_GAP_MIN_SEC,
+  CHAT_BUBBLE_VISIBLE_SEC,
   DISMISS_BUBBLE_FAST_FADE_SEC,
   FURNITURE_ANIM_INTERVAL_SEC,
   HUE_SHIFT_MIN_DEG,
@@ -34,6 +37,7 @@ import { CharacterState, Direction, MATRIX_EFFECT_DURATION, TILE_SIZE } from '..
 import { createCharacter, updateCharacter } from './characters.js';
 import { matrixEffectSeeds } from './matrixEffect.js';
 import { inputDirection, stepTile } from './playerMove.js';
+import { pickPhrase } from './chatLines.js';
 
 export class OfficeState {
   layout: OfficeLayout;
@@ -578,12 +582,17 @@ export class OfficeState {
 
   setAgentIdentity(
     id: number,
-    opts: { displayName?: string; isBoss?: boolean; isPlayer?: boolean },
+    opts: { displayName?: string; isBoss?: boolean; isPlayer?: boolean; chatLines?: string[] },
   ): void {
     const ch = this.characters.get(id);
     if (!ch) return;
     if (opts.displayName) ch.agentName = opts.displayName;
     if (opts.isBoss) ch.isBoss = true;
+    if (opts.chatLines && opts.chatLines.length > 0) {
+      ch.chatLines = opts.chatLines;
+      // Stagger the first phrase so the two bosses don't speak in lockstep.
+      ch.chatTimer = CHAT_BUBBLE_GAP_MIN_SEC + (id % 3);
+    }
     if (opts.isPlayer) {
       ch.isPlayer = true;
       // Player roams freely and the camera follows it.
@@ -787,10 +796,24 @@ export class OfficeState {
         continue; // skip normal FSM while effect is active
       }
 
-      // Player character: WASD movement instead of wander AI
-      if (ch.isPlayer) {
-        this.updatePlayer(ch, dt);
-        continue;
+      // Ambient chat bubbles for boss characters (runs for the player too)
+      if (ch.chatLines && ch.chatLines.length > 0) {
+        ch.chatTimer -= dt;
+        if (ch.chatTimer <= 0) {
+          if (ch.chatText) {
+            // Was visible → hide and start the gap until the next phrase.
+            ch.chatText = null;
+            ch.chatTimer =
+              CHAT_BUBBLE_GAP_MIN_SEC +
+              Math.random() * (CHAT_BUBBLE_GAP_MAX_SEC - CHAT_BUBBLE_GAP_MIN_SEC);
+          } else {
+            // Gap elapsed → show a fresh phrase.
+            const picked = pickPhrase(ch.chatLines, ch.chatPrevIndex);
+            ch.chatText = picked.text;
+            ch.chatPrevIndex = picked.index;
+            ch.chatTimer = CHAT_BUBBLE_VISIBLE_SEC;
+          }
+        }
       }
 
       // Player character: WASD movement instead of wander AI
