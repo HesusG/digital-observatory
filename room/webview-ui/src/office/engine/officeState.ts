@@ -33,6 +33,7 @@ import type {
 import { CharacterState, Direction, MATRIX_EFFECT_DURATION, TILE_SIZE } from '../types.js';
 import { createCharacter, updateCharacter } from './characters.js';
 import { matrixEffectSeeds } from './matrixEffect.js';
+import { inputDirection, stepTile } from './playerMove.js';
 
 export class OfficeState {
   layout: OfficeLayout;
@@ -46,6 +47,8 @@ export class OfficeState {
   furnitureAnimTimer = 0;
   selectedAgentId: number | null = null;
   cameraFollowId: number | null = null;
+  /** WASD input state for the player character (set by usePlayerControls) */
+  playerInput = { up: false, down: false, left: false, right: false };
   hoveredAgentId: number | null = null;
   hoveredTile: { col: number; row: number } | null = null;
   /** Maps "parentId:toolId" → sub-agent character ID (negative) */
