@@ -42,3 +42,12 @@ class PipelineState:
 
     def mark_weekly_email_sent(self):
         self.set("last_weekly_email", datetime.now().isoformat())
+
+    def should_send_daily_digest(self) -> bool:
+        last = self.get("last_daily_digest")
+        if not last:
+            return True
+        return datetime.fromisoformat(last).date() < datetime.now().date()
+
+    def mark_daily_digest_sent(self):
+        self.set("last_daily_digest", datetime.now().isoformat())

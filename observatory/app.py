@@ -399,8 +399,13 @@ async def skip_item(item_id: str = Query(...), reason: str = Query(default="user
 
 @app.get("/api/stats")
 async def stats():
+    try:
+        total = chromadb_store.get_item_count_fast()
+    except Exception as exc:
+        total = None
+        logger.warning(f"stats count failed: {exc}")
     return {
-        "total_items": chromadb_store.get_item_count(),
+        "total_items": total,
         "chromadb_host": f"{settings.chroma_host}:{settings.chroma_port}",
     }
 

@@ -2,12 +2,12 @@ import logging
 
 from config.settings import settings
 from observatory.storage import chromadb_store
-from observatory.processing.embedder import clean_for_embedding
+from observatory.processing.embedder import build_embedding_text
 
 logger = logging.getLogger(__name__)
 
 
-def is_duplicate(raw_text: str, url: str) -> tuple[bool, str | None]:
+def is_duplicate(raw_text: str, url: str, title: str = "") -> tuple[bool, str | None]:
     """
     Two-phase deduplication:
     1. URL hash check (fast O(1) — catches exact re-scrapes)
@@ -16,7 +16,7 @@ def is_duplicate(raw_text: str, url: str) -> tuple[bool, str | None]:
     if chromadb_store.url_exists(url):
         return True, url
 
-    cleaned = clean_for_embedding(raw_text)
+    cleaned = build_embedding_text(title, raw_text)
     distance, metadata = chromadb_store.find_nearest(cleaned)
 
     if distance is None:

@@ -72,7 +72,7 @@ async def run_pipeline(
     sheets = SheetsOutput()
 
     for item in items:
-        dup, dup_of = is_duplicate(item.raw_text, item.url)
+        dup, dup_of = is_duplicate(item.raw_text, item.url, item.title)
         if dup:
             result.duplicates += 1
             metrics.items_deduplicated.labels(source=item.source).inc()
@@ -100,6 +100,11 @@ async def run_pipeline(
         if evaluation is None:
             result.eval_failures += 1
             metrics.llm_errors.labels(provider="unknown").inc()
+            event_log.append_event(
+                "tess", "tess.skipped",
+                item_url=item.url, run_id=run_id,
+                payload={"title": item.title, "skip_reason": "eval-failed"},
+            )
             continue
 
         result.evaluated += 1
@@ -112,6 +117,16 @@ async def run_pipeline(
             summary=evaluation.summary,
             reasoning=evaluation.reasoning,
             is_free_or_funded=evaluation.is_free_or_funded,
+        )
+
+        event_log.append_event(
+            "tess", "tess.scored",
+            item_url=item.url, run_id=run_id,
+            payload={
+                "title": item.title,
+                "affinity_score": evaluation.affinity_score,
+                "category": evaluation.category,
+            },
         )
 
         sheets.append_row(
@@ -139,6 +154,7 @@ async def run_pipeline(
                 result.notifications_sent += 1
                 metrics.notifications_sent.labels(channel="telegram").inc()
 
+    await _maybe_send_daily_digest()
     await _maybe_send_weekly_email()
 
     result.finished_at = datetime.utcnow()
@@ -337,6 +353,34 @@ async def _collect(
             items.extend(r)
 
     return items
+
+
+async def _maybe_send_daily_digest():
+    from observatory.outputs.digest import send_daily_opportunity_digest
+
+    state = PipelineState(settings.state_db_path)
+    if not state.should_send_daily_digest():
+        return
+
+    since = datetime.utcnow() - timedelta(hours=24)
+    try:
+        recent = chromadb_store.get_recent_items(since=since, kind="opportunity")
+    except Exception as exc:
+        logger.warning(f"daily digest: recent fetch failed: {exc}")
+        return
+
+    items = [
+        {
+            "title": r.get("metadata", {}).get("title", ""),
+            "url": r.get("metadata", {}).get("url", ""),
+            "score": int(r.get("metadata", {}).get("affinity_score", 0) or 0),
+        }
+        for r in recent
+    ]
+    sent = await send_daily_opportunity_digest(items)
+    if sent:
+        state.mark_daily_digest_sent()
+        metrics.notifications_sent.labels(channel="telegram").inc()
 
 
 async def _maybe_send_weekly_email():

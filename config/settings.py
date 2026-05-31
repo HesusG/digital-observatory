@@ -41,9 +41,14 @@ class Settings(BaseSettings):
     app_port: int = 8400
 
     # Processing
-    dedup_distance_threshold: float = 0.15
+    # Cosine distance below which two items are treated as semantic duplicates.
+    # Tightened from 0.15 → 0.05 after observing distinct opportunities collide at
+    # ~0.001 with the old raw_text-only embedding; combined with title+text
+    # embedding (build_embedding_text), this keeps only true near-duplicates.
+    dedup_distance_threshold: float = 0.05
     embedding_model: str = "all-MiniLM-L6-v2"
     high_affinity_threshold: int = 8
+    daily_digest_top_n: int = 5
     weekly_email_interval_days: int = 7
 
     # AI-article (marketing) pipeline
