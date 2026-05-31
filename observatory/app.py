@@ -303,6 +303,13 @@ async def skip_draft(draft_id: str, reason: str = Query(default="user-skip")):
     return {"status": "ok", "draft_id": draft_id}
 
 
+@app.post("/api/drafts/{draft_id}/reject")
+async def reject_draft(draft_id: str, reason: str = Query(default="user-reject")):
+    drafts_store.mark_rejected(draft_id=draft_id, reason=reason)
+    event_log.append_event("user", "user.rejected", draft_id=draft_id, payload={"reason": reason})
+    return {"status": "ok", "draft_id": draft_id}
+
+
 @app.post("/api/drafts/{draft_id}/edit")
 async def edit_draft(draft_id: str, payload: dict = Body(...)):
     """Replace the draft content, then publish."""
