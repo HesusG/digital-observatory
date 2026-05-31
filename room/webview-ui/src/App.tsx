@@ -182,19 +182,27 @@ function App() {
   return (
     <div className="w-full h-full relative overflow-hidden">
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 z-40 flex gap-2 pixel-panel"
+        role="tablist"
+        aria-label="Vistas del cuarto"
+        className="absolute top-8 left-1/2 -translate-x-1/2 z-40 flex gap-2 pixel-panel"
         style={{ padding: 4 }}
       >
         <button
+          role="tab"
+          aria-selected={tab === 'office'}
+          aria-controls="office-panel"
           onClick={() => setTab('office')}
-          className={tab === 'office' ? 'text-accent-bright' : ''}
+          className={tab === 'office' ? 'text-accent-bright' : 'text-text-muted'}
           style={{ padding: '4px 12px' }}
         >
           Oficina
         </button>
         <button
+          role="tab"
+          aria-selected={tab === 'inbox'}
+          aria-controls="inbox-panel"
           onClick={() => setTab('inbox')}
-          className={tab === 'inbox' ? 'text-accent-bright' : ''}
+          className={tab === 'inbox' ? 'text-accent-bright' : 'text-text-muted'}
           style={{ padding: '4px 12px' }}
         >
           Bandeja
@@ -202,6 +210,8 @@ function App() {
       </div>
 
       <div
+        id="office-panel"
+        role="tabpanel"
         ref={containerRef}
         className="absolute top-0 left-0 bottom-0 overflow-hidden"
         style={{ right: HISTORY_PANEL_WIDTH, display: tab === 'office' ? 'block' : 'none' }}
@@ -413,7 +423,11 @@ function App() {
       )}
       </div>
       {tab === 'office' && <HistoryLog />}
-      {tab === 'inbox' && <DraftInbox />}
+      {tab === 'inbox' && (
+        <div id="inbox-panel" role="tabpanel" className="absolute inset-0">
+          <DraftInbox />
+        </div>
+      )}
     </div>
   );
 }
