@@ -303,6 +303,13 @@ async def skip_draft(draft_id: str, reason: str = Query(default="user-skip")):
     return {"status": "ok", "draft_id": draft_id}
 
 
+@app.post("/api/drafts/{draft_id}/reject")
+async def reject_draft(draft_id: str, reason: str = Query(default="user-reject")):
+    drafts_store.mark_rejected(draft_id=draft_id, reason=reason)
+    event_log.append_event("user", "user.rejected", draft_id=draft_id, payload={"reason": reason})
+    return {"status": "ok", "draft_id": draft_id}
+
+
 @app.post("/api/drafts/{draft_id}/edit")
 async def edit_draft(draft_id: str, payload: dict = Body(...)):
     """Replace the draft content, then publish."""
@@ -407,6 +414,44 @@ async def stats():
     return {
         "total_items": total,
         "chromadb_host": f"{settings.chroma_host}:{settings.chroma_port}",
+    }
+
+
+@app.get("/api/obsidian/folders")
+async def obsidian_folders():
+    """List vault folders (for the picker) + the currently selected ones."""
+    from observatory.collectors.obsidian import list_vault_folders, _load_folders_config
+
+    available = list_vault_folders()
+    selected = [f.get("path", "") for f in _load_folders_config()]
+    return {"available": available, "selected": selected}
+
+
+@app.post("/api/obsidian/folders")
+async def set_obsidian_folders(payload: dict = Body(...)):
+    from observatory.collectors.obsidian import save_folders_config
+
+    folders = payload.get("folders", [])
+    if not isinstance(folders, list):
+        return JSONResponse(status_code=400, content={"error": "folders must be a list"})
+    save_folders_config([str(f) for f in folders])
+    return {"status": "ok", "selected": folders}
+
+
+@app.post("/api/collect/obsidian")
+async def collect_obsidian():
+    """Process the user's selected Obsidian notes through the article pipeline."""
+    result = await run_pipeline(
+        enable_rss=False,
+        enable_wordpress=False,
+        enable_playwright=False,
+        enable_obsidian=True,
+    )
+    return {
+        "status": "ok",
+        "new_items": result.new_items,
+        "evaluated": result.evaluated,
+        "drafted": result.articles_drafted,
     }
 
 

@@ -1,0 +1,6 @@
+# Folders of the Obsidian vault to ingest as article sources.
+# Edited by the visual folder picker (Phase 3) or by hand.
+enabled: true
+folders:
+  - path: "Pedagogía"
+    recursive: true

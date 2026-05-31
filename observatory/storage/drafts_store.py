@@ -171,6 +171,13 @@ def mark_skipped(draft_id: str, reason: str = "user-skip") -> None:
     })
 
 
+def mark_rejected(draft_id: str, reason: str = "user-reject") -> None:
+    _merge_meta(draft_id, {
+        "status": DraftStatus.REJECTED.value,
+        "reject_reason": reason,
+    })
+
+
 def get_draft(draft_id: str) -> Optional[dict]:
     return _read(draft_id)
 

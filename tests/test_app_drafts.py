@@ -74,6 +74,21 @@ def test_post_drafts_skip_updates_status(client, monkeypatch):
     assert calls == [("draft-abc", "off-topic")]
 
 
+def test_post_drafts_reject_updates_status(client, monkeypatch):
+    from observatory.storage import drafts_store
+
+    calls = []
+    monkeypatch.setattr(
+        drafts_store,
+        "mark_rejected",
+        lambda draft_id, reason="user-reject": calls.append((draft_id, reason)),
+    )
+
+    r = client.post("/api/drafts/draft-xyz/reject", params={"reason": "no-sirve"})
+    assert r.status_code == 200
+    assert calls == [("draft-xyz", "no-sirve")]
+
+
 def test_post_drafts_edit_replaces_content_then_approves(client, monkeypatch):
     """Edit replaces content, then triggers Pablo publish on the new content."""
     from observatory.storage import drafts_store

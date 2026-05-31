@@ -52,6 +52,7 @@ async def run_pipeline(
     enable_rss: bool = True,
     enable_wordpress: bool = True,
     enable_playwright: bool = False,
+    enable_obsidian: bool = False,
     keywords: list[str] | None = None,
     source_filter: list[str] | None = None,
 ) -> PipelineResult:
@@ -63,6 +64,7 @@ async def run_pipeline(
         enable_rss=enable_rss,
         enable_wordpress=enable_wordpress,
         enable_playwright=enable_playwright,
+        enable_obsidian=enable_obsidian,
         keywords=keywords,
         source_filter=source_filter,
     )
@@ -280,7 +282,10 @@ async def carla_draft_for_item(
     from observatory.intelligence.drafter import draft_for_platforms
     out: list[dict] = []
     for lang in evaluation.lang_targets:
-        platforms = evaluation.suggested_platforms or settings.ai_default_platforms
+        platforms = list(evaluation.suggested_platforms or settings.ai_default_platforms)
+        # Pedagogy notes also get a long-form blog draft alongside social posts.
+        if item.source_group == "pedagogy_notes" and "blog" not in platforms:
+            platforms.append("blog")
         result = await draft_for_platforms(
             hook=evaluation.one_line_hook,
             summary=evaluation.summary,
@@ -322,6 +327,7 @@ async def _collect(
     enable_playwright: bool,
     keywords: list[str] | None,
     source_filter: list[str] | None,
+    enable_obsidian: bool = False,
 ) -> list[CollectedItem]:
     items: list[CollectedItem] = []
     tasks = []
@@ -329,6 +335,11 @@ async def _collect(
     if enable_rss:
         rss = RSSCollector()
         tasks.append(rss.collect())
+
+    if enable_obsidian:
+        from observatory.collectors.obsidian import ObsidianNotesCollector
+
+        tasks.append(ObsidianNotesCollector().collect())
 
     if enable_wordpress:
         wp_kwargs = {}
