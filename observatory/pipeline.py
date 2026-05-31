@@ -282,7 +282,10 @@ async def carla_draft_for_item(
     from observatory.intelligence.drafter import draft_for_platforms
     out: list[dict] = []
     for lang in evaluation.lang_targets:
-        platforms = evaluation.suggested_platforms or settings.ai_default_platforms
+        platforms = list(evaluation.suggested_platforms or settings.ai_default_platforms)
+        # Pedagogy notes also get a long-form blog draft alongside social posts.
+        if item.source_group == "pedagogy_notes" and "blog" not in platforms:
+            platforms.append("blog")
         result = await draft_for_platforms(
             hook=evaluation.one_line_hook,
             summary=evaluation.summary,

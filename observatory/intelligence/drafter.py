@@ -27,6 +27,8 @@ PLATFORM_PROMPTS = {
     "x":        {"limit_chars": 280},
     "linkedin": {"limit_chars": 1300},
     "bluesky":  {"limit_chars": 300},
+    # Long-form blog draft: no hard character cap (0 = unbounded).
+    "blog":     {"limit_chars": 0},
 }
 
 LANG_LABELS = {"es": "Spanish (es-MX register)", "en": "English"}
@@ -72,18 +74,31 @@ def build_platform_prompt(
     )
     tone_block = f"tone_override: {tone}" if tone else "tone_override: (none)"
 
+    if platform == "blog":
+        platform_line = "platform: blog (long-form article, no character limit)"
+        format_line = (
+            "Write a complete long-form BLOG DRAFT (several paragraphs, with an "
+            "intro, body, and closing). Return ONLY the article text as a plain "
+            "string. Markdown headings are allowed; no code fences."
+        )
+    else:
+        platform_line = f"platform: {platform} (char limit {limit})"
+        format_line = (
+            "Return ONLY the post text. If platform requires a thread, return a JSON "
+            "array of strings. Otherwise a plain string. No markdown fences."
+        )
+
     return (
         f"{persona.body}\n\n"
         f"--- ASSIGNMENT ---\n"
-        f"platform: {platform} (char limit {limit})\n"
+        f"{platform_line}\n"
         f"lang: {lang_label}\n"
         f"hook: {hook}\n"
         f"summary: {textwrap.shorten(summary or '(no summary)', width=600, placeholder='...')}\n"
         f"angles:\n{_format_angles(angles, lang)}\n"
         f"{cta_block}\n"
         f"{tone_block}\n\n"
-        f"Return ONLY the post text. If platform requires a thread, return a JSON "
-        f"array of strings. Otherwise a plain string. No markdown fences."
+        f"{format_line}"
     )
 
 
