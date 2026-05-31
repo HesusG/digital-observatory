@@ -417,6 +417,23 @@ async def stats():
     }
 
 
+@app.post("/api/collect/obsidian")
+async def collect_obsidian():
+    """Process the user's selected Obsidian notes through the article pipeline."""
+    result = await run_pipeline(
+        enable_rss=False,
+        enable_wordpress=False,
+        enable_playwright=False,
+        enable_obsidian=True,
+    )
+    return {
+        "status": "ok",
+        "new_items": result.new_items,
+        "evaluated": result.evaluated,
+        "drafted": result.articles_drafted,
+    }
+
+
 @app.post("/api/pipeline/run")
 async def api_pipeline_run(
     http_only: bool = Query(default=False),
