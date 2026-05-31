@@ -44,3 +44,20 @@ def test_ignores_non_md_and_missing_folder(tmp_path):
     items = asyncio.run(collector.collect())
     assert len(items) == 1
     assert items[0].raw_text.strip() == "uno"
+
+
+def test_list_vault_folders_depth_and_hidden(tmp_path):
+    from observatory.collectors.obsidian import list_vault_folders
+
+    (tmp_path / "Pedagogía" / "Sub").mkdir(parents=True)
+    (tmp_path / ".obsidian" / "plugins").mkdir(parents=True)
+    (tmp_path / "A" / "B" / "C" / "D").mkdir(parents=True)
+
+    folders = list_vault_folders(tmp_path, max_depth=3)
+    assert "Pedagogía" in folders
+    assert "Pedagogía/Sub" in folders
+    # hidden tree excluded
+    assert not any(f.startswith(".obsidian") for f in folders)
+    # depth>3 excluded (A/B/C/D is depth 4)
+    assert "A/B/C/D" not in folders
+    assert "A/B/C" in folders

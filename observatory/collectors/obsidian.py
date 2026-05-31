@@ -24,6 +24,35 @@ def _load_folders_config() -> list[dict]:
     return data.get("folders", []) or []
 
 
+def list_vault_folders(vault_path: Path | str | None = None, max_depth: int = 3) -> list[str]:
+    """Return relative folder paths under the vault (dirs only, depth-limited),
+    skipping hidden/.obsidian dirs. Used by the visual folder picker."""
+    root = Path(vault_path) if vault_path else Path(settings.obsidian_vault_path)
+    if not root.is_dir():
+        return []
+    out: list[str] = []
+    for d in sorted(root.rglob("*")):
+        if not d.is_dir():
+            continue
+        rel = d.relative_to(root)
+        if any(part.startswith(".") for part in rel.parts):
+            continue
+        if len(rel.parts) > max_depth:
+            continue
+        out.append(rel.as_posix())
+    return out
+
+
+def save_folders_config(folders: list[str]) -> None:
+    """Persist the selected folder paths to the yaml config (recursive=True)."""
+    data = {
+        "enabled": True,
+        "folders": [{"path": p, "recursive": True} for p in folders],
+    }
+    DEFAULT_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    DEFAULT_CONFIG.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+
+
 def _parse_note(text: str, stem: str) -> tuple[str, str]:
     """Return (title, body). Title from YAML frontmatter `title:` if present,
     else the filename stem. Body excludes the frontmatter block."""

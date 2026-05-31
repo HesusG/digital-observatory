@@ -12,6 +12,36 @@ export function DraftInbox() {
   const [drafts, setDrafts] = useState<DraftItem[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [showFolders, setShowFolders] = useState(false);
+  const [available, setAvailable] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
+
+  const loadFolders = useCallback(async () => {
+    try {
+      const r = await fetch('/api/obsidian/folders');
+      const d = (await r.json()) as { available?: string[]; selected?: string[] };
+      setAvailable(d.available ?? []);
+      setSelected(d.selected ?? []);
+    } catch {
+      /* offline */
+    }
+  }, []);
+
+  async function toggleFolder(path: string) {
+    const next = selected.includes(path)
+      ? selected.filter((p) => p !== path)
+      : [...selected, path];
+    setSelected(next);
+    try {
+      await fetch('/api/obsidian/folders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folders: next }),
+      });
+    } catch {
+      /* offline */
+    }
+  }
 
   const load = useCallback(async () => {
     try {
@@ -68,7 +98,37 @@ export function DraftInbox() {
         <button onClick={() => void load()} className="pixel-panel px-6 py-2 text-sm" title="Refrescar">
           ↻
         </button>
+        <button
+          onClick={() => {
+            const next = !showFolders;
+            setShowFolders(next);
+            if (next) void loadFolders();
+          }}
+          className="pixel-panel px-6 py-2 text-sm"
+          title="Elegir carpetas de Obsidian"
+        >
+          📁 Carpetas
+        </button>
       </div>
+
+      {showFolders && (
+        <div className="pixel-panel p-8 flex flex-col gap-2">
+          <div className="text-sm text-accent-bright">Carpetas a procesar</div>
+          {available.length === 0 && (
+            <div className="text-2xs opacity-50">No se encontraron carpetas en el vault.</div>
+          )}
+          {available.map((f) => (
+            <label key={f} className="text-sm flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selected.includes(f)}
+                onChange={() => void toggleFolder(f)}
+              />
+              {f}
+            </label>
+          ))}
+        </div>
+      )}
 
       {drafts.length === 0 && (
         <div className="text-sm opacity-50">Sin borradores pendientes.</div>
