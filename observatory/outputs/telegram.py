@@ -3,6 +3,7 @@ import logging
 import httpx
 
 from config.settings import settings
+from observatory.timefmt import fmt_cdmx
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +18,16 @@ def format_alert_message(
 ) -> str:
     cat_line = ""
     if category and category != "general":
-        cat_line = f"*Type:* {category.upper()}\n"
+        cat_line = f"🏷️ *Categoría:* {category.upper()}\n"
 
     return (
-        f"\U0001f31f *HIGH MATCH! ({score}/10)* \U0001f31f\n\n"
-        f"*Source:* {source}\n"
+        f"⭐ *¡Coincidencia alta! ({score}/10)*\n\n"
+        f"📌 *{title}*\n\n"
+        f"📰 *Fuente:* {source}\n"
         f"{cat_line}"
-        f"*Title:* {title}\n"
-        f"*AI Summary:* {summary}\n\n"
-        f"\U0001f517 *Link:* {url}"
+        f"📝 {summary}\n\n"
+        f"🔗 {url}\n"
+        f"🕐 {fmt_cdmx()}"
     )
 
 

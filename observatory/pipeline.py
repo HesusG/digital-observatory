@@ -399,7 +399,7 @@ async def _maybe_send_weekly_email():
     if not state.should_send_weekly_email(interval_days=settings.weekly_email_interval_days):
         return
 
-    since = datetime.utcnow() - timedelta(days=7)
+    since = datetime.utcnow() - timedelta(days=settings.weekly_email_interval_days)
     try:
         recent = chromadb_store.get_recent_items(since=since)
     except Exception as exc:

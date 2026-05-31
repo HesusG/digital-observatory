@@ -8,6 +8,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from config.settings import settings
+from observatory.timefmt import fmt_cdmx
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +88,9 @@ async def send_weekly_email(
         items, key=lambda it: int(it.get("score", 0) or 0), reverse=True
     )
     plain_lines = [
-        f"Weekly Opportunity Radar — {len(items)} items in last 7 days.",
+        f"Radar de Oportunidades — {len(items)} en los últimos "
+        f"{settings.weekly_email_interval_days} días.",
+        f"Generado: {fmt_cdmx()}",
         "",
         "TOP HIGHLIGHTS:",
     ]
@@ -99,7 +102,9 @@ async def send_weekly_email(
     plain_text = "\n".join(plain_lines)
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Weekly Opportunity Radar: top {min(len(items), TOP_HIGHLIGHT_COUNT)} of {len(items)} this week"
+    msg["Subject"] = (
+        f"Radar de Oportunidades: top {min(len(items), TOP_HIGHLIGHT_COUNT)} de {len(items)}"
+    )
     msg["From"] = sender
     msg["To"] = receiver
     # Order matters in multipart/alternative — last attached = preferred by client.
