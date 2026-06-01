@@ -4,7 +4,7 @@ from html import escape
 import httpx
 
 from config.settings import settings
-from observatory.timefmt import fmt_cdmx
+from observatory.timefmt import deadline_label, fmt_cdmx
 
 logger = logging.getLogger(__name__)
 
@@ -26,16 +26,21 @@ def format_alert_message(
     score: int,
     summary: str,
     category: str = "general",
+    deadline: str = "",
 ) -> str:
     cat_line = ""
     if category and category != "general":
         cat_line = f"🏷️ <b>Categoría:</b> {_e(category.upper())}\n"
+
+    dl = deadline_label(deadline)
+    dl_line = f"⏳ <b>{_e(dl)}</b>\n" if dl else ""
 
     return (
         f"⭐ <b>¡Coincidencia alta! ({_e(score)}/10)</b>\n\n"
         f"📌 <b>{_e(title)}</b>\n\n"
         f"📰 <b>Fuente:</b> {_e(source)}\n"
         f"{cat_line}"
+        f"{dl_line}"
         f"📝 {_e(summary)}\n\n"
         f"🔗 {_e(url)}\n"
         f"🕐 {_e(fmt_cdmx())}"
@@ -88,8 +93,9 @@ async def send_telegram_alert(
     score: int,
     summary: str,
     category: str = "general",
+    deadline: str = "",
     token: str | None = None,
     chat_id: str | None = None,
 ) -> bool:
-    message = format_alert_message(title, url, source, score, summary, category)
+    message = format_alert_message(title, url, source, score, summary, category, deadline)
     return await _send_message(message, token=token, chat_id=chat_id)

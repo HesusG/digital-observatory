@@ -30,6 +30,9 @@ class EvaluationResult(BaseModel):
     category: str = "general"
     summary: str = ""
     reasoning: str = ""
+    # Application deadline as ISO date "YYYY-MM-DD" if stated in the text,
+    # else empty string.
+    deadline: str = ""
 
 
 class EvaluatedItem(BaseModel):
