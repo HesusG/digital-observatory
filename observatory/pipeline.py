@@ -119,6 +119,7 @@ async def run_pipeline(
             summary=evaluation.summary,
             reasoning=evaluation.reasoning,
             is_free_or_funded=evaluation.is_free_or_funded,
+            deadline=evaluation.deadline,
         )
 
         event_log.append_event(
@@ -151,12 +152,14 @@ async def run_pipeline(
                 score=evaluation.affinity_score,
                 summary=evaluation.summary,
                 category=evaluation.category,
+                deadline=evaluation.deadline,
             )
             if sent:
                 result.notifications_sent += 1
                 metrics.notifications_sent.labels(channel="telegram").inc()
 
     await _maybe_send_daily_digest()
+    await _maybe_notify_drafts_awaiting()
     await _maybe_send_weekly_email()
 
     result.finished_at = datetime.utcnow()
@@ -390,7 +393,33 @@ async def _maybe_send_daily_digest():
     ]
     sent = await send_daily_opportunity_digest(items)
     if sent:
+        metrics.notifications_sent.labels(channel="telegram").inc()
+    # Mark the day done whether we sent or there was simply nothing to send, so
+    # an empty day doesn't re-trigger on every later run. (A real send failure
+    # returns False too, but the next scheduled run retries — acceptable.)
+    eligible = [i for i in items if int(i.get("score", 0) or 0) >= settings.high_affinity_threshold]
+    if sent or not eligible:
         state.mark_daily_digest_sent()
+
+
+async def _maybe_notify_drafts_awaiting():
+    """Ping Telegram when article drafts are sitting in 'awaiting-user'."""
+    from observatory.outputs.digest import send_drafts_awaiting_notice
+    from observatory.storage import drafts_store
+
+    try:
+        pending = drafts_store.list_drafts_by_status("awaiting-user", limit=100)
+    except Exception as exc:
+        logger.warning(f"drafts notice: list failed: {exc}")
+        return
+
+    state = PipelineState(settings.state_db_path)
+    if not state.should_notify_drafts(len(pending)):
+        return
+
+    sent = await send_drafts_awaiting_notice(pending)
+    if sent:
+        state.mark_drafts_notified(len(pending))
         metrics.notifications_sent.labels(channel="telegram").inc()
 
 
@@ -424,6 +453,13 @@ async def _maybe_send_weekly_email():
             "summary": meta.get("summary", "") or "",
             "reasoning": meta.get("reasoning", "") or "",
         })
+
+    # Don't send a useless "0 opportunities" email when everything collected was
+    # an article (filtered out above) or nothing scored.
+    scored = [i for i in items if int(i.get("score", 0) or 0) > 0]
+    if not scored:
+        logger.info("Weekly email: no scored opportunities in window; skipping.")
+        return
 
     sent = await send_weekly_email(items)
     if sent:

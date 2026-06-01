@@ -34,9 +34,11 @@ the user's profile.
    - Grants and funding (NGO grants, research funding, project grants)
    - Conferences and workshops (CFPs, speaking opportunities, AI + education)
 5. Summarize what the opportunity is about in 2 sentences max.
+6. Find the APPLICATION DEADLINE if the text states one. Return it as an ISO
+   date "YYYY-MM-DD". If no deadline is mentioned, return an empty string "".
 
 Return ONLY valid JSON with this structure, no extra text or markdown blocks:
-{{"affinity_score": (int 1-10), "is_free_or_funded": (bool), "category": (str), "summary": (str), "reasoning": (str)}}"""
+{{"affinity_score": (int 1-10), "is_free_or_funded": (bool), "category": (str), "summary": (str), "reasoning": (str), "deadline": (str "YYYY-MM-DD" or "")}}"""
 
 
 def _load_user_profile() -> str:
@@ -63,6 +65,7 @@ def parse_llm_response(raw: str) -> EvaluationResult:
             category=str(data.get("category", "general")),
             summary=str(data.get("summary", "")),
             reasoning=str(data.get("reasoning", "")),
+            deadline=str(data.get("deadline", "") or ""),
         )
     except (json.JSONDecodeError, ValueError, KeyError) as e:
         logger.error(f"Failed to parse LLM response: {e}")

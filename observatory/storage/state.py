@@ -44,10 +44,33 @@ class PipelineState:
         self.set("last_weekly_email", datetime.now().isoformat())
 
     def should_send_daily_digest(self) -> bool:
-        last = self.get("last_daily_digest")
-        if not last:
-            return True
-        return datetime.fromisoformat(last).date() < datetime.now().date()
+        # Once per CDMX calendar day. We store the CDMX date string on mark, so
+        # the comparison is consistent regardless of the server's UTC clock.
+        from observatory.timefmt import cdmx_date
+
+        last = self.get("last_daily_digest_date")
+        return last != cdmx_date().isoformat()
 
     def mark_daily_digest_sent(self):
-        self.set("last_daily_digest", datetime.now().isoformat())
+        from observatory.timefmt import cdmx_date
+
+        self.set("last_daily_digest_date", cdmx_date().isoformat())
+
+    def should_notify_drafts(self, pending_count: int) -> bool:
+        """Notify at most once per CDMX day, and only if the number of pending
+        drafts increased since the last notice (so a new batch re-pings, but a
+        re-run with the same backlog doesn't)."""
+        from observatory.timefmt import cdmx_date
+
+        today = cdmx_date().isoformat()
+        last_date = self.get("last_drafts_notice_date")
+        last_count = int(self.get("last_drafts_notice_count") or 0)
+        if last_date == today and pending_count <= last_count:
+            return False
+        return pending_count > 0
+
+    def mark_drafts_notified(self, pending_count: int):
+        from observatory.timefmt import cdmx_date
+
+        self.set("last_drafts_notice_date", cdmx_date().isoformat())
+        self.set("last_drafts_notice_count", str(pending_count))

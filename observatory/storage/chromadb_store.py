@@ -239,6 +239,7 @@ def update_item_evaluation(
     summary: str = "",
     reasoning: str = "",
     is_free_or_funded: bool = False,
+    deadline: str = "",
 ):
     collection = get_items_collection()
     doc_id = url_to_id(url)
@@ -255,6 +256,7 @@ def update_item_evaluation(
         "summary": summary,
         "reasoning": reasoning,
         "is_free_or_funded": is_free_or_funded,
+        "deadline": deadline,
         "processed_at": datetime.utcnow().isoformat(),
     })
 
