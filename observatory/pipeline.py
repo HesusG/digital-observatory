@@ -390,8 +390,13 @@ async def _maybe_send_daily_digest():
     ]
     sent = await send_daily_opportunity_digest(items)
     if sent:
-        state.mark_daily_digest_sent()
         metrics.notifications_sent.labels(channel="telegram").inc()
+    # Mark the day done whether we sent or there was simply nothing to send, so
+    # an empty day doesn't re-trigger on every later run. (A real send failure
+    # returns False too, but the next scheduled run retries — acceptable.)
+    eligible = [i for i in items if int(i.get("score", 0) or 0) >= settings.high_affinity_threshold]
+    if sent or not eligible:
+        state.mark_daily_digest_sent()
 
 
 async def _maybe_send_weekly_email():
@@ -424,6 +429,13 @@ async def _maybe_send_weekly_email():
             "summary": meta.get("summary", "") or "",
             "reasoning": meta.get("reasoning", "") or "",
         })
+
+    # Don't send a useless "0 opportunities" email when everything collected was
+    # an article (filtered out above) or nothing scored.
+    scored = [i for i in items if int(i.get("score", 0) or 0) > 0]
+    if not scored:
+        logger.info("Weekly email: no scored opportunities in window; skipping.")
+        return
 
     sent = await send_weekly_email(items)
     if sent:

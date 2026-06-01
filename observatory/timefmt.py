@@ -14,11 +14,21 @@ _MESES = [
 ]
 
 
+def now_utc() -> datetime:
+    """Timezone-aware current UTC time (replaces deprecated datetime.utcnow())."""
+    return datetime.now(timezone.utc)
+
+
+def cdmx_date() -> "datetime.date":
+    """Today's date in Mexico City local time (for once-per-day idempotency)."""
+    return datetime.now(CDMX).date()
+
+
 def fmt_cdmx(dt_utc: datetime | None = None) -> str:
     """Format a UTC datetime as Mexico City local time, e.g. '31 may 2026, 16:17 (CDMX)'.
     A naive datetime is assumed to be UTC (matching datetime.utcnow())."""
     if dt_utc is None:
-        dt_utc = datetime.utcnow()
+        dt_utc = now_utc()
     if dt_utc.tzinfo is None:
         dt_utc = dt_utc.replace(tzinfo=timezone.utc)
     local = dt_utc.astimezone(CDMX)
