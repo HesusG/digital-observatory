@@ -8,6 +8,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from config.settings import settings
+from observatory.timefmt import fmt_cdmx
 
 logger = logging.getLogger(__name__)
 
@@ -28,22 +29,19 @@ def _why_snippet(item: dict) -> str:
     return src[: WHY_SNIPPET_CHARS - 1].rstrip() + "…"
 
 
-def render_weekly_digest(items: list[dict]) -> str:
-    """Sort items by score desc, split into highlighted top and compact tail.
-    The tail items each get a short 'why' snippet derived from the LLM's
-    reasoning / summary fields so the user can skim them without clicking."""
-    sorted_items = sorted(
-        items,
+def render_weekly_digest(items: list[dict], generated_at: str = "") -> str:
+    """Rank evaluated opportunities by score and split into highlighted top and
+    compact tail. Only items with score > 0 are shown (0-score = unevaluated
+    noise) — this is what keeps 0/10 entries out of the highlights. The tail
+    items each get a short 'why' snippet so the user can skim without clicking."""
+    scored = [it for it in items if int(it.get("score", 0) or 0) > 0]
+    scored.sort(
         key=lambda it: (int(it.get("score", 0) or 0), it.get("title", "")),
         reverse=True,
     )
-    top = sorted_items[:TOP_HIGHLIGHT_COUNT]
-    # Long tail: skip zero-score (unevaluated noise) then cap by count so the
-    # whole email stays under Gmail's 102KB clip threshold.
-    long_tail_candidates = [
-        it for it in sorted_items[TOP_HIGHLIGHT_COUNT:]
-        if int(it.get("score", 0) or 0) > 0
-    ]
+
+    top = scored[:TOP_HIGHLIGHT_COUNT]
+    long_tail_candidates = scored[TOP_HIGHLIGHT_COUNT:]
     rest = long_tail_candidates[:LONG_TAIL_MAX]
     for it in rest:
         it["why"] = _why_snippet(it)
@@ -52,13 +50,14 @@ def render_weekly_digest(items: list[dict]) -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
     template = env.get_template("weekly_digest.html")
     return template.render(
-        items=sorted_items,
+        items=scored,
         top=top,
         rest=rest,
-        total=len(sorted_items),
+        total=len(items),  # everything scanned (incl. unevaluated) — honest volume
         top_count=len(top),
         rest_count=len(rest),
         overflow_count=overflow,
+        generated_at=generated_at,
     )
 
 
@@ -80,18 +79,24 @@ async def send_weekly_email(
         logger.warning("Email not configured. Skipping weekly digest.")
         return False
 
-    html = render_weekly_digest(items)
+    generated_at = fmt_cdmx()
+    html = render_weekly_digest(items, generated_at=generated_at)
 
     # Also build a plain-text fallback for clients that can't render HTML.
-    sorted_items = sorted(
-        items, key=lambda it: int(it.get("score", 0) or 0), reverse=True
+    # Only evaluated items (score > 0) — mirrors the HTML so no 0/10 noise.
+    scored = sorted(
+        (it for it in items if int(it.get("score", 0) or 0) > 0),
+        key=lambda it: int(it.get("score", 0) or 0),
+        reverse=True,
     )
     plain_lines = [
-        f"Weekly Opportunity Radar — {len(items)} items in last 7 days.",
+        f"Radar de Oportunidades — {len(items)} revisadas en los últimos "
+        f"{settings.weekly_email_interval_days} días.",
+        f"Generado: {generated_at}",
         "",
-        "TOP HIGHLIGHTS:",
+        "DESTACADAS:",
     ]
-    for it in sorted_items[:TOP_HIGHLIGHT_COUNT]:
+    for it in scored[:TOP_HIGHLIGHT_COUNT]:
         plain_lines.append(
             f"  [{it.get('score', 0)}/10] {it.get('title', '')}  ({it.get('source','')})"
         )
@@ -99,7 +104,9 @@ async def send_weekly_email(
     plain_text = "\n".join(plain_lines)
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Weekly Opportunity Radar: top {min(len(items), TOP_HIGHLIGHT_COUNT)} of {len(items)} this week"
+    msg["Subject"] = (
+        f"Radar de Oportunidades: top {min(len(items), TOP_HIGHLIGHT_COUNT)} de {len(items)}"
+    )
     msg["From"] = sender
     msg["To"] = receiver
     # Order matters in multipart/alternative — last attached = preferred by client.

@@ -2,6 +2,7 @@ import logging
 
 from config.settings import settings
 from observatory.outputs.telegram import _send_message
+from observatory.timefmt import fmt_cdmx
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,7 @@ def pick_top_opportunities(items: list[dict], n: int, min_score: int) -> list[di
 
 
 def _format_digest(items: list[dict]) -> str:
-    lines = [f"📬 *Oportunidades del día* ({len(items)})", ""]
+    lines = [f"📬 *Oportunidades destacadas* ({len(items)})", f"🕐 {fmt_cdmx()}", ""]
     for i in items:
         lines.append(f"⭐ *{i['score']}/10* — {i['title']}")
         if i.get("url"):
