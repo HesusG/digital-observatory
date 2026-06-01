@@ -6,8 +6,8 @@ interface DraftItem {
   document: string;
 }
 
-// Approval inbox: lists drafts in status "awaiting-user" and lets the user
-// approve / edit / skip / reject them via the /api/drafts endpoints.
+// Approval inbox: lists drafts in status "awaiting-user" as a responsive grid of
+// compact, scannable cards. Approve / edit (inline) / skip / reject via /api/drafts.
 export function DraftInbox() {
   const [drafts, setDrafts] = useState<DraftItem[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
@@ -17,6 +17,7 @@ export function DraftInbox() {
   const [selected, setSelected] = useState<string[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingText, setEditingText] = useState('');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const loadFolders = useCallback(async () => {
     try {
@@ -87,21 +88,24 @@ export function DraftInbox() {
 
   return (
     <div className="absolute inset-0 flex flex-col bg-bg">
-      {/* Screen-reader status for async actions */}
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {processing ? 'Procesando notas…' : busy ? 'Procesando acción…' : ''}
       </div>
 
-      {/* HEADER */}
-      <div className="shrink-0 border-b-2 border-border px-16 py-12 flex items-center justify-between gap-8 flex-wrap">
-        <div className="text-lg text-accent-bright">
+      {/* HEADER BAR — actions kept on the left so they don't collide with the
+          top-right Oficina|Bandeja tab bar. */}
+      <div
+        className="shrink-0 border-b-2 border-border px-20 py-12 flex items-center gap-10 flex-wrap"
+        style={{ paddingRight: 230 }}
+      >
+        <div className="text-xl text-accent-bright">
           📥 Bandeja de aprobación ({drafts.length})
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-5">
           <button
             onClick={processNotes}
             disabled={processing}
-            className="pixel-panel px-8 py-3 text-sm disabled:opacity-35"
+            className="pixel-panel px-10 py-4 text-sm disabled:opacity-35 hover:text-accent-bright"
             aria-label="Procesar notas de Obsidian"
             aria-busy={processing}
           >
@@ -109,7 +113,7 @@ export function DraftInbox() {
           </button>
           <button
             onClick={() => void load()}
-            className="pixel-panel px-8 py-3 text-sm"
+            className="pixel-panel px-10 py-4 text-sm hover:text-accent-bright"
             aria-label="Refrescar bandeja"
           >
             ↻
@@ -120,7 +124,7 @@ export function DraftInbox() {
               setShowFolders(next);
               if (next) void loadFolders();
             }}
-            className="pixel-panel px-8 py-3 text-sm"
+            className="pixel-panel px-10 py-4 text-sm hover:text-accent-bright"
             aria-expanded={showFolders}
             aria-label={`${showFolders ? 'Cerrar' : 'Abrir'} selector de carpetas`}
           >
@@ -129,26 +133,26 @@ export function DraftInbox() {
         </div>
       </div>
 
-      {/* FOLDER PICKER (collapsible) */}
+      {/* FOLDER PICKER */}
       {showFolders && (
-        <div className="shrink-0 border-b-2 border-border px-16 py-10">
-          <div className="pixel-panel p-10 flex flex-col gap-4 max-w-320">
-            <div className="text-sm text-accent-bright">📁 Carpetas a procesar</div>
-            <div className="text-2xs text-text-muted">
+        <div className="shrink-0 border-b-2 border-border px-20 py-12">
+          <div className="pixel-panel p-12 flex flex-col gap-5 max-w-700">
+            <div className="text-base text-accent-bright">📁 Carpetas a procesar</div>
+            <div className="text-sm text-text-muted">
               Marca las carpetas de Obsidian que se procesarán al pulsar “Procesar notas”.
             </div>
             {available.length === 0 && (
-              <div className="text-2xs text-text-muted">No se encontraron carpetas en el vault.</div>
+              <div className="text-sm text-text-muted">No se encontraron carpetas en el vault.</div>
             )}
-            <div className="flex flex-col gap-3 max-h-200 overflow-y-auto">
+            <div className="flex flex-col gap-4 max-h-260 overflow-y-auto">
               {available.map((f) => (
-                <div key={f} className="text-sm flex items-center gap-4">
+                <div key={f} className="text-sm flex items-center gap-5">
                   <input
                     id={`folder-${f}`}
                     type="checkbox"
                     checked={selected.includes(f)}
                     onChange={() => void toggleFolder(f)}
-                    className="w-16 h-16 shrink-0"
+                    className="w-18 h-18 shrink-0"
                   />
                   <label htmlFor={`folder-${f}`} className="cursor-pointer hover:text-accent-bright">
                     {f}
@@ -160,139 +164,153 @@ export function DraftInbox() {
         </div>
       )}
 
-      {/* SCROLLABLE CARD AREA */}
-      <div className="flex-1 overflow-y-auto px-16 py-12 flex flex-col items-center gap-10">
-        {drafts.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center gap-4">
-            <div className="text-4xl">📭</div>
-            <div className="text-base text-text-muted">Sin borradores pendientes</div>
-            <div className="text-2xs text-text-muted">
+      {/* CARD GRID */}
+      <div className="flex-1 overflow-y-auto px-20 py-16">
+        {drafts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-6">
+            <div className="text-5xl">📭</div>
+            <div className="text-lg text-text-muted">Sin borradores pendientes</div>
+            <div className="text-sm text-text-muted">
               Usa <span className="text-accent-bright">📝 Procesar notas</span> para generar borradores desde Obsidian.
             </div>
           </div>
-        )}
-
-        {drafts.map((d) => {
-          const m = d.metadata as {
-            platform?: string;
-            lang?: string;
-            item_title?: string;
-            edu_reasoning?: string;
-          };
-          const title = m.item_title || '(sin título)';
-          const isBlog = m.platform === 'blog';
-          const isEditing = editingId === d.id;
-          return (
-            <div key={d.id} className="pixel-panel w-full max-w-320 flex flex-col">
-              {/* Card header: title + badges */}
-              <div className="px-10 py-8 border-b-2 border-border flex items-center justify-between gap-6">
-                <div className="text-sm text-accent-bright">{title}</div>
-                <div className="flex gap-3 shrink-0">
-                  <span className="pixel-panel px-4 py-1 text-2xs text-text-muted">{m.platform}</span>
-                  <span className="pixel-panel px-4 py-1 text-2xs text-text-muted">{m.lang}</span>
-                </div>
-              </div>
-
-              {/* Card body */}
-              <div className="px-10 py-8 flex flex-col gap-6">
-                {isEditing ? (
-                  <div className="flex flex-col gap-4">
-                    <label htmlFor={`edit-${d.id}`} className="text-2xs text-text-muted">
-                      Editar contenido
-                    </label>
-                    <textarea
-                      id={`edit-${d.id}`}
-                      value={editingText}
-                      onChange={(e) => setEditingText(e.target.value)}
-                      className="pixel-panel p-6 text-sm w-full"
-                      style={{ minHeight: 160, lineHeight: 1.4 }}
-                      autoFocus
-                    />
-                    <div className="flex gap-3">
-                      <button
-                        disabled={busy === d.id || !editingText.trim()}
-                        onClick={async () => {
-                          await act(d.id, 'edit', { content: editingText });
-                          setEditingId(null);
-                          setEditingText('');
-                        }}
-                        className="pixel-panel bg-accent text-white px-8 py-3 text-sm disabled:opacity-35"
-                      >
-                        Guardar y publicar
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingId(null);
-                          setEditingText('');
-                        }}
-                        className="pixel-panel px-8 py-3 text-sm"
-                      >
-                        Cancelar
-                      </button>
+        ) : (
+          <div className="mx-auto max-w-1100 grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {drafts.map((d) => {
+              const m = d.metadata as {
+                platform?: string;
+                lang?: string;
+                item_title?: string;
+                edu_reasoning?: string;
+              };
+              const title = m.item_title || '(sin título)';
+              const isEditing = editingId === d.id;
+              const isExpanded = expandedId === d.id;
+              return (
+                <div key={d.id} className="pixel-panel flex flex-col">
+                  {/* Header */}
+                  <div className="px-12 py-10 border-b-2 border-border flex items-start justify-between gap-6">
+                    <div className="text-base text-accent-bright leading-snug">{title}</div>
+                    <div className="flex gap-3 shrink-0">
+                      <span className="pixel-panel px-5 py-2 text-2xs text-text-muted">{m.platform}</span>
+                      <span className="pixel-panel px-5 py-2 text-2xs text-text-muted">{m.lang}</span>
                     </div>
                   </div>
-                ) : (
-                  <>
-                    <div
-                      className="text-sm whitespace-pre-wrap"
-                      style={isBlog ? { maxHeight: 200, overflowY: 'auto' } : undefined}
-                    >
-                      {d.document}
-                    </div>
-                    {m.edu_reasoning && (
-                      <div className="pt-4 border-t border-border text-2xs text-text-muted">
-                        <span className="text-accent-bright">Edu:</span> {m.edu_reasoning}
+
+                  {/* Body */}
+                  <div className="px-12 py-10 flex flex-col gap-6 flex-1">
+                    {isEditing ? (
+                      <div className="flex flex-col gap-5">
+                        <label htmlFor={`edit-${d.id}`} className="text-sm text-text-muted">
+                          Editar contenido
+                        </label>
+                        <textarea
+                          id={`edit-${d.id}`}
+                          value={editingText}
+                          onChange={(e) => setEditingText(e.target.value)}
+                          className="pixel-panel p-8 text-base w-full"
+                          style={{ minHeight: 220, lineHeight: 1.5 }}
+                          autoFocus
+                        />
+                        <div className="flex gap-4">
+                          <button
+                            disabled={busy === d.id || !editingText.trim()}
+                            onClick={async () => {
+                              await act(d.id, 'edit', { content: editingText });
+                              setEditingId(null);
+                              setEditingText('');
+                            }}
+                            className="pixel-panel bg-accent text-white px-10 py-4 text-sm disabled:opacity-35 hover:bg-accent-bright"
+                          >
+                            Guardar y publicar
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditingId(null);
+                              setEditingText('');
+                            }}
+                            className="pixel-panel px-10 py-4 text-sm"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
                       </div>
+                    ) : (
+                      <>
+                        <div
+                          className="text-base text-text whitespace-pre-wrap overflow-hidden"
+                          style={
+                            isExpanded
+                              ? { lineHeight: 1.55 }
+                              : { lineHeight: 1.55, maxHeight: 150 }
+                          }
+                        >
+                          {d.document}
+                        </div>
+                        {d.document.length > 180 && (
+                          <button
+                            onClick={() => setExpandedId(isExpanded ? null : d.id)}
+                            className="text-2xs text-accent-bright self-start hover:underline"
+                          >
+                            {isExpanded ? '▲ Ver menos' : '▼ Ver todo'}
+                          </button>
+                        )}
+                        {m.edu_reasoning && (
+                          <div className="pt-5 border-t border-border text-2xs text-text-muted leading-snug">
+                            <span className="text-accent-bright">Edu:</span> {m.edu_reasoning}
+                          </div>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </div>
-
-              {/* Card actions */}
-              {!isEditing && (
-                <div className="px-10 pb-8 flex flex-col gap-4">
-                  <button
-                    disabled={busy === d.id}
-                    onClick={() => void act(d.id, 'approve')}
-                    className="pixel-panel bg-accent text-white py-4 text-sm disabled:opacity-35 hover:bg-accent-bright"
-                    aria-label={`Aprobar y publicar borrador: ${title}`}
-                  >
-                    ✅ Aprobar y publicar
-                  </button>
-                  <div className="flex gap-3">
-                    <button
-                      disabled={busy === d.id}
-                      onClick={() => {
-                        setEditingId(d.id);
-                        setEditingText(d.document);
-                      }}
-                      className="flex-1 pixel-panel px-6 py-3 text-sm disabled:opacity-35"
-                      aria-label={`Editar borrador: ${title}`}
-                    >
-                      ✏️ Editar
-                    </button>
-                    <button
-                      disabled={busy === d.id}
-                      onClick={() => void act(d.id, 'skip')}
-                      className="flex-1 pixel-panel px-6 py-3 text-sm disabled:opacity-35"
-                      aria-label={`Saltar borrador: ${title}`}
-                    >
-                      ⏭️ Saltar
-                    </button>
-                    <button
-                      disabled={busy === d.id}
-                      onClick={() => void act(d.id, 'reject')}
-                      className="flex-1 pixel-panel px-6 py-3 text-sm text-danger disabled:opacity-35"
-                      aria-label={`Rechazar borrador: ${title}`}
-                    >
-                      ❌ Rechazar
-                    </button>
                   </div>
+
+                  {/* Actions */}
+                  {!isEditing && (
+                    <div className="px-12 pb-12 flex flex-col gap-4">
+                      <button
+                        disabled={busy === d.id}
+                        onClick={() => void act(d.id, 'approve')}
+                        className="pixel-panel bg-accent text-white py-5 text-base disabled:opacity-35 hover:bg-accent-bright"
+                        aria-label={`Aprobar y publicar borrador: ${title}`}
+                      >
+                        ✅ Aprobar y publicar
+                      </button>
+                      <div className="flex gap-4">
+                        <button
+                          disabled={busy === d.id}
+                          onClick={() => {
+                            setEditingId(d.id);
+                            setEditingText(d.document);
+                          }}
+                          className="flex-1 pixel-panel px-6 py-4 text-sm disabled:opacity-35 hover:text-accent-bright"
+                          aria-label={`Editar borrador: ${title}`}
+                        >
+                          ✏️ Editar
+                        </button>
+                        <button
+                          disabled={busy === d.id}
+                          onClick={() => void act(d.id, 'skip')}
+                          className="flex-1 pixel-panel px-6 py-4 text-sm disabled:opacity-35 hover:text-accent-bright"
+                          aria-label={`Saltar borrador: ${title}`}
+                        >
+                          ⏭️ Saltar
+                        </button>
+                        <button
+                          disabled={busy === d.id}
+                          onClick={() => void act(d.id, 'reject')}
+                          className="flex-1 pixel-panel px-6 py-4 text-sm text-danger disabled:opacity-35 hover:bg-accent"
+                          aria-label={`Rechazar borrador: ${title}`}
+                        >
+                          ❌ Rechazar
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

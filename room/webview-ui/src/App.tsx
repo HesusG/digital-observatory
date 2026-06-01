@@ -184,7 +184,7 @@ function App() {
       <div
         role="tablist"
         aria-label="Vistas del cuarto"
-        className="absolute top-8 left-1/2 -translate-x-1/2 z-40 flex gap-2 pixel-panel"
+        className="absolute top-8 right-10 z-40 flex gap-2 pixel-panel"
         style={{ padding: 4 }}
       >
         <button
