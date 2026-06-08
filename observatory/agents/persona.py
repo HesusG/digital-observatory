@@ -34,7 +34,6 @@ class Persona:
     brain: Optional[str] = None
     vibe: Optional[str] = None
     schedule: Optional[str] = None
-    tools: Optional[list[str]] = None
 
 
 def load_persona(path: Path) -> Persona:
@@ -58,5 +57,4 @@ def load_persona(path: Path) -> Persona:
         brain=fm.get("brain"),
         vibe=fm.get("vibe"),
         schedule=fm.get("schedule"),
-        tools=fm.get("tools"),
     )
