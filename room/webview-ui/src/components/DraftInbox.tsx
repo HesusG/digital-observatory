@@ -67,7 +67,9 @@ export function DraftInbox() {
     try {
       const r = await fetch('/api/drafts?status=awaiting-user&limit=100');
       const d = (await r.json()) as { items?: DraftItem[] };
-      setDrafts(d.items ?? []);
+      // YouTube scripts live in the "Videos & Guiones" section, not here.
+      const isScript = (p: unknown) => p === 'youtube_long' || p === 'youtube_short';
+      setDrafts((d.items ?? []).filter((it) => !isScript(it.metadata?.platform)));
     } catch {
       /* offline */
     }

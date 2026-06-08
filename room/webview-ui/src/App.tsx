@@ -18,6 +18,7 @@ import { useEditorKeyboard } from './hooks/useEditorKeyboard.js';
 import { useExtensionMessages } from './hooks/useExtensionMessages.js';
 import { usePlayerControls } from './hooks/usePlayerControls.js';
 import { DraftInbox } from './components/DraftInbox.js';
+import { VideoScripts } from './components/VideoScripts.js';
 import { RoomSidebar, SIDEBAR_WIDTH, type RoomSection } from './components/RoomSidebar.js';
 import { ChatBubbleOverlay } from './office/components/ChatBubbleOverlay.js';
 import { OfficeCanvas } from './office/components/OfficeCanvas.js';
@@ -409,6 +410,11 @@ function App() {
       {section === 'bandeja' && (
         <div id="inbox-panel" role="tabpanel" className="absolute inset-0">
           <DraftInbox />
+        </div>
+      )}
+      {section === 'videos' && (
+        <div id="videos-panel" role="tabpanel" className="absolute inset-0">
+          <VideoScripts />
         </div>
       )}
       </div>
