@@ -22,6 +22,9 @@ FORMAT_TO_PLATFORM = {
     "bluesky": "bluesky",
     "linkedin": "linkedin",
     "blog": "blog",
+    # YouTube scripts (subsistema C) — map to themselves; the drafter knows them.
+    "youtube_long": "youtube_long",
+    "youtube_short": "youtube_short",
 }
 
 

@@ -111,3 +111,40 @@ async def test_draft_for_platforms_passes_profile_and_account(monkeypatch):
     assert result["x"] == "texto generado"
     assert captured[0]["profile_id"] == "tech-reviewer"
     assert captured[0]["account"] == "x"
+
+
+def test_platform_prompts_includes_youtube_formats():
+    from observatory.intelligence.drafter import PLATFORM_PROMPTS
+
+    assert "youtube_short" in PLATFORM_PROMPTS
+    assert "youtube_long" in PLATFORM_PROMPTS
+    # Scripts are unbounded (0 = no hard char cap).
+    assert PLATFORM_PROMPTS["youtube_short"]["limit_chars"] == 0
+    assert PLATFORM_PROMPTS["youtube_long"]["limit_chars"] == 0
+
+
+def test_youtube_short_prompt_embeds_script_framework():
+    from observatory.intelligence.drafter import build_platform_prompt
+
+    p = build_platform_prompt(
+        platform="youtube_short", lang="es", hook="Claude 4.8 salió",
+        summary="Nuevo modelo", angles=[], include_course_cta=False, tone="punchy",
+    )
+    low = p.lower()
+    assert "video script" in low
+    assert "hook" in low
+    assert "payoff" in low  # short-form structure
+    assert "punchy" in low  # tone threaded in
+
+
+def test_youtube_long_prompt_embeds_script_framework():
+    from observatory.intelligence.drafter import build_platform_prompt
+
+    p = build_platform_prompt(
+        platform="youtube_long", lang="es", hook="Cómo usar RAG",
+        summary="Guía", angles=[], include_course_cta=False, tone="pedagógica",
+    )
+    low = p.lower()
+    assert "video script" in low
+    assert "second-best" in low  # body ordering cheat code
+    assert "outro" in low
