@@ -290,6 +290,73 @@ async def _process_article(
 # ---- Indirection layer so tests can monkey-patch these entry points ----
 
 
+async def draft_promo_posts(
+    book_id: str, lang: str = "es", run_id: str | None = None
+) -> list[dict]:
+    """Manual-trigger branch: generate promotional drafts for one book using the
+    'promo' profile's voice and outputs. Not fed by RSS routing."""
+    from observatory.intelligence.drafter import draft_for_platforms
+    from observatory.profiles.loader import (
+        FORMAT_TO_PLATFORM,
+        load_books,
+        load_profiles,
+    )
+
+    book = next((b for b in load_books() if b.id == book_id), None)
+    if book is None:
+        logger.warning("draft_promo_posts: unknown book_id '%s'", book_id)
+        return []
+
+    profile = load_profiles().get("promo")
+    if profile is None or not profile.active:
+        logger.warning("draft_promo_posts: 'promo' profile missing or inactive")
+        return []
+
+    platforms: list[str] = []
+    accounts: dict[str, str] = {}
+    for out in profile.outputs:
+        platform = FORMAT_TO_PLATFORM.get(out.format)
+        if platform and platform not in platforms:
+            platforms.append(platform)
+            accounts[platform] = out.account
+
+    hook = f"{book.title} — para {book.audience}"
+    summary = f"Libro: {book.title}. Audiencia: {book.audience}. Temas: {', '.join(book.themes)}."
+    angles = [{"angle": t, "for": book.audience} for t in book.themes]
+    pseudo_url = f"promo://book/{book.id}"
+
+    result = await draft_for_platforms(
+        hook=hook,
+        summary=summary,
+        angles=angles,
+        platforms=platforms,
+        lang=lang,
+        item_url=pseudo_url,
+        item_title=book.title,
+        item_source="promo:books",
+        include_course_cta=False,
+        tone=profile.voice,
+        profile_id=profile.id,
+        accounts=accounts,
+    )
+
+    out_list: list[dict] = []
+    for platform in platforms:
+        content = result.get(platform)
+        draft_id = result.get("draft_ids", {}).get(platform)
+        if content and draft_id:
+            out_list.append(
+                {"id": draft_id, "platform": platform, "lang": lang, "content": content}
+            )
+            event_log.append_event(
+                "carla", "carla.drafted",
+                item_url=pseudo_url, draft_id=draft_id,
+                platform=platform, lang=lang, run_id=run_id,
+                payload={"title": book.title, "profile_id": profile.id},
+            )
+    return out_list
+
+
 async def carla_draft_for_item(
     item: CollectedItem, evaluation, profile, run_id: str | None = None
 ) -> list[dict]:
