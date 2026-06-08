@@ -97,7 +97,7 @@ async def test_pipeline_article_path_invokes_edu_per_draft(monkeypatch):
     monkeypatch.setattr(pipeline, "write_article_drafts", AsyncMock(return_value=[]))
     monkeypatch.setattr(pipeline.chromadb_store, "update_item_ai_evaluation", lambda **kw: None)
 
-    async def fake_carla(item, evaluation, run_id=None):
+    async def fake_carla(item, evaluation, profile, run_id=None):
         return [
             {"id": "draft-x", "platform": "x", "lang": "en", "content": "x text"},
             {"id": "draft-li", "platform": "linkedin", "lang": "en", "content": "li text"},
@@ -140,3 +140,56 @@ async def test_pipeline_article_path_invokes_edu_per_draft(monkeypatch):
     event_types = [et for _, et in events]
     assert "tess.scored" in event_types
     assert event_types.count("edu.approved") == 2
+
+
+@pytest.mark.asyncio
+async def test_carla_uses_profile_voice_and_mapped_platforms(monkeypatch):
+    import types
+    from observatory import pipeline
+    from observatory.profiles.loader import Profile, ProfileOutput
+    from observatory.storage.models import CollectedItem
+
+    calls = {}
+
+    async def fake_draft_for_platforms(**kwargs):
+        calls.update(kwargs)
+        return {
+            "x": "texto",
+            "bluesky": "texto",
+            "draft_ids": {"x": "id-x", "bluesky": "id-b"},
+        }
+
+    monkeypatch.setattr(
+        "observatory.intelligence.drafter.draft_for_platforms",
+        fake_draft_for_platforms,
+    )
+    monkeypatch.setattr(pipeline.event_log, "append_event", lambda *a, **k: None)
+
+    profile = Profile(
+        id="tech-reviewer",
+        voice="voz punchy",
+        outputs=[
+            ProfileOutput(format="thread", account="x"),
+            ProfileOutput(format="bluesky", account="bluesky"),
+            ProfileOutput(format="youtube_short", account="youtube"),
+        ],
+        min_score=6,
+    )
+    item = CollectedItem(
+        url="https://ex.com/a", title="T", source="S", source_type="rss",
+        raw_text="body", kind="article", source_group="ai_news",
+    )
+    evaluation = types.SimpleNamespace(
+        lang_targets=["es"], one_line_hook="hook", summary="sum",
+        post_angles=[],
+    )
+
+    drafts = await pipeline.carla_draft_for_item(item, evaluation, profile)
+
+    assert calls["tone"] == "voz punchy"
+    # youtube_short is unsupported -> dropped; only x + bluesky remain.
+    assert set(calls["platforms"]) == {"x", "bluesky"}
+    assert calls["profile_id"] == "tech-reviewer"
+    assert calls["accounts"]["x"] == "x"
+    assert calls["accounts"]["bluesky"] == "bluesky"
+    assert len(drafts) == 2
