@@ -6,6 +6,23 @@ interface DraftItem {
   document: string;
 }
 
+// Display metadata for the content profiles (subsistema A) and account aliases.
+// Used to render the "destino" strip so it's clear which profile/account a draft
+// is headed to. Unknown ids fall back gracefully.
+const PROFILE_META: Record<string, { emoji: string; name: string }> = {
+  'tech-reviewer': { emoji: '🗞️', name: 'Tech Reviewer' },
+  'tech-educator': { emoji: '📐', name: 'Tech Educator' },
+  'linkedin-influencer': { emoji: '💼', name: 'LinkedIn Influencer' },
+  promo: { emoji: '📚', name: 'Promo' },
+};
+
+const ACCOUNT_LABEL: Record<string, string> = {
+  x: '𝕏 X',
+  linkedin: 'in · LinkedIn',
+  bluesky: '🦋 Bluesky',
+  youtube: '▶ YouTube',
+};
+
 // Approval inbox: lists drafts in status "awaiting-user" as a responsive grid of
 // compact, scannable cards. Approve / edit (inline) / skip / reject via /api/drafts.
 export function DraftInbox() {
@@ -182,19 +199,37 @@ export function DraftInbox() {
                 lang?: string;
                 item_title?: string;
                 edu_reasoning?: string;
+                profile_id?: string;
+                account?: string;
               };
               const title = m.item_title || '(sin título)';
+              const profile = m.profile_id ? PROFILE_META[m.profile_id] : undefined;
+              // Prefer the explicit account alias; fall back to platform for
+              // older drafts created before the profiles layer.
+              const accountKey = m.account || m.platform || '';
+              const accountLabel = accountKey ? (ACCOUNT_LABEL[accountKey] ?? accountKey) : '';
               const isEditing = editingId === d.id;
               const isExpanded = expandedId === d.id;
               return (
                 <div key={d.id} className="pixel-panel flex flex-col">
-                  {/* Header */}
-                  <div className="px-12 py-10 border-b-2 border-border flex items-start justify-between gap-6">
-                    <div className="text-base text-accent-bright leading-snug">{title}</div>
-                    <div className="flex gap-3 shrink-0">
-                      <span className="pixel-panel px-5 py-2 text-2xs text-text-muted">{m.platform}</span>
-                      <span className="pixel-panel px-5 py-2 text-2xs text-text-muted">{m.lang}</span>
-                    </div>
+                  {/* Destino: perfil → cuenta. Lo más importante de un vistazo. */}
+                  <div className="px-12 py-7 border-b-2 border-border flex items-center gap-6 bg-active-bg">
+                    {profile && (
+                      <span className="text-sm text-accent-bright shrink-0">
+                        {profile.emoji} {profile.name}
+                      </span>
+                    )}
+                    {profile && accountLabel && <span className="text-sm text-text-muted">→</span>}
+                    {accountLabel && <span className="text-sm text-text shrink-0">{accountLabel}</span>}
+                    {m.lang && (
+                      <span className="ml-auto pixel-panel px-5 py-2 text-2xs text-text-muted uppercase">
+                        {m.lang}
+                      </span>
+                    )}
+                  </div>
+                  {/* Título de la fuente */}
+                  <div className="px-12 py-9 border-b-2 border-border">
+                    <div className="font-read text-base text-text leading-snug">{title}</div>
                   </div>
 
                   {/* Body */}
@@ -238,11 +273,11 @@ export function DraftInbox() {
                     ) : (
                       <>
                         <div
-                          className="text-base text-text whitespace-pre-wrap overflow-hidden"
+                          className="font-read text-base text-text whitespace-pre-wrap overflow-hidden"
                           style={
                             isExpanded
-                              ? { lineHeight: 1.55 }
-                              : { lineHeight: 1.55, maxHeight: 150 }
+                              ? { lineHeight: 1.6 }
+                              : { lineHeight: 1.6, maxHeight: 160 }
                           }
                         >
                           {d.document}
@@ -256,7 +291,7 @@ export function DraftInbox() {
                           </button>
                         )}
                         {m.edu_reasoning && (
-                          <div className="pt-5 border-t border-border text-2xs text-text-muted leading-snug">
+                          <div className="font-read pt-5 border-t border-border text-xs text-text-muted leading-relaxed">
                             <span className="text-accent-bright">Edu:</span> {m.edu_reasoning}
                           </div>
                         )}
