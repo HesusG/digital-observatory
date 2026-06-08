@@ -1,0 +1,5 @@
+# alias -> how it resolves at publish time.
+x:        { platform: x,        postiz_integration_id: "" }
+linkedin: { platform: linkedin, postiz_integration_id: "" }
+bluesky:  { platform: bluesky,  postiz_integration_id: "${POSTIZ_BLUESKY}" }
+youtube:  { platform: youtube,  postiz_integration_id: "" }
