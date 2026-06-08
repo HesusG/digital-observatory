@@ -18,6 +18,7 @@ import { useEditorKeyboard } from './hooks/useEditorKeyboard.js';
 import { useExtensionMessages } from './hooks/useExtensionMessages.js';
 import { usePlayerControls } from './hooks/usePlayerControls.js';
 import { DraftInbox } from './components/DraftInbox.js';
+import { RoomSidebar, SIDEBAR_WIDTH, type RoomSection } from './components/RoomSidebar.js';
 import { ChatBubbleOverlay } from './office/components/ChatBubbleOverlay.js';
 import { OfficeCanvas } from './office/components/OfficeCanvas.js';
 import { ToolOverlay } from './office/components/ToolOverlay.js';
@@ -93,7 +94,7 @@ function App() {
   const [hooksTooltipDismissed, setHooksTooltipDismissed] = useState(false);
   const [isDebugMode, setIsDebugMode] = useState(false);
   const [alwaysShowOverlay, setAlwaysShowOverlay] = useState(false);
-  const [tab, setTab] = useState<'office' | 'inbox'>('office');
+  const [section, setSection] = useState<RoomSection>('oficina');
 
   const currentMajorMinor = toMajorMinor(extensionVersion);
 
@@ -181,40 +182,20 @@ function App() {
 
   return (
     <div className="w-full h-full relative overflow-hidden">
-      <div
-        role="tablist"
-        aria-label="Vistas del cuarto"
-        className="absolute top-8 right-10 z-40 flex gap-2 pixel-panel"
-        style={{ padding: 4 }}
-      >
-        <button
-          role="tab"
-          aria-selected={tab === 'office'}
-          aria-controls="office-panel"
-          onClick={() => setTab('office')}
-          className={tab === 'office' ? 'text-accent-bright' : 'text-text-muted'}
-          style={{ padding: '4px 12px' }}
-        >
-          Oficina
-        </button>
-        <button
-          role="tab"
-          aria-selected={tab === 'inbox'}
-          aria-controls="inbox-panel"
-          onClick={() => setTab('inbox')}
-          className={tab === 'inbox' ? 'text-accent-bright' : 'text-text-muted'}
-          style={{ padding: '4px 12px' }}
-        >
-          Bandeja
-        </button>
-      </div>
+      <RoomSidebar section={section} onSelect={setSection} />
 
+      <div
+        className="absolute top-0 bottom-0 overflow-hidden"
+        style={{ left: SIDEBAR_WIDTH, right: 0 }}
+      >
+      {section === 'oficina' && (
+        <>
       <div
         id="office-panel"
         role="tabpanel"
         ref={containerRef}
         className="absolute top-0 left-0 bottom-0 overflow-hidden"
-        style={{ right: HISTORY_PANEL_WIDTH, display: tab === 'office' ? 'block' : 'none' }}
+        style={{ right: HISTORY_PANEL_WIDTH }}
       >
       <InfoButton />
       <OfficeCanvas
@@ -422,12 +403,15 @@ function App() {
         <MigrationNotice onDismiss={() => setMigrationNoticeDismissed(true)} />
       )}
       </div>
-      {tab === 'office' && <HistoryLog />}
-      {tab === 'inbox' && (
+      <HistoryLog />
+        </>
+      )}
+      {section === 'bandeja' && (
         <div id="inbox-panel" role="tabpanel" className="absolute inset-0">
           <DraftInbox />
         </div>
       )}
+      </div>
     </div>
   );
 }

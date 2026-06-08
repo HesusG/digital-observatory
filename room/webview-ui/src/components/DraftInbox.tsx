@@ -113,7 +113,6 @@ export function DraftInbox() {
           top-right Oficina|Bandeja tab bar. */}
       <div
         className="shrink-0 border-b-2 border-border px-20 py-12 flex items-center gap-10 flex-wrap"
-        style={{ paddingRight: 230 }}
       >
         <div className="text-xl text-accent-bright">
           📥 Bandeja de aprobación ({drafts.length})
