@@ -90,6 +90,8 @@ def upsert_draft(
     content: str,
     item_title: str = "",
     item_source: str = "",
+    profile_id: str = "",
+    account: str = "",
 ) -> str:
     """Create or refresh a draft row. Status starts as 'draft'."""
     draft_id = build_draft_id(item_url, platform, lang)
@@ -107,6 +109,8 @@ def upsert_draft(
         "skip_reason": "",
         "item_title": item_title,
         "item_source": item_source,
+        "profile_id": profile_id,
+        "account": account,
         "created_at": now,
         "updated_at": now,
     }
