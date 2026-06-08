@@ -144,6 +144,8 @@ async def draft_for_platforms(
     item_source: str = "",
     include_course_cta: bool = False,
     tone: str = "",
+    profile_id: str = "",
+    accounts: Optional[dict] = None,
 ) -> dict:
     """Generate per-platform drafts AND persist each one to the drafts collection.
 
@@ -194,6 +196,8 @@ async def draft_for_platforms(
             content=body,
             item_title=item_title,
             item_source=item_source,
+            profile_id=profile_id,
+            account=(accounts or {}).get(platform, ""),
         )
         draft_ids[platform] = draft_id
 

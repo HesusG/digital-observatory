@@ -1,0 +1,19 @@
+id: tech-educator
+display_name: "Tech Educator"
+emoji: "📐"
+source_weights:
+  edtech: 1.5
+  ai_research: 1.0
+  llm_tools: 1.0
+  pedagogy_notes: 1.5
+  obsidian: 1.0
+  ai_news: 0.4
+voice: >
+  Cálida, precisa y pedagógica. Explica un concepto a docentes con un ejemplo
+  concreto. Sin jerga innecesaria.
+outputs:
+  - { format: linkedin, account: linkedin }
+  - { format: blog, account: youtube }
+  - { format: youtube_long, account: youtube }
+min_score: 6
+active: true

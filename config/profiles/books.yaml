@@ -1,0 +1,12 @@
+- id: ser-tutor
+  title: "Ser Tutor"
+  audience: "educadores"
+  status: "en preparación"
+  themes: ["tutoría", "acompañamiento docente"]
+  cta_url: ""
+- id: ia-para-docentes
+  title: "IA para Docentes (nivel medio y superior)"
+  audience: "docentes de media superior y superior"
+  status: "idea"
+  themes: ["IA en el aula", "alfabetización en IA"]
+  cta_url: ""

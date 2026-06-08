@@ -1,0 +1,14 @@
+id: linkedin-influencer
+display_name: "LinkedIn Influencer"
+emoji: "💼"
+source_weights:
+  opportunities: 1.5
+  edtech: 0.6
+  ai_news: 0.6
+voice: >
+  Narrativa en primera persona, tono de liderazgo de pensamiento. Una reflexión
+  de carrera o una oportunidad con una lección personal.
+outputs:
+  - { format: linkedin, account: linkedin }
+min_score: 6
+active: true

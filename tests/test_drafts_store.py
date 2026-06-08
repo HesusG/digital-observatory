@@ -144,3 +144,30 @@ def test_list_drafts_by_status_filters(mock_get_collection):
     result = drafts_store.list_drafts_by_status("awaiting-user")
 
     assert {r["id"] for r in result} == {"d1", "d3"}
+
+
+def test_upsert_draft_persists_profile_and_account(monkeypatch):
+    captured = {}
+
+    class FakeColl:
+        def upsert(self, ids, documents, metadatas):
+            captured["id"] = ids[0]
+            captured["meta"] = metadatas[0]
+
+    monkeypatch.setattr(
+        "observatory.storage.drafts_store._get_collection", lambda: FakeColl()
+    )
+    from observatory.storage.drafts_store import upsert_draft
+
+    upsert_draft(
+        item_url="https://example.com/a",
+        platform="x",
+        lang="es",
+        content="hola",
+        item_title="T",
+        item_source="S",
+        profile_id="tech-reviewer",
+        account="x",
+    )
+    assert captured["meta"]["profile_id"] == "tech-reviewer"
+    assert captured["meta"]["account"] == "x"

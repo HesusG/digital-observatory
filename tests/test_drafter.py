@@ -76,3 +76,38 @@ async def test_draft_for_platforms_persists_each_draft(monkeypatch):
     assert result["linkedin"] == "linkedin-post"
     assert "draft_ids" in result
     assert result["draft_ids"]["x"] == "fake-draft-id-x"
+
+
+async def test_draft_for_platforms_passes_profile_and_account(monkeypatch):
+    from observatory.intelligence import drafter as _drafter
+
+    captured = []
+
+    def fake_upsert(**kwargs):
+        captured.append(kwargs)
+        return "draft-" + kwargs["platform"]
+
+    class FakeResp:
+        content = "texto generado"
+
+    class FakeProvider:
+        async def ainvoke(self, messages):
+            return FakeResp()
+
+    async def fake_get_provider():
+        return FakeProvider()
+
+    monkeypatch.setattr(_drafter, "upsert_draft", fake_upsert)
+    monkeypatch.setattr(_drafter, "_get_provider", fake_get_provider)
+
+    result = await _drafter.draft_for_platforms(
+        hook="h", summary="s", angles=[], platforms=["x"], lang="es",
+        item_url="https://ex.com/a", item_title="T", item_source="S",
+        tone="voz reviewer",
+        profile_id="tech-reviewer",
+        accounts={"x": "x"},
+    )
+
+    assert result["x"] == "texto generado"
+    assert captured[0]["profile_id"] == "tech-reviewer"
+    assert captured[0]["account"] == "x"

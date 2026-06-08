@@ -1,0 +1,13 @@
+id: promo
+display_name: "Promo (libros/blog)"
+emoji: "📚"
+source_weights: {}          # not RSS-routed; fed by books.yaml via manual trigger
+voice: >
+  Promocional honesto y cálido. Presenta el libro, para quién es y qué problema
+  resuelve, con un llamado a la acción claro y sin exagerar.
+outputs:
+  - { format: thread, account: x }
+  - { format: bluesky, account: bluesky }
+  - { format: linkedin, account: linkedin }
+min_score: 0
+active: true
