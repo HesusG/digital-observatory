@@ -1,0 +1,1175 @@
+[00:00] Janus, avísale al equipo de edición que
+[00:02] ya estoy grabando y ya sabes, cuando se
+[00:05] termine de subir esta grabación al Nas
+[00:06] les avisas de que hemos terminado.
+[00:08] ¿Vale?
+[00:08] Todo claro. Estás grabando el vídeo
+[00:10] NG13.
+[00:11] La IA maneja mi canal. Cuando termines
+[00:14] de grabar se subirá al servidor
+[00:15] automáticamente y yo enviaré un mensaje
+[00:17] a los editores con la ruta para que
+[00:18] empiecen a editar. Marcaré la tarea de
+[00:20] grabar este vídeo como en curso y cuando
+[00:22] termines como finalizada. También iré
+[00:25] generando una transcripción para
+[00:26] proponer unos primeros cortes y
+[00:28] localizaré todos los vídeos de recurso
+[00:29] que van a necesitar para importarlos en
+[00:31] el proyecto. Ahora, concéntrate en
+[00:33] grabar. Buena grabación.
+[00:35] He dedicado los últimos 6 meses de mi
+[00:37] vida a probar la inteligencia
+[00:38] artificial. Primero estuve
+[00:40] experimentando con contextos, luego con
+[00:42] agentes. ¿Qué [ __ ] acaba de pasar?
+[00:45] Puse a la I a trabajar en proyectos
+[00:47] dentro del canal. ¿Qué [ __ ] Y empecé
+[00:49] a pasar a Linux prácticamente todos los
+[00:50] ordenadores que tengo aquí en la
+[00:51] oficina. Dejé de pagar aplicaciones como
+[00:53] Slack Notion y empecé a pasar a
+[00:55] aplicaciones open source, autohosteadas,
+[00:57] que están directamente aquí y que son
+[00:59] totalmente gratis para mí con ayuda de
+[01:00] la inteligencia artificial. Y ahora,
+[01:02] después de todo este tiempo, puedo decir
+[01:04] que somos una empresa basada en
+[01:06] inteligencia artificial. Y en gran parte
+[01:08] el motivo por el que hice todo esto fue
+[01:09] para terminar de entender yo mismo si
+[01:11] esto realmente es una revolución o
+[01:12] simplemente es humo. Porque sí, sí que
+[01:14] es verdad que cualquiera os puede
+[01:15] reconocer que la inteligencia artificial
+[01:17] es útil en el día a día, al final te
+[01:19] puede ayudar en un momento a mandar un
+[01:21] email o es un atajo para no tener que
+[01:23] buscar en Google o leer la Wikipedia.
+[01:24] Pero para mí una forma importante de ver
+[01:26] si todo este dinero que se le está
+[01:28] invirtiendo, todo lo que se está
+[01:29] haciendo con ella, realmente tiene algún
+[01:31] tipo de sentido era ver si se puede
+[01:33] aplicar a algo de negocios, o sea, si se
+[01:35] puede aplicar a una empresa, un proyecto
+[01:37] y hacer ganar dinero. Así que me puse el
+[01:39] reto de integrar inteligencia artificial
+[01:41] en todas las partes de mi proyecto que
+[01:43] tuviese sentido. Pero a día de hoy puedo
+[01:45] decir con bastante seguridad que somos
+[01:47] una empresa basada en inteligencia
+[01:49] artificial y el término que se usa hoy
+[01:50] en día para esto es AI first, aunque
+[01:52] tengo que decir que esa palabra no me
+[01:54] gusta demasiado. AI first vendría a ser
+[01:56] algo así como inteligencia artificial
+[01:58] primero. A mí la verdad me parece un
+[01:59] término un poco marketiniano, como lo
+[02:01] fue en su momento Cloudbased o
+[02:03] blockchain. Eran términos que se
+[02:05] pusieron de moda y en un momento los
+[02:06] llevaban todos los productos y todas las
+[02:08] empresas. Creo que evidentemente hay una
+[02:10] fiebre y hay una moda con el tema de la
+[02:11] inteligencia artificial y sobre todo hay
+[02:13] mucho fomo, o sea, mucho miedo a
+[02:15] quedarse fuera de esta tendencia y no
+[02:16] estar sacándole todo el provecho, como
+[02:18] pasó antes justamente con las
+[02:19] criptomonedas y con muchas otras cosas.
+[02:21] Así que también de ahí viene un poco mi
+[02:23] obsesión de convertirme en un experto en
+[02:25] el tema, al punto de entrevistar varias
+[02:27] personas del sector, viajar a Silicon
+[02:29] Valley para hablar con desarrolladores,
+[02:30] saber qué están haciendo con IA a día de
+[02:32] hoy y hablar con muchos emprendedores,
+[02:33] pero sobre todo estar aquí probando,
+[02:35] probando, probando y experimentando. Y
+[02:37] después de todo este trabajo, que hoy lo
+[02:38] vais a poder ver y lo vais a poder
+[02:40] juzgar en este vídeo, pues tengo que
+[02:41] decir que realmente mi empresa no es AI
+[02:43] First, sino que es Human First. Mi
+[02:46] proyecto es Human First, asistido por
+[02:48] IA. Y sé que suena una frase bonita,
+[02:51] pero lo vais a entender mucho mejor a lo
+[02:52] largo de este vídeo. Y te aviso desde ya
+[02:54] que si le ves el valor, te parece
+[02:55] interesante todo lo que yo te voy a
+[02:57] mostrar en este vídeo dentro de
+[02:58] Mastermind, que es nuestra escuela de
+[03:00] tecnología. Vamos a crear una sección
+[03:02] pro en la cual vamos a impartir una
+[03:04] formación intensiva y personalizada, en
+[03:06] la cual vamos a estar mano a mano con
+[03:08] vosotros enseñando cómo utilizar la
+[03:09] inteligencia artificial para cosas
+[03:11] reales, para ahorrar trabajo,
+[03:13] automatizar procesos, hacer mucho más
+[03:15] con menos. Si esto te interesa, dejaré
+[03:17] abajo en la descripción un link para que
+[03:19] te puedas apuntar y dentro de poco
+[03:20] enviaré más información.
+[03:22] Yo he sido programador, desarrollador de
+[03:24] software gran parte de mi vida y por eso
+[03:26] mi forma natural de pensar y de ver las
+[03:28] cosas es intentar automatizar, recortar
+[03:31] pasos, crear programas que resuelvan
+[03:33] problemas. El software al final del día
+[03:34] lo que hace es automatizar tareas o
+[03:37] simplificar tareas que antes, como seres
+[03:39] humanos, nos llevaban mucho trabajo.
+[03:40] Mismamente el email. Antes es que
+[03:42] literalmente nos teníamos que enviar
+[03:43] cartas de papel. Había que escribirlas,
+[03:45] meterlas en un sobre, enviarlas. Un tío
+[03:46] las tenía que traer hasta tu oficina y
+[03:49] tú las tenías que abrir. Ahora es todo
+[03:51] automático. En el mundo tradicional
+[03:53] tenemos, por un lado la automatización.
+[03:54] Todo lo que es lógico, predecible, se
+[03:56] puede automatizar. Y luego tenemos a los
+[03:58] humanos. Los humanos hacen tareas que
+[03:59] solo los humanos pueden hacer, como por
+[04:01] ejemplo las relaciones humanas, tener
+[04:03] ideas creativas, tomar decisiones,
+[04:05] ciertos trabajos manuales, resolver
+[04:07] situaciones complejas, poner ese
+[04:09] criterio, el ojo crítico, ¿no? Bueno,
+[04:10] pues la inteligencia artificial entra
+[04:12] justo en medio de estas dos.
+[04:14] literalmente busca imitar la
+[04:15] inteligencia del ser humano para hacer
+[04:17] tareas que antes los ordenadores no
+[04:19] podían hacer, saber comportarse en
+[04:21] situaciones que no están del todo
+[04:22] previstas e imitar un poquito, ¿no?, el
+[04:24] comportamiento del ser humano. Tareas
+[04:25] que no se pueden automatizar con
+[04:27] programas de toda la vida y que
+[04:28] necesitan un poco de inteligencia que
+[04:30] pueda tomar decisiones y entender
+[04:32] formatos raros o cosas que una máquina
+[04:34] tradicional pues haría que entre
+[04:35] totalmente en colapso. Y este va a ser
+[04:37] un poco el futuro de las empresas y de
+[04:39] la humanidad. ¿Hay quien cree que
+[04:40] directamente la inteligencia artificial
+[04:42] va a reemplazar al ser humano. Yo creo
+[04:44] que siempre vamos a tener estos tres
+[04:45] roles: el rol de la automatización y las
+[04:47] máquinas, el rol del humano y el rol de
+[04:49] la inteligencia artificial. El tema es
+[04:51] que sí, probablemente la línea entre
+[04:53] inteligencia artificial y humano se irá
+[04:54] moviendo más hacia el lado del humano.
+[04:56] Pero para poner esto en práctica y
+[04:58] entender esto mucho mejor, te voy a
+[05:00] explicar cómo funciona mi empresa. Si
+[05:02] estás experimentando con agentes de
+[05:03] inteligencia artificial,
+[05:04] automatizaciones o cualquier proyecto
+[05:06] que necesite correr programas sin
+[05:08] interrupciones 247 como mismamente Open
+[05:11] Clow, ya sabes lo que eso implica, ¿no?
+[05:13] tener un ordenador siempre encendido que
+[05:14] no a todo el mundo le encaja y sobre
+[05:16] todo según el PC que tengas incluso se
+[05:18] te puede quedar un poco corto a nivel de
+[05:20] recursos para ciertas aplicaciones y por
+[05:23] eso HostGator acaba de lanzar sus VPS
+[05:26] con OpenCl ya preinstalado. O sea,
+[05:28] básicamente tú contratas un servidor que
+[05:30] tiene almacenamiento NVME, memoria DDR5
+[05:34] y una CPU de alto rendimiento y ya te
+[05:36] viene con un agente de inteligencia
+[05:37] artificial listo para funcionar desde el
+[05:40] minuto uno, sin instalar, sin pelearte
+[05:42] con dependencias, muy poca inversión de
+[05:44] tiempo. OpenClog, que si no lo conoces,
+[05:45] hice un vídeo hace muy poquito en el
+[05:47] canal explicándolo a fondo, básicamente
+[05:49] es una aplicación open source que
+[05:50] instalas en tu ordenador y se convierte
+[05:52] en tu asistente personal. Recuerda cosas
+[05:54] en su memoria, ejecuta tareas, se
+[05:56] encarga de tu mensajería, tus mensajes,
+[05:58] tu mail, gestiona archivos y muchísimas
+[06:00] cosas más. Y si lo que necesitas es algo
+[06:01] más sencillo, como por ejemplo una
+[06:03] página web de toda la vida, HostGator
+[06:05] también te cubre. Con inteligencia
+[06:06] artificial puedes montar una página web
+[06:08] personalizada sin tocar ni una sola
+[06:09] línea de código. Le dices el nombre del
+[06:11] proyecto, el nicho, el objetivo y la
+[06:13] guía te genera la estructura, diseño,
+[06:15] texto, secciones, un poco todo. En menos
+[06:17] de 10 minutos tienes una web lista para
+[06:19] publicar con dominio, correo profesional
+[06:21] y encima hasta cuatro veces más rápida.
+[06:23] que la competencia, que eso para Google
+[06:25] importa muchísimo. Tenéis el link en la
+[06:26] descripción con un descuento exclusivo.
+[06:29] Gracias a HostGator por patrocinar este
+[06:31] espacio y ahora sigamos con el contenido
+[06:33] de hoy. Mi empresa básicamente es una
+[06:35] productora de vídeos. Nosotros aquí lo
+[06:37] que hacemos son vídeos como el que estás
+[06:38] viendo ahora mismo, los subimos a
+[06:40] YouTube, a redes sociales y nuestro
+[06:41] modelo de negocio es vender publicidad
+[06:43] dentro de estos vídeos. Cuando miras
+[06:45] este vídeo en YouTube, hay momentos en
+[06:46] los cuales el vídeo se para, aparece un
+[06:48] anuncio de YouTube o mismamente hay un
+[06:49] trozo del vídeo donde aparece pues un
+[06:51] mensaje de un sponsor. Esa parte del
+[06:53] vídeo es la que nosotros cobramos y es
+[06:55] lo que nos permite ganar dinero, además
+[06:56] de algunos proyectos específicos
+[06:58] patrocinados que hacemos, ¿no? Para
+[06:59] hacer todo esto, bueno, pues los vídeos
+[07:00] llevan bastante trabajo, no te voy a
+[07:02] mentir, tenemos un equipo de gente, pero
+[07:03] cuando yo empecé con todo esto, estaba
+[07:05] simplemente yo en mi habitación con un
+[07:07] ordenador y una cámara y mi proceso era
+[07:09] muy caótico. Yo simplemente pues pensaba
+[07:11] de que me apetece hacer un vídeo y no
+[07:12] tenía ningún orden, ningunas reglas,
+[07:14] simplemente hacía las cosas pues como me
+[07:16] apetecía ese día. Pero luego con el
+[07:17] tiempo, cuando empecé a trabajar con más
+[07:19] gente, porque yo ya no daba más abasto,
+[07:21] pues empecé a entender que para que este
+[07:22] proyecto pudiese funcionar y la gente
+[07:24] pudiese trabajar conmigo, necesitábamos
+[07:27] reglas y procesos. Así que después de
+[07:29] casi 10 años haciendo vídeos en YouTube,
+[07:31] llegué a una estructura bastante clara
+[07:33] de cómo funciona todo aquí. ¿Cómo se
+[07:35] hace un vídeo en mi canal? Bueno, pues
+[07:36] primero que nada hace falta una idea.
+[07:38] Este es un Mac de 16 pulgadas M5 Max.
+[07:41] Imagínate que quiero hacer una review de
+[07:42] este Mac. Bueno, pues el primer paso
+[07:44] sería tener la idea. Vale, ya la tengo.
+[07:46] Pero cuando llega la hora de la verdad,
+[07:47] hay que bajar esa idea a tierra, o sea,
+[07:48] todos los requisitos que necesito para
+[07:50] hacer este vídeo. Lo voy a comparar con
+[07:51] algún otro ordenador. Bueno, pues estos
+[07:53] son requisitos. Tercer paso, ponernos a
+[07:55] investigar, entender el producto, de
+[07:56] dónde sale, a quién está dirigido, cómo
+[07:58] funciona, hacerle pruebas. Vamos,
+[08:00] experimentar, investigar y una vez que
+[08:03] tenemos todos esos datos, podemos hacer
+[08:04] un guion. Hacer el guion sería escribir
+[08:06] todo lo que voy a decir en el vídeo. Los
+[08:07] vídeos nunca son improvisados, todo lo
+[08:08] que digo está perfectamente planificado.
+[08:10] Luego llega la fase de hacer lo que
+[08:12] estoy haciendo ahora, o sea, grabarme
+[08:13] hablando a cámara, explicando lo que
+[08:15] tengo que explicar. La siguiente fase
+[08:16] sería grabar los productos, ¿vale? Esto
+[08:18] se puede hacer antes o después o en
+[08:19] paralelo, que sería que venga un cámara
+[08:21] aquí, coja este portátil, lo grabe en
+[08:23] distintas escenografías con distintas
+[08:25] iluminaciones. Luego tocaría la edición,
+[08:27] que es una fase también bastante larga.
+[08:28] Normalmente el vídeo se tira una semana
+[08:30] en edición. Por último, se revisa, se
+[08:32] exporta, se hace la miniatura, el título
+[08:34] y se va para YouTube. Y todo esto tiene
+[08:36] un montón de pasos intermedios. Pero es
+[08:38] que además para poder hacer todo esto
+[08:39] hay otra gente. También tenemos por un
+[08:41] lado el tema de compras, ¿no? Alguien
+[08:43] tiene que comprar este portátil.
+[08:44] Finanzas, alguien tiene que decir que
+[08:45] esa compra está bien y que no nos vamos
+[08:48] a la banca rota el mes que viene. Si
+[08:49] vamos bien en balance, mal, presentar
+[08:51] impuestos, pagar lo que se tenga que
+[08:53] pagar. Al mismo tiempo hay almacenaje.
+[08:55] ¿Cuántos Max de estos he tenido que
+[08:56] conseguir? o cuántos portátiles, placas
+[08:58] base. También hace falta alguien que
+[09:00] asigne todas esas tareas y se fije que
+[09:01] los vídeos no se vayan de madre, ¿vale?
+[09:04] Porque puede pasar que yo tenga un
+[09:05] calendario con los próximos 20 vídeos,
+[09:08] pero el vídeo que estoy haciendo ahora
+[09:09] se alarga un montón porque hay una cosa
+[09:10] de este portátil que no consigo sacar y
+[09:12] no consigo entender y vuelvo a hacer
+[09:13] pruebas y esto me retrasa otra semana y
+[09:15] los siguientes vídeos ya no salen, los
+[09:17] sponsors se enfadan y esto es algo que
+[09:18] vivimos aquí en el día a día. O sea, el
+[09:20] tema de la planificación y project
+[09:21] management es un infierno en un canal de
+[09:23] YouTube, sobre todo para nosotros, que
+[09:25] tenemos añadida esa parte de que no es
+[09:27] simplemente sentarte a cámara y contar
+[09:28] cualquier cosa, lo cual me parece
+[09:30] fantástico y me encantaría que fuera
+[09:31] así, pero nosotros tenemos que hacer un
+[09:33] trabajo extra de investigación, de
+[09:35] pruebas, de conseguir cosas, etcétera,
+[09:37] etcétera, que hace que los vídeos se a
+[09:38] veces se alarguen muchísimo. Y ya los de
+[09:39] moding, ni te digo, o sea, no he ni
+[09:41] siquiera hablado de moding, ¿vale?
+[09:42] Cuando un vídeo es de moding, ahí sí que
+[09:43] se abre toda una fase extra de
+[09:45] producción que puede durar incluso
+[09:47] varios meses y que normalmente se hace
+[09:48] en paralelo a todo lo otro. Y luego hay
+[09:50] una parte de informática y desarrollo.
+[09:53] ¿Por qué? Pues porque alguien tiene que
+[09:54] montar los sistemas para guardar toda
+[09:55] esta información, que si alguien se le
+[09:57] rompe el ordenador o no se puede
+[09:58] conectar al servidor, él nos da una
+[10:00] alerta, o sea, pasa cualquier cosa, pues
+[10:02] tiene que haber un técnico informático
+[10:03] que adivinad quién es, vaya sorpresa soy
+[10:05] yo en este caso. Y además, por cierto,
+[10:07] tenemos ventas, que es la persona que se
+[10:08] encarga de hablar con las marcas, [ __ ]
+[10:10] el teléfono, mandar emails y conseguir
+[10:12] que todos esos prerrolls de los vídeos,
+[10:14] todos esos anuncios al principio del
+[10:16] vídeo, esos resaboración, todo eso se
+[10:18] venda para mantener esto con vida, ¿no?
+[10:21] Aprovecho para decir que tenemos una
+[10:22] serie de líneas rojas que nunca
+[10:23] cruzamos, nunca aceptaríamos que este
+[10:25] vídeo del Mac, por ejemplo, fuese pagado
+[10:27] por Apple, ¿vale? Porque es una review
+[10:28] honesta. Y si fuera así, al principio
+[10:29] del vídeo diría, "Este vídeo está
+[10:31] patrocinado por Apple y si no lo
+[10:32] hiciera, la ley me perseguiría porque
+[10:33] eso es ilegal en España." Vale,
+[10:35] simplemente que lo sepáis. Bueno, pues
+[10:36] en todo este sistema, los últimos 10
+[10:38] años he tenido muchísimos puntos de
+[10:39] dolor, o sea, muchas cosas que no han
+[10:41] funcionado bien de ninguna manera. El
+[10:43] primer problema de todos es que la gente
+[10:44] creativa es caótica, o sea, todos los
+[10:46] que editamos vídeos, grabamos,
+[10:48] escribimos, hacemos todo este tipo de
+[10:49] cosas, ¿sí? Eh, nos gusta la
+[10:51] informática, en parte somos informáticos
+[10:53] y los informáticos son muy organizados,
+[10:55] pero aquí no es el caso. Se nota que es
+[10:57] un entorno creativo y es muy difícil
+[10:58] predecir las fechas, es difícil predecir
+[11:00] cuándo van a seguir las cosas porque la
+[11:02] inspiración no siempre viene y las cosas
+[11:04] no siempre salen como uno quiere. Y como
+[11:05] os decía al principio del vídeo, yo
+[11:07] vengo del mundo del desarrollo de
+[11:08] software, de la programación. Por eso,
+[11:09] desde el día cero, prácticamente, desde
+[11:11] que tuve equipo, empecé a aplicar la
+[11:13] metodología agile. Empecé a usar Scram,
+[11:15] Gira, Canvans Standup Meetings, todas
+[11:18] estas cosas, ¿vale? Si no sabes lo que
+[11:19] son, no te preocupes. Simplemente
+[11:21] técnicas que se usan dentro del mundo de
+[11:23] desarrollo de software para organizar el
+[11:24] trabajo y más o menos nos ha ido bien
+[11:26] con muchos peros. Pero luego tengo
+[11:27] muchos otros problemas que son muy
+[11:29] específicos. O por ejemplo, a mí siempre
+[11:30] me hubiese gustado tener un programa
+[11:32] hecho a medida que me permita controlar
+[11:34] todo el flujo de los vídeos de inicio a
+[11:36] fin, incluyendo estadísticas, pudiendo
+[11:38] asignar los anuncios directamente a los
+[11:40] vídeos, ¿vale? De forma superfácil y
+[11:42] visual. Vamos, poder entrar en una
+[11:43] aplicación y tener ahí el briefing de la
+[11:45] marca, cuánto va a pagar, cuándo tiene
+[11:47] que salir, el guion, el estado de la
+[11:49] edición, o sea, todas las cosas
+[11:50] relacionadas con un vídeo y cómo va ese
+[11:52] vídeo en este momento, pues tenerlo en
+[11:54] una aplicación web. Pero claro, hacerte
+[11:55] un programa tuyo a medida es algo que
+[11:57] para la mayoría de empresas no tiene
+[11:59] sentido, porque tienes que contratar un
+[12:00] desarrollador que se va a encargar del
+[12:01] desarrollo que puede tardar 6 meses o
+[12:03] más luego de mantenerlo, evolucionarlo,
+[12:05] etcétera, etcétera. Y eso tiene un coste
+[12:07] tan alto que para muchas empresas
+[12:08] directamente no se lo pueden permitir. Y
+[12:10] este es mi caso. Muchos de estos
+[12:11] perfiles es que no me los puedo
+[12:12] permitir, o sea, no puedo tener toda la
+[12:13] gente que me gustaría tener dentro de la
+[12:15] empresa. Y por eso muchos de los que
+[12:16] estamos aquí vamos un poco ahogados,
+[12:18] vamos haciendo cosas que a veces no nos
+[12:19] tocan y que no hay nadie que haga. Y
+[12:21] este es el día a día de la mayoría de
+[12:23] empresas pequeñas y medianas en España,
+[12:24] ¿vale? Es algo que viven prácticamente
+[12:26] todos. Y aquí es exactamente donde he
+[12:28] ido a atacar con la inteligencia
+[12:29] artificial. Lo primero que hice fue un
+[12:31] análisis financiero de mi empresa, de
+[12:33] todos los gastos que tenía, de todo lo
+[12:35] que estaba, bueno, perdiendo dinero para
+[12:37] deducir exactamente de qué puede ser un
+[12:39] gasto o de qué no, pues sí que hace
+[12:41] falta una cierta inteligencia. Y ahí fue
+[12:42] donde metí el primer LLM. Le hice
+[12:44] analizar los gastos uno por uno y con
+[12:46] una serie de herramientas. Esto ya os lo
+[12:48] expliqué en otro vídeo, pues podía mirar
+[12:49] en mi mail, en una base de datos, en una
+[12:51] serie de aplicaciones y cosas, incluso
+[12:53] buscar en Google el nombre de la empresa
+[12:55] para entender para qué habíamos comprado
+[12:57] eso y de esa manera me catalogué todos
+[12:59] los gastos desde el inicio de la empresa
+[13:00] hasta ahora y me di cuenta de que me
+[13:02] estaba gastando una pasta increíble en
+[13:04] programas para organizar todo, o sea,
+[13:05] que si no es Slack, no sé qué, tal y
+[13:07] cual, y decidí, pues, en parte como
+[13:08] contenido para el canal, empezarme a
+[13:10] quitar todas estas aplicaciones y montar
+[13:12] alternativas open source. Me monté el
+[13:14] element para el chat, me quité el Slack,
+[13:16] lo dejé de pagar, dejé de pagar Notion y
+[13:18] me monté outline y el resto de
+[13:19] aplicaciones como Gira, que lo usaba
+[13:21] para las tareas y algunas otras que
+[13:22] teníamos por ahí, decidí integrarlas en
+[13:24] Orion. Como os dije antes, hay un montón
+[13:26] de pasos para hacer un vídeo y la verdad
+[13:28] es que siempre nos ha costado mucho
+[13:29] tener todo bajo control y todo bien
+[13:30] organizado y no sentir que es una gran
+[13:32] pérdida de tiempo, ¿no? Incluso las
+[13:33] pruebas de rendimiento. Nosotros hacemos
+[13:35] pruebas de rendimiento en el canal,
+[13:36] cogemos ordenadores, los probamos, los
+[13:38] probamos a fondo y luego sacamos todos
+[13:39] esos números. Al principio los poníamos
+[13:41] en un Excel. Luego creo una aplicación
+[13:42] con una base de datos donde los puedes
+[13:44] meter. Al final, lo que os decía, no soy
+[13:45] programador, pues me hice esta
+[13:46] aplicación. Luego esto genera unas
+[13:48] gráficas que aparecen dentro de mis
+[13:49] vídeos. Todas las gráficas estas que
+[13:50] veis en los vídeos están generadas desde
+[13:52] mi base de datos con HTML. Esta ya es
+[13:54] una aplicación que desarrollé yo a
+[13:55] medida para el canal y a lo largo del
+[13:57] último año, 2 años, esta aplicación ha
+[13:59] ido creciendo, le he ido metiendo más y
+[14:00] más cosas. En un momento le puse un
+[14:02] módulo de inventario, ¿vale? Porque aquí
+[14:03] tenemos tantas cosas de tantos años que,
+[14:05] bueno, que nos sirven para los vídeos,
+[14:06] los usamos para montar ordenadores, para
+[14:08] hacer cosas y todo esto pues tiene que
+[14:09] estar inventariado, ¿no? Necesito una
+[14:10] lista de todo lo que tengo en el
+[14:11] almacén. Así que lo que hice fue crear
+[14:13] una aplicación donde tengo el tracking
+[14:15] de todo y además una foto de cada
+[14:17] elemento con su número de serie y más o
+[14:19] menos intentar recordar de dónde salió y
+[14:21] para qué lo compramos y si está nuevo o
+[14:22] no. Y todo esto no es inteligencia
+[14:24] artificial, o sea, todo esto lo programé
+[14:25] yo como desarrollador de software antes
+[14:27] de la era de la inteligencia artificial.
+[14:29] A mí hacer toda esta parte de software,
+[14:31] o sea, hacer nuestro programa, eh lo que
+[14:32] hacía era que yo me quedase algunos días
+[14:34] por la noche, algunos fines de semana
+[14:35] hasta muy tarde, programando, cambiando
+[14:38] cosas. Era un poco mi proyecto personal
+[14:39] que yo hacía en mi tiempo libre, pero
+[14:41] claro, con la inteligencia artificial ya
+[14:42] me animé. ¿Qué pasa si le doy mi
+[14:43] proyecto a la inteligencia artificial? Y
+[14:45] ahí la cosa se empezó a acelerar
+[14:47] muchísimo más. Orion es la forma
+[14:50] definitiva y la aplicación central. es
+[14:52] la evolución de aquella aplicación que
+[14:53] creé al principio para para los
+[14:55] benchmarks y que luego fue
+[14:56] evolucionando. Bueno, pues Orion a día
+[14:57] de hoy es el sistema operativo de todo
+[14:59] el canal. En Orion está toda la
+[15:01] operativa de toda la empresa concentrada
+[15:03] en un programa y esto pues lo empecé
+[15:05] evidentemente desarrollando yo, pero en
+[15:06] el momento en el que metí la
+[15:07] inteligencia artificial ya la cosa fue
+[15:09] muchísimo más rápido. Te estoy hablando
+[15:10] de un por 10 fácilmente. A día de hoy
+[15:13] todo este flujo está manejado
+[15:14] directamente dentro de Orion. O sea,
+[15:16] Orion tiene todo el conocimiento de todo
+[15:18] lo que pasa, todas las tareas del
+[15:19] equipo, tiene un canvan, tiene las fases
+[15:21] de los proyectos, los próximos vídeos
+[15:23] que van a salir, maneja el calendario de
+[15:24] Google Calendar, está sincronizado con
+[15:26] la parte de ventas, pero tengo más
+[15:27] software hecho a medida. Como yo os
+[15:29] conté en un vídeo, yo ya no grabo con
+[15:30] tarjetas, esta cámara que me está
+[15:31] grabando ahora mismo y este micrófono
+[15:33] están conectados a ese ordenador. Ese
+[15:34] ordenador tiene Linux donde está
+[15:36] grabando esto directamente en una
+[15:37] tarjeta capturadora, cosa que cuando yo
+[15:39] termine de grabar termina de subir el
+[15:41] último trozo, recompone todo el vídeo y
+[15:43] esto ya queda listo para los editores.
+[15:44] No hay tarjetitas ni nada por el estilo,
+[15:46] pues hay bastantes partes en las que ya
+[15:48] hemos metido software que automatiza,
+[15:49] ¿no? Pero hasta aquí, como podéis ver,
+[15:51] no hay nada de inteligencia artificial.
+[15:53] La única inteligencia artificial que
+[15:54] estoy usando, la estoy usando para
+[15:56] desarrollo de software IT, ¿vale? O sea,
+[15:58] dentro de todos estos procesos que hace
+[15:59] mi empresa, de momento lo que os he
+[16:01] contado hasta ahora, simplemente tenemos
+[16:02] inteligencia artificial a la hora de
+[16:03] manejar los servidores y hacer el
+[16:05] desarrollo de software. Esto es algo en
+[16:06] que la inteligencia artificial realmente
+[16:08] es muy buena, pero que la inteligencia
+[16:10] artificial realmente no lo hace sola.
+[16:11] Esto es una mentira, ¿vale? En realidad
+[16:13] estoy yo detrás, yo sé lo que quiero
+[16:14] montar, sé lo que quiero hacer, sé cómo
+[16:16] funciona y yo hablo con la inteligencia
+[16:18] artificial y le delegoo tareas. Las
+[16:20] cosas que hace realmente no necesitan
+[16:21] tanto pensamiento, ¿vale? lo que está
+[16:23] montando realmente son aplicaciones
+[16:24] bastante estándar, son cosas que están
+[16:26] documentadas, que hay manuales que te
+[16:27] explican un poco cómo hacerlo, cómo
+[16:29] utilizarlo, cómo configurarlo. No hay
+[16:31] muchísima, muchísima creatividad dentro
+[16:33] de lo que hace, pero sí que hay un
+[16:34] humano detrás que está pensando cómo
+[16:36] resolver todos esos problemas. Así que
+[16:37] si la IA a día de hoy es mi
+[16:38] desarrolladora, todo el resto hasta aquí
+[16:40] son automatizaciones, entonces, ¿cómo
+[16:42] puedo decir que mi empresa está
+[16:43] potenciada por IA? Bueno, pues aquí
+[16:45] viene la parte interesante. Primero que
+[16:46] nada, una de las cosas que me preocupaba
+[16:48] a la hora de usar inteligencia
+[16:49] artificial era tener algún servidor de
+[16:51] inteligencia artificial aquí
+[16:52] directamente en la oficina. Y
+[16:53] efectivamente tengo un servidor de
+[16:55] inteligencia artificial y ese servidor
+[16:56] ya lo habéis visto en un vídeo del
+[16:57] canal. Esta bestia de aquí con un Thread
+[16:59] Reaper. Este Thread Reaper, este es un
+[17:02] eh
+[17:04] Oye, Janus, he subido un vídeo de un
+[17:06] Thread Reaper hace, no sé, unos meses.
+[17:09] ¿Me puedes decir qué hardware tenía ese
+[17:11] ordenador, por favor? El vídeo era el
+[17:13] del Tradriper 9995WX,
+[17:16] el PCE bruto de unos 30,000 € La base
+[17:18] del ordenador era un procesador
+[17:20] MD3riperer de 96 núcleos montado sobre
+[17:22] una placa Gigabyte RX50 con memoria RDIN
+[17:26] de servidor. Almacenamiento Samsung 990
+[17:28] Pro líquida custom de Eca Waterblocks.
+[17:31] La gráfica no era una gráfica gaming
+[17:33] normal, era una RTX Pro 6000. Sus datos
+[17:36] importantes son estos. Tiene 96 GB de
+[17:38] memoria de vídeo GDDR7 con corrección de
+[17:41] errores, un bus de 512 bits y casi 1,8
+[17:44] teras por segundo de ancho de banda. Con
+[17:46] 96 GB de memoria de vídeo puedes cargar
+[17:49] modelos y pipelines que en una GeForce
+[17:51] normal directamente no caben.
+[17:53] Bueno, pues esto que acaba de pasar es
+[17:55] porque tenemos dentro de ese mismo
+[17:56] servidor donde hay una RTX 6000 Pro, que
+[17:59] es la gráfica más avanzada que tiene
+[18:00] Nvidia, que puedes pinchar en un PC. Más
+[18:02] allá de ahí tenemos que ir ya por
+[18:04] servidores de IA. Pues en este servidor
+[18:05] tengo corriendo una base de datos
+[18:07] semántica donde están metidos todos mis
+[18:10] vídeos de la historia del canal. Cada
+[18:12] vez que yo saco un vídeo en el canal,
+[18:13] toda la transcripción, contenido y todo
+[18:15] lo que ha pasado con ese vídeo se mete
+[18:16] dentro de esa base de datos, por lo cual
+[18:18] ese ordenador sabe todo lo que hemos
+[18:19] hecho, hablado y ha salido en el canal
+[18:21] en cualquier momento. Y esto es
+[18:22] superútil, por ejemplo, para lo que
+[18:23] acaba de pasar ahora mismo, ¿vale? Yo
+[18:25] literalmente no me acordaba qué PC era
+[18:26] ese, pero como para muchas otras cosas,
+[18:28] mismamente para que un editor le pueda
+[18:29] preguntar en cualquier momento dónde
+[18:31] exactamente ha salido un producto, en
+[18:33] qué vídeo, qué vídeo tiene que utilizar
+[18:34] para la persona que hace las ventas
+[18:36] saber si hemos hecho ya un vídeo de ese
+[18:37] tipo y todo eso está corriendo en ese
+[18:39] servidor. Pero también tengo otra
+[18:40] herramienta que me hice yo mismo con
+[18:42] inteligencia artificial. Esa herramienta
+[18:43] yo le llamo Mindmap, ¿vale? Básicamente
+[18:45] yo antes pagaba Miro, que es una
+[18:46] aplicación de pago para hacer mapas
+[18:48] mentales. Ahora tengo mi propia
+[18:49] aplicación, que es esta que estáis
+[18:50] viendo, todo el guion que que os estoy
+[18:53] leyendo ahora mismo, ¿vale? lo que os
+[18:54] estoy contando. El día de hoy no tengo
+[18:55] un guion literal, sino que está basado
+[18:57] en todo este árbol que he ido creando yo
+[18:59] en base a mis ideas y todo lo que os
+[19:00] quería contar. Y bueno, pues esta es una
+[19:01] aplicación en la que tengo incluso
+[19:03] distintas versiones y tengo un botón que
+[19:05] me permite con inteligencia artificial
+[19:06] chequear si lo que estoy diciendo está
+[19:08] bien o incluso investigar más a fondo un
+[19:10] punto. Pero no solo eso, sino que todo
+[19:11] este mapa mental automáticamente genera
+[19:13] un guion y todo ese guion acaba
+[19:15] automáticamente en cosmos donde yo me
+[19:17] puedo ir y luego a partir de ahí en base
+[19:19] a esa ese cascarón, ese guion base
+[19:22] creado en base a todos mis puntos de mi
+[19:24] árbol de ideas, puedo luego si quiero,
+[19:26] si quisiera, por ejemplo, en este vídeo
+[19:27] no lo he hecho, ¿vale? Pero yo podría
+[19:29] terminar de redactarlo y hacerlo de
+[19:30] forma muy exacta. Los guiones es algo de
+[19:32] lo que me encargo yo desde hace muchos
+[19:33] años. He tenido algún guionista en
+[19:34] alguna época, pero a día de hoy pues me
+[19:36] encargo yo de esto. Y como veis, tengo
+[19:37] una herramienta hecha a medida para esto
+[19:39] que encaja perfectamente con mi flujo de
+[19:41] trabajo y tiene integrada inteligencia
+[19:43] artificial. Y aquí es donde sale el gran
+[19:46] debate. Me he encontrado mucha gente en
+[19:47] el día a día que piensa que los
+[19:49] creadores de contenido hacemos
+[19:50] prácticamente todo con inteligencia
+[19:51] artificial, no solo en algunos de
+[19:53] vuestros comentarios, sino literalmente
+[19:54] por la calle o hablando con amigos. La
+[19:56] gente cree que a día de hoy todos los
+[19:57] guiones y todo lo que hacemos está
+[19:59] creado literalmente por inteligencia
+[20:00] artificial. O sea, que yo me voy a chat
+[20:02] GPT, le pido, "Hazme un guion de este
+[20:03] tema y luego vengo aquí y simplemente lo
+[20:05] leo." Y esto es algo en lo cual la a día
+[20:07] de hoy, por lo menos, no es
+[20:08] suficientemente buena, no es
+[20:09] suficientemente buena para hacer los
+[20:11] vídeos que yo quiero hacer. Y estoy
+[20:12] totalmente convencido de que la
+[20:14] personalidad, la forma de pensar, la
+[20:15] forma de hacer las cosas, cómo somos en
+[20:17] sí, es algo que que nos hace únicos a
+[20:19] los creadores de contenido y es lo que
+[20:21] al final hace que la gente nos vea, ¿no?
+[20:22] Y de hecho hablé de esto con muchos
+[20:24] creadores de contenido, muchos que son
+[20:26] al final colegas, ¿no? Les he preguntado
+[20:27] a muchos de ellos si usaban la
+[20:29] inteligencia artificial para hacer
+[20:30] guiones. Te estoy hablando desde Bybite
+[20:32] a Ecomonos. No sé, es que os podría
+[20:34] hacer una lista larguísima ahora de
+[20:35] gente a la que le he preguntado si usan
+[20:37] la inteligencia artificial para sus
+[20:38] vídeos y todos me han dicho que lo
+[20:40] intentaron, pero que no es
+[20:41] suficientemente buena a día de hoy para
+[20:43] poder hacer los guiones. La verdad es
+[20:44] que la IA hace resultados bastante
+[20:46] predecibles, bastante iguales y en mi
+[20:48] opinión no sirve hoy en día para esto. Y
+[20:50] ahí es donde el humano justamente aporta
+[20:52] valor. Y aunque tú no estés de acuerdo
+[20:54] conmigo y creas que la IA pues nos va a
+[20:56] reemplazar a todos, que puede ser,
+[20:57] ¿vale? Aunque yo creo que el humano
+[20:59] seguirá aportando valor, pero puede ser
+[21:00] que la nos acabe reemplazando también a
+[21:02] los que hacemos contenido. En mi caso,
+[21:03] yo decidí poner aquí la línea, o sea, la
+[21:05] línea para mí que no se cruza es esta de
+[21:07] aquí. Nosotros en el equipo aportamos
+[21:09] valor en la parte creativa. Parece muy
+[21:11] sencillo escribir un vídeo sobre un Mac
+[21:12] como este, pero hay tantas cosas de las
+[21:14] que se puede hablar. Yo, por ejemplo, la
+[21:16] review que hice de los Mac Pros de esta
+[21:18] generación, en lugar de centrarme en la
+[21:20] potencia, en la pantalla y ese tipo de
+[21:21] cosas, hablé de los marcos, hablé de
+[21:24] cómo el ángulo de las curvaturas y la
+[21:26] forma del chasis que tiene esta nueva
+[21:27] generación de MacBook Pro era una
+[21:29] alegoría. Hacía referencia a la época en
+[21:31] la que Apple era libre de procesadores
+[21:34] Intel y trabajaba con Power PC y
+[21:35] representaba un poco esta nueva época.
+[21:37] Bueno, me centré mucho en la forma del
+[21:39] portátil, en el diseño, en la parte de
+[21:41] ingeniería, incluso con los nuevos
+[21:43] iPhones. Cuando hablé de los tres nuevos
+[21:44] iPhones, pues también dije una cosa que
+[21:46] me salió a mí totalmente de la manga y
+[21:47] en ningún momento hablé ni siquiera de
+[21:49] las cámaras. Vosotros pensaréis que es
+[21:50] una idea terrible y la inteligencia
+[21:52] artificial también lo piensa. O sea, si
+[21:53] yo le pregunto a la parece este vídeo
+[21:55] buena idea pues muchas veces me dicen,
+[21:56] "No, es una idea terrible, pero luego
+[21:58] ese vídeo tiene millones de visitas."
+[21:59] Pues esas cosas, esas ida de olla son
+[22:01] las que nos hacen a los humanos
+[22:02] distintos. Es la diversidad humana. Esa
+[22:04] capacidad de ser únicos, de hacer las
+[22:06] cosas de autor, son las que la
+[22:07] inteligencia artificial de momento no
+[22:09] puede hacer. Tú puedes hacer tareas
+[22:11] creativas y apoyarte en la inteligencia
+[22:12] artificial para tu arte, pero al final
+[22:14] si no tiene ese ingrediente humano, en
+[22:17] mi opinión eso no tiene recorrido. Así
+[22:19] que yo aquí marqué una línea. En mi
+[22:21] canal los humanos nos encargamos de la
+[22:23] parte artística. El arte lo hacemos
+[22:25] nosotros. La IA se encarga de hacer todo
+[22:27] lo que a nosotros no nos apetece hacer.
+[22:29] Por eso os decía antes que mi empresa es
+[22:31] Human First, AI Powered, humanos primero
+[22:34] potenciados por inteligencia artificial.
+[22:36] Pero esto acaba de empezar. También
+[22:37] tenemos un software de edición donde se
+[22:39] usa inteligencia artificial. Yo ahora
+[22:40] pues no sé cuánto llevo grabando, os lo
+[22:42] voy a decir, ¿vale? Llevo 1 hora 20
+[22:44] minutos diciendo tonterías delante de la
+[22:47] cámara. Esto se lo traga el editor, se
+[22:48] lo tiene que tragar entero, cortarlo y
+[22:50] sacar un vídeo que dure más o menos
+[22:52] media hora sin dejar nada importante
+[22:54] fuera. Pero bueno, lo cierto es que yo
+[22:55] me equivoco, repito cosas, hay veces que
+[22:57] algo no me gusta como suena y él se
+[22:59] dedica pues a cortar, cortar, cortar,
+[23:00] cortar. Bueno, pues tenemos una
+[23:02] aplicación de inteligencia artificial
+[23:03] que se mira todo el vídeo, lo
+[23:04] transcribe, marca cada palabra, detecta
+[23:07] repeticiones, conceptos y quita lo que
+[23:09] sobra. Esto evidentemente no es
+[23:10] definitivo. Él luego tiene que hacer una
+[23:12] segunda pasada y corregir muchas cosas.
+[23:14] Aún no es perfecto, pero le ahorra algo
+[23:15] de tiempo. Eso le genera un proyecto de
+[23:17] Da Vinci Resolve, que ya lo tiene
+[23:18] cargado directamente en la base de
+[23:20] datos, donde además en este mismo
+[23:21] proyecto importa en una carpeta todos
+[23:23] los productos de los cuales yo he
+[23:25] hablado en este vídeo. Por ejemplo, yo
+[23:26] ahora mismo he hablado de este Mac. Así
+[23:28] que en el proyecto de Da Vinci Resolve
+[23:30] hay una carpeta sobre este Mac o Mcs
+[23:32] similares donde tiene planos de recurso
+[23:34] que si quiere puede utilizar de nuestra
+[23:35] propia base de datos porque nosotros
+[23:37] tenemos una base de datos de productos
+[23:38] que hemos grabado a lo largo de los años
+[23:39] y todo eso está cacheado dentro de la
+[23:41] base de datos de conocimiento del canal,
+[23:42] por lo cual sabe exactamente la ruta de
+[23:44] cada uno de los archivos y no es IA en
+[23:46] sí, sino que es una automatización,
+[23:47] ¿vale? Al final es software, pero ese
+[23:49] software me ayudó la IA a hacerlo, o
+[23:50] sea, mi informático. Pero para todo ese
+[23:52] otro trabajo de corte que tenemos partes
+[23:54] de inteligencia artificial que corren
+[23:55] directamente en nuestra A6000 Pro.
+[23:57] Somnus es una aplicación que se encarga
+[23:59] de escanear todos los vídeos que hay en
+[24:01] el Nas. Coge varias capturas de pantalla
+[24:03] de los vídeos, las analiza con
+[24:04] inteligencia artificial, en base a la
+[24:05] carpeta en la que está deduce de qué
+[24:07] producto se trata y se encarga de todos
+[24:09] los planos útiles, todos los que se
+[24:10] pueden meter en la librería porque son
+[24:12] planos de broll, por lo que intuía la
+[24:14] IA, a los comprime a una décima parte de
+[24:16] su tamaño, manteniendo la máxima calidad
+[24:18] posible y los mueve a otra unidad del
+[24:20] servidor que está pensada para tener
+[24:21] nuestra librería de imágenes de
+[24:23] productos y además las indexa para que
+[24:24] cuando el editor pues las busque las
+[24:26] pueda encontrar. Y gracias a esto tengo
+[24:28] todo prácticamente digitalizado, todo lo
+[24:30] que tenemos en el almacén, todos los
+[24:31] vídeos que hacemos, todo el contenido de
+[24:33] los vídeos, los acuerdos, el progreso,
+[24:35] las tareas, tarjetas, o sea, tenemos
+[24:37] prácticamente todo lo que pasa aquí
+[24:38] dentro un clon digital dentro de
+[24:40] nuestros servidores, gracias a software
+[24:42] hecho a medida y algunas rutinas de
+[24:44] agentes que nos ayudan a mantener estos
+[24:46] datos y todo eso hace muy fácil que esto
+[24:48] exista. Preséntate y dime todo lo que
+[24:51] puedes hacer.
+[24:53] Soy tu asistente operativo. Puedo mirar
+[24:55] cómo van tus vídeos, tareas, campañas,
+[24:57] servidores y documentación. Si me
+[24:59] preguntas algo, no me quedo en una
+[25:00] respuesta genérica. Busco en tus
+[25:02] herramientas, cruzo datos y te digo que
+[25:04] está pasando de verdad. También puedo
+[25:05] transcribir audios, mandarte respuestas
+[25:07] por WhatsApp, preparar audios, avisar al
+[25:09] equipo cuando el contacto está
+[25:10] confirmado, buscar cosas que dijiste en
+[25:12] vídeos antiguos y recordar decisiones
+[25:14] importantes para no repetir errores. La
+[25:16] idea es simple. Tu pregunta se dictas
+[25:18] algo rápido y yo me encargo de
+[25:19] investigar, resumir, avisar o dejarlo
+[25:21] apuntado. Menos caos, más control.
+[25:23] Antes os hablé de Orion, que es el
+[25:25] sistema operativo de N Gentile, ¿vale?
+[25:26] Es el software que controla todo lo que
+[25:28] pasa aquí dentro. Bueno, pues yo no
+[25:31] entro prácticamente nunca dentro de
+[25:33] Orion, sino que es Janus el que se
+[25:34] encarga de manejar a Orion y solo yo
+[25:37] tengo acceso a Janus. Janus está basado
+[25:39] en Deepsek V4, que corre en la nube en
+[25:42] un servidor privado, no es cloud ni nada
+[25:44] por el estilo. Tiene acceso
+[25:45] absolutamente a todo lo que tenemos en
+[25:47] la empresa. Tiene acceso a todo lo que
+[25:48] es Orion, a todos los datos, pero además
+[25:51] tiene acceso de lectura a mi correo, a
+[25:53] mis calendarios y a unas cuantas cosas
+[25:54] más. Todo su flujo de trabajo está
+[25:56] dirigido según rutinas muy específicas.
+[25:58] De hecho, los lunes por la mañana, por
+[25:59] ejemplo, ejecutamos la rutina de los
+[26:01] lunes. Él me plantea los reels que
+[26:02] tendrían que haber salido la semana
+[26:03] pasada, el vídeo que tendría que haber
+[26:05] salido la semana pasada, las tareas que
+[26:06] se tendrían que haber hecho, me cuenta
+[26:08] lo que ha hecho el equipo, vemos si es
+[26:09] realista llegar a sacar ese vídeo. Si no
+[26:11] lo es, lo aplazamos y movemos los
+[26:13] vídeos. Analizamos qué vídeos tenemos
+[26:14] que sacar. A ver si hay uno más fácil
+[26:16] que se pueda mover para esta semana.
+[26:17] Tiene en cuenta mi calendario, ¿sabes?
+[26:19] si voy al dentista, si me voy de viaje,
+[26:20] si voy a la Comutex ahora, por ejemplo,
+[26:22] la semana que viene me voy. Tiene en
+[26:23] cuenta un montón de factores que tiene
+[26:25] gracias a que todo está digitalizado.
+[26:26] Además, tiene acceso a la configuración
+[26:28] de toda la infraestructura y puede
+[26:30] mandar a nuestro informático, que
+[26:31] todavía no le he puesto nombre, le voy a
+[26:33] llamar Dimitri, ¿vale? Puede mandar a
+[26:34] Dimitri a arreglar, conectarse a
+[26:36] cualquier servidor y mirar cualquier
+[26:38] cosa. Y esto Janus lo puede hacer porque
+[26:40] todas las aplicaciones que tenemos aquí
+[26:41] tienen una puerta trasera. Tiene una
+[26:43] puerta trasera que es una API. La API le
+[26:45] permite a Janus hablar con todos estos
+[26:46] servicios y Janus tiene una gran
+[26:48] cantidad de skills relacionadas con el
+[26:49] conocimiento del canal, otras con acceso
+[26:51] a los guiones, otra con acceso a la
+[26:53] facturación, otra con acceso a las
+[26:54] tareas, etcétera, etcétera, etcétera.
+[26:56] Evidentemente tiene conexión con moneta.
+[26:58] Si yo estoy en un sitio, compro una
+[26:59] cosa, le puedo mandar una foto de una
+[27:01] factura directamente a Janus y él
+[27:02] meterla donde toca dentro de la
+[27:04] facturación. Le puedo preguntar cuántos
+[27:06] acuros se cerraron esta semana, puedo
+[27:07] planificar los próximos vídeos, le puedo
+[27:09] dar una idea y decirle que me cree un
+[27:10] template de vídeo y sobre todo que le
+[27:12] avise a todo el equipo de esa idea, le
+[27:14] pida feedback y ya no sé es un ser
+[27:15] todopoderoso que únicamente habla
+[27:17] conmigo, pero también la puede hablar
+[27:18] con el equipo a través de Fama. Fama es
+[27:21] pues otra diosa romana que como veis
+[27:22] todos son dioses romanos. Todas las
+[27:24] unidades del NAS, todo lo que tenemos
+[27:25] aquí son dioses romanos. Fama se encarga
+[27:27] de hacerle follow up al equipo. Yo sé
+[27:29] que el equipo pasa de mi cara, no se
+[27:30] meten en las tareas, no las miran, no
+[27:32] las mueven, no me las tachan. O sea, los
+[27:34] artistas son así, tío. O sea, me cuesta
+[27:36] mucho y no quiero estar encima de ellos
+[27:37] con el látigo. Así que lo hace fama,
+[27:39] fama. Les escribe, les pregunta, ¿cómo
+[27:40] vas con esto? Y simplemente les mandan
+[27:42] un audio. Oye, voy así, así, así. Y Fama
+[27:44] se encarga de modo las tarjetas
+[27:46] actualizar y tener exactamente el
+[27:48] progreso de cada proyecto actualizado en
+[27:49] todo momento. Y también hay muchísimos
+[27:51] otros proyectos de los que ni siquiera
+[27:52] os he hablado. Por ejemplo, la nueva
+[27:54] página web que sustituye al Link Tri,
+[27:55] que está hecha totalmente con
+[27:56] inteligencia artificial. Y luego también
+[27:58] hemos lanzado una newsletter, que por
+[28:00] cierto, si no te has apuntado, apúntate.
+[28:01] ¿Cómo funciona la newsletter? Bueno,
+[28:03] pues yo le mando un audio lo largo que
+[28:05] quiera a Janus hablándole de un producto
+[28:06] que me haya gustado esta semana,
+[28:08] reflexiones, cosas que estemos haciendo.
+[28:10] Bueno, un poco le hago como si fuera una
+[28:12] entrada de un diario. Janus se encarga
+[28:13] de conectar con el servicio de
+[28:14] newsletters, que también es un software
+[28:16] desarrollado por nosotros. Cuando digo
+[28:17] nosotros somos Dimitri y yo. Y en este
+[28:19] software se monta una newsletter basada
+[28:21] en todo lo que yo dije, que yo tengo que
+[28:23] revisarla, cambiar las palabras que no
+[28:24] me gusten y directamente enviarla,
+[28:26] ¿vale? Porque justamente si no quisiese
+[28:27] yo escribir una newsletter directamente
+[28:29] no la mandaría, ¿vale? La gracia de esto
+[28:30] es que me apetece contaros más sobre mí.
+[28:32] Pero evidentemente el trabajo de montar
+[28:34] todo ese servidor, de meterme en la web,
+[28:36] de redactar, de preparar distintos
+[28:37] recursos, de buscar links, todo esto lo
+[28:39] puede hacer una inteligencia artificial.
+[28:40] Tengo una gente que sigue una serie de
+[28:42] pasos muy estrictos y monta todo este
+[28:44] email para que yo luego lo pueda
+[28:45] revisar.
+[28:46] Hola, Janus, te mando este audio para
+[28:49] preparar la newsletter de mañana, ¿vale?
+[28:52] Esta semana ha sido la Comutex. Comutex,
+[28:55] para los que no sepáis, es un evento que
+[28:57] se hace en Taiwán todos los años. es una
+[28:59] de las ferias de tecnología más
+[29:01] importantes del mundo. Está muy enfocada
+[29:03] en el mundo de PC, tanto PC gaming como
+[29:07] servidores, como chips, ordenadores y
+[29:09] todo este tipo de cosas. Es mi evento
+[29:11] favorito, no voy a mentir. Me encanta
+[29:13] venir aquí a Taiwán. Y desde hace unos
+[29:15] años ya la cosa venía decayendo. Venía
+[29:18] decayendo porque la industria cada vez
+[29:20] está avanzando más lento. Y todo esto es
+[29:22] posible porque yo tengo procedimientos.
+[29:24] Todo lo que hago está procedimentado y
+[29:26] lo que hago es que la IA siga mis
+[29:28] procedimientos. Lo que se puede hacer
+[29:29] con un procedimiento, con un proceso,
+[29:31] con una serie de pasos, lo puedo delegar
+[29:33] a la inteligencia artificial. la parte
+[29:34] creativa, la parte de pensar, inventar
+[29:36] de ya no me apetece hacer esto, ahora el
+[29:38] canal va a hablar de esta cosa
+[29:39] totalmente distinta o voy a hacer blogs
+[29:40] en Estados Unidos o me apetece hablar de
+[29:42] inteligencia artificial o me quiero
+[29:44] montar un servidor o quiero pasar a
+[29:45] Linux, todas estas cosas, esto es la
+[29:47] parte humana. Por eso mi empresa es
+[29:49] Human First. Las tareas que son una
+[29:50] tortura para los artistas y para los
+[29:52] humanos las hace la IA y el resto las
+[29:54] hacemos nosotros. Por lo cual la IA me
+[29:56] ahorra costes, me libera tiempo y me
+[29:58] ahorra problemas y fallos humanos,
+[29:59] incluso en ciertas tareas. Y entonces a
+[30:01] lo largo de todo este tiempo me fui
+[30:03] dando cuenta de una cosa muy importante,
+[30:05] una de las preocupaciones más grandes
+[30:07] que tiene la gente a día de hoy es que
+[30:08] la inteligencia artificial te deje sin
+[30:10] trabajo. No te voy a mentir, las cosas
+[30:11] pintan raras, estamos en tiempos un poco
+[30:14] extraños y no sé lo que puede llegar a
+[30:16] pasar dentro de 10 años. Lo que sí te
+[30:18] puedo decir es que lo que yo estoy
+[30:19] viendo es que un tío como los
+[30:21] conocimientos técnicos suficientes,
+[30:22] dedicándole el suficiente tiempo a
+[30:24] investigar todo esto, pero sobre todo
+[30:26] con una base sólida anterior de cómo
+[30:27] funciona mi empresa, de cómo funcionan
+[30:29] los sistemas informáticos, de cómo
+[30:31] funciona todo esto, pues yo he
+[30:32] conseguido implementar una cosa para la
+[30:34] que antes hubiese necesitado mucho más
+[30:36] tiempo, más gente y más dinero. Ahora
+[30:38] con menos tiempo, menos dinero y menos
+[30:40] gente, o sea, prácticamente con nadie,
+[30:41] lo puedo hacer todo yo. Y tú podrías
+[30:43] pensar que esto significa que hay gente
+[30:45] que se va a quedar sin trabajo, pero yo
+[30:46] lo que te digo es que yo tampoco iba a
+[30:48] contratar a nadie para hacer eso.
+[30:49] Literalmente no lo iba a hacer. O sea,
+[30:51] iba a seguir trabajando como antes,
+[30:53] aunque me costase más. Esto, ¿qué
+[30:55] significa? Pues significa que se abre un
+[30:56] nuevo hueco en el mercado. Antes una
+[30:59] pequeña empresa como la mía no se podía
+[31:01] permitir el lujo de contratar un año a
+[31:03] un programador y tenerlo ahí cobrando
+[31:05] una pasta, desarrollando un programa
+[31:07] simplemente para que mover tarjetas y
+[31:09] tareas sea más cómodo, ¿vale? o para que
+[31:11] esté todo centralizado. Este era un
+[31:12] gasto difícil de justificar y difícil
+[31:14] ver incluso cómo me va a dar esto
+[31:16] dinero, ¿no?, algún día. Sin embargo,
+[31:18] ahora podría aparecer el perfil de una
+[31:19] persona que es técnica, que tiene
+[31:21] conocimientos técnicos y que en cuestión
+[31:22] de semanas o pocos meses puede
+[31:24] automatizar gran parte de las cosas de
+[31:26] la empresa, hacer software específico y
+[31:28] crear maravillas como lo que tengo yo
+[31:30] hoy en día, que me asiste prácticamente
+[31:31] en todos los departamentos de la
+[31:33] empresa. Yo creo que este es un poco el
+[31:34] futuro de los desarrolladores y los
+[31:36] informáticos. implementador de
+[31:38] inteligencia artificial o de sistemas o
+[31:39] de automatizaciones. Es una nueva
+[31:41] profesión a la que se puede dedicar
+[31:42] perfectamente una sola persona y abarcar
+[31:44] pues grandes procesos dentro de una
+[31:46] empresa. Incluso empresas pequeñas que
+[31:47] antes nunca hubiesen ni siquiera soñado
+[31:49] de tener sistemas como los que puedes
+[31:51] montar hoy en día con la inteligencia
+[31:52] artificial. Porque todas estas cosas al
+[31:54] final, si os fijáis, en todos los
+[31:55] procesos de los que os he hablado, hay
+[31:57] humanos de por medio y hace falta un
+[31:58] humano que maneje esa máquina. Al final
+[32:00] la inteligencia artificial no deja de
+[32:02] ser una herramienta. Yo creo que en
+[32:03] parte sí que es verdad que la
+[32:05] inteligencia artificial no tengo ninguna
+[32:06] duda de que va a afectar al trabajo. Ya
+[32:09] está afectando, ya están habiendo
+[32:10] despidos masivos, pero por otro lado,
+[32:12] viéndole el lado positivo, creo que
+[32:13] también está creando una nueva
+[32:15] necesidad, un nuevo hueco en el mercado
+[32:17] que cualquiera de nosotros puede ocupar
+[32:19] realmente, ¿no? Dando servicio a
+[32:20] empresas, ayudándoles a implementar un
+[32:22] sistema informático de automatización,
+[32:24] de inteligencia artificial, tal y como
+[32:25] he hecho yo con mi empresa. Y como os
+[32:27] decía al principio del vídeo, si esto os
+[32:28] parece interesante, creéis que es algo
+[32:30] que os puede interesar aprender a hacer
+[32:31] todas estas cosas, desarrollarlas dentro
+[32:33] de vuestro proyecto, dentro de vuestra
+[32:34] empresa o incluso aprenderla para
+[32:36] vosotros, dar este servicio a empresas o
+[32:38] a pequeños negocios o incluso empresas
+[32:40] grandes, he decidido crear junto a la
+[32:42] escuela mastermind una sección pro, una
+[32:44] sección pro en la que vamos a hacer una
+[32:46] formación intensiva dedicada a enseñar
+[32:48] todo lo que he aprendido sobre esto,
+[32:49] incluso algunos conceptos de redes,
+[32:51] programación, ciberseguridad. Va a ser
+[32:52] un programa de unas 10 semanas que voy a
+[32:54] impartir personalmente yo con vosotros
+[32:56] en directo. No son clases grabadas ni
+[32:58] nada por el estilo. De hecho, va a ser
+[32:59] bastante personalizado a los perfiles
+[33:01] que entren y además conmigo va a haber
+[33:02] otros personajes bastante top del
+[33:04] sector. Así que si es algo que os puede
+[33:05] interesar os dejaré abajo un link para
+[33:08] más información. Y la gran duda que me
+[33:09] queda es, ¿realmente cualquiera puede
+[33:11] hacer esto? O sea, ¿qué conocimientos
+[33:13] técnicos necesitas para llegar a montar
+[33:14] algo por el estilo? Bueno, pues esto es
+[33:16] un poco a lo que irá centrada mi
+[33:17] formación, pero más allá de eso, un poco
+[33:19] lo que me lleva preocupando desde el
+[33:21] principio es cómo afecta esto a los
+[33:23] programadores, cómo afecta a la
+[33:24] industria del desarrollo de software.
+[33:26] Bueno, pues esto es algo que llevo
+[33:27] investigando muchos meses, he
+[33:28] entrevistado a muchas personas, como os
+[33:29] decía, he experimentado mucho yo mismo y
+[33:33] tengo muchas cosas que contaros al
+[33:35] respecto de esto, pero esto lo veremos
+[33:37] en otro vídeo. En fin, si te ha gustado
+[33:38] este vídeo, déjame una manito para
+[33:40] arriba, suscríbete al canal y nos vemos
+[33:41] en el próximo.

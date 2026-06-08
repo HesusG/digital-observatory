@@ -106,6 +106,15 @@
     @apply bg-bg border-2 border-border rounded-none shadow-pixel;
   }
 
+  /* Readable font for long-form content (draft bodies, reasoning) — the global
+     `* { font-pixel }` rule makes paragraphs hard to read, so opt specific text
+     blocks back into a normal sans-serif. Chrome/labels keep the pixel font. */
+  .font-read,
+  .font-read * {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    letter-spacing: 0.1px;
+  }
+
   /* Horizontal carousel for editor items */
   .carousel {
     @apply flex gap-8 overflow-x-auto flex-nowrap pb-2;

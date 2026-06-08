@@ -1,0 +1,239 @@
+Janus, avísale al equipo de edición que ya estoy grabando y ya sabes, cuando se termine de subir esta grabación al Nas les avisas de que hemos terminado. ¿Vale? Todo claro.
+
+Estás grabando el vídeo NG13. La IA maneja mi canal. Cuando termines de grabar se subirá al servidor automáticamente y yo enviaré un mensaje a los editores con la ruta para que empiecen a editar.
+
+Marcaré la tarea de grabar este vídeo como en curso y cuando termines como finalizada. También iré generando una transcripción para proponer unos primeros cortes y localizaré todos los vídeos de recurso que van a necesitar para importarlos en el proyecto. Ahora, concéntrate en grabar.
+
+Buena grabación. He dedicado los últimos 6 meses de mi vida a probar la inteligencia artificial. Primero estuve experimentando con contextos, luego con agentes.
+
+¿Qué [ __ ] acaba de pasar? Puse a la I a trabajar en proyectos dentro del canal. ¿Qué [ __ ] Y empecé a pasar a Linux prácticamente todos los ordenadores que tengo aquí en la oficina.
+
+Dejé de pagar aplicaciones como Slack Notion y empecé a pasar a aplicaciones open source, autohosteadas, que están directamente aquí y que son totalmente gratis para mí con ayuda de la inteligencia artificial. Y ahora, después de todo este tiempo, puedo decir que somos una empresa basada en inteligencia artificial. Y en gran parte el motivo por el que hice todo esto fue para terminar de entender yo mismo si esto realmente es una revolución o simplemente es humo.
+
+Porque sí, sí que es verdad que cualquiera os puede reconocer que la inteligencia artificial es útil en el día a día, al final te puede ayudar en un momento a mandar un email o es un atajo para no tener que buscar en Google o leer la Wikipedia. Pero para mí una forma importante de ver si todo este dinero que se le está invirtiendo, todo lo que se está haciendo con ella, realmente tiene algún tipo de sentido era ver si se puede aplicar a algo de negocios, o sea, si se puede aplicar a una empresa, un proyecto y hacer ganar dinero. Así que me puse el reto de integrar inteligencia artificial en todas las partes de mi proyecto que tuviese sentido.
+
+Pero a día de hoy puedo decir con bastante seguridad que somos una empresa basada en inteligencia artificial y el término que se usa hoy en día para esto es AI first, aunque tengo que decir que esa palabra no me gusta demasiado. AI first vendría a ser algo así como inteligencia artificial primero. A mí la verdad me parece un término un poco marketiniano, como lo fue en su momento Cloudbased o blockchain.
+
+Eran términos que se pusieron de moda y en un momento los llevaban todos los productos y todas las empresas. Creo que evidentemente hay una fiebre y hay una moda con el tema de la inteligencia artificial y sobre todo hay mucho fomo, o sea, mucho miedo a quedarse fuera de esta tendencia y no estar sacándole todo el provecho, como pasó antes justamente con las criptomonedas y con muchas otras cosas. Así que también de ahí viene un poco mi obsesión de convertirme en un experto en el tema, al punto de entrevistar varias personas del sector, viajar a Silicon Valley para hablar con desarrolladores, saber qué están haciendo con IA a día de hoy y hablar con muchos emprendedores, pero sobre todo estar aquí probando, probando, probando y experimentando.
+
+Y después de todo este trabajo, que hoy lo vais a poder ver y lo vais a poder juzgar en este vídeo, pues tengo que decir que realmente mi empresa no es AI First, sino que es Human First. Mi proyecto es Human First, asistido por IA. Y sé que suena una frase bonita, pero lo vais a entender mucho mejor a lo largo de este vídeo.
+
+Y te aviso desde ya que si le ves el valor, te parece interesante todo lo que yo te voy a mostrar en este vídeo dentro de Mastermind, que es nuestra escuela de tecnología. Vamos a crear una sección pro en la cual vamos a impartir una formación intensiva y personalizada, en la cual vamos a estar mano a mano con vosotros enseñando cómo utilizar la inteligencia artificial para cosas reales, para ahorrar trabajo, automatizar procesos, hacer mucho más con menos. Si esto te interesa, dejaré abajo en la descripción un link para que te puedas apuntar y dentro de poco enviaré más información.
+
+Yo he sido programador, desarrollador de software gran parte de mi vida y por eso mi forma natural de pensar y de ver las cosas es intentar automatizar, recortar pasos, crear programas que resuelvan problemas. El software al final del día lo que hace es automatizar tareas o simplificar tareas que antes, como seres humanos, nos llevaban mucho trabajo. Mismamente el email.
+
+Antes es que literalmente nos teníamos que enviar cartas de papel. Había que escribirlas, meterlas en un sobre, enviarlas. Un tío las tenía que traer hasta tu oficina y tú las tenías que abrir.
+
+Ahora es todo automático. En el mundo tradicional tenemos, por un lado la automatización. Todo lo que es lógico, predecible, se puede automatizar.
+
+Y luego tenemos a los humanos. Los humanos hacen tareas que solo los humanos pueden hacer, como por ejemplo las relaciones humanas, tener ideas creativas, tomar decisiones, ciertos trabajos manuales, resolver situaciones complejas, poner ese criterio, el ojo crítico, ¿no? Bueno, pues la inteligencia artificial entra justo en medio de estas dos.
+
+literalmente busca imitar la inteligencia del ser humano para hacer tareas que antes los ordenadores no podían hacer, saber comportarse en situaciones que no están del todo previstas e imitar un poquito, ¿no?, el comportamiento del ser humano. Tareas que no se pueden automatizar con programas de toda la vida y que necesitan un poco de inteligencia que pueda tomar decisiones y entender formatos raros o cosas que una máquina tradicional pues haría que entre totalmente en colapso. Y este va a ser un poco el futuro de las empresas y de la humanidad.
+
+¿Hay quien cree que directamente la inteligencia artificial va a reemplazar al ser humano. Yo creo que siempre vamos a tener estos tres roles: el rol de la automatización y las máquinas, el rol del humano y el rol de la inteligencia artificial. El tema es que sí, probablemente la línea entre inteligencia artificial y humano se irá moviendo más hacia el lado del humano.
+
+Pero para poner esto en práctica y entender esto mucho mejor, te voy a explicar cómo funciona mi empresa. Si estás experimentando con agentes de inteligencia artificial, automatizaciones o cualquier proyecto que necesite correr programas sin interrupciones 247 como mismamente Open Clow, ya sabes lo que eso implica, ¿no? tener un ordenador siempre encendido que no a todo el mundo le encaja y sobre todo según el PC que tengas incluso se te puede quedar un poco corto a nivel de recursos para ciertas aplicaciones y por eso HostGator acaba de lanzar sus VPS con OpenCl ya preinstalado.
+
+O sea, básicamente tú contratas un servidor que tiene almacenamiento NVME, memoria DDR5 y una CPU de alto rendimiento y ya te viene con un agente de inteligencia artificial listo para funcionar desde el minuto uno, sin instalar, sin pelearte con dependencias, muy poca inversión de tiempo. OpenClog, que si no lo conoces, hice un vídeo hace muy poquito en el canal explicándolo a fondo, básicamente es una aplicación open source que instalas en tu ordenador y se convierte en tu asistente personal. Recuerda cosas en su memoria, ejecuta tareas, se encarga de tu mensajería, tus mensajes, tu mail, gestiona archivos y muchísimas cosas más.
+
+Y si lo que necesitas es algo más sencillo, como por ejemplo una página web de toda la vida, HostGator también te cubre. Con inteligencia artificial puedes montar una página web personalizada sin tocar ni una sola línea de código. Le dices el nombre del proyecto, el nicho, el objetivo y la guía te genera la estructura, diseño, texto, secciones, un poco todo.
+
+En menos de 10 minutos tienes una web lista para publicar con dominio, correo profesional y encima hasta cuatro veces más rápida. que la competencia, que eso para Google importa muchísimo. Tenéis el link en la descripción con un descuento exclusivo.
+
+Gracias a HostGator por patrocinar este espacio y ahora sigamos con el contenido de hoy. Mi empresa básicamente es una productora de vídeos. Nosotros aquí lo que hacemos son vídeos como el que estás viendo ahora mismo, los subimos a YouTube, a redes sociales y nuestro modelo de negocio es vender publicidad dentro de estos vídeos.
+
+Cuando miras este vídeo en YouTube, hay momentos en los cuales el vídeo se para, aparece un anuncio de YouTube o mismamente hay un trozo del vídeo donde aparece pues un mensaje de un sponsor. Esa parte del vídeo es la que nosotros cobramos y es lo que nos permite ganar dinero, además de algunos proyectos específicos patrocinados que hacemos, ¿no? Para hacer todo esto, bueno, pues los vídeos llevan bastante trabajo, no te voy a mentir, tenemos un equipo de gente, pero cuando yo empecé con todo esto, estaba simplemente yo en mi habitación con un ordenador y una cámara y mi proceso era muy caótico.
+
+Yo simplemente pues pensaba de que me apetece hacer un vídeo y no tenía ningún orden, ningunas reglas, simplemente hacía las cosas pues como me apetecía ese día. Pero luego con el tiempo, cuando empecé a trabajar con más gente, porque yo ya no daba más abasto, pues empecé a entender que para que este proyecto pudiese funcionar y la gente pudiese trabajar conmigo, necesitábamos reglas y procesos. Así que después de casi 10 años haciendo vídeos en YouTube, llegué a una estructura bastante clara de cómo funciona todo aquí.
+
+¿Cómo se hace un vídeo en mi canal? Bueno, pues primero que nada hace falta una idea. Este es un Mac de 16 pulgadas M5 Max.
+
+Imagínate que quiero hacer una review de este Mac. Bueno, pues el primer paso sería tener la idea. Vale, ya la tengo.
+
+Pero cuando llega la hora de la verdad, hay que bajar esa idea a tierra, o sea, todos los requisitos que necesito para hacer este vídeo. Lo voy a comparar con algún otro ordenador. Bueno, pues estos son requisitos.
+
+Tercer paso, ponernos a investigar, entender el producto, de dónde sale, a quién está dirigido, cómo funciona, hacerle pruebas. Vamos, experimentar, investigar y una vez que tenemos todos esos datos, podemos hacer un guion. Hacer el guion sería escribir todo lo que voy a decir en el vídeo.
+
+Los vídeos nunca son improvisados, todo lo que digo está perfectamente planificado. Luego llega la fase de hacer lo que estoy haciendo ahora, o sea, grabarme hablando a cámara, explicando lo que tengo que explicar. La siguiente fase sería grabar los productos, ¿vale?
+
+Esto se puede hacer antes o después o en paralelo, que sería que venga un cámara aquí, coja este portátil, lo grabe en distintas escenografías con distintas iluminaciones. Luego tocaría la edición, que es una fase también bastante larga. Normalmente el vídeo se tira una semana en edición.
+
+Por último, se revisa, se exporta, se hace la miniatura, el título y se va para YouTube. Y todo esto tiene un montón de pasos intermedios. Pero es que además para poder hacer todo esto hay otra gente.
+
+También tenemos por un lado el tema de compras, ¿no? Alguien tiene que comprar este portátil. Finanzas, alguien tiene que decir que esa compra está bien y que no nos vamos a la banca rota el mes que viene.
+
+Si vamos bien en balance, mal, presentar impuestos, pagar lo que se tenga que pagar. Al mismo tiempo hay almacenaje. ¿Cuántos Max de estos he tenido que conseguir?
+
+o cuántos portátiles, placas base. También hace falta alguien que asigne todas esas tareas y se fije que los vídeos no se vayan de madre, ¿vale? Porque puede pasar que yo tenga un calendario con los próximos 20 vídeos, pero el vídeo que estoy haciendo ahora se alarga un montón porque hay una cosa de este portátil que no consigo sacar y no consigo entender y vuelvo a hacer pruebas y esto me retrasa otra semana y los siguientes vídeos ya no salen, los sponsors se enfadan y esto es algo que vivimos aquí en el día a día.
+
+O sea, el tema de la planificación y project management es un infierno en un canal de YouTube, sobre todo para nosotros, que tenemos añadida esa parte de que no es simplemente sentarte a cámara y contar cualquier cosa, lo cual me parece fantástico y me encantaría que fuera así, pero nosotros tenemos que hacer un trabajo extra de investigación, de pruebas, de conseguir cosas, etcétera, etcétera, que hace que los vídeos se a veces se alarguen muchísimo. Y ya los de moding, ni te digo, o sea, no he ni siquiera hablado de moding, ¿vale? Cuando un vídeo es de moding, ahí sí que se abre toda una fase extra de producción que puede durar incluso varios meses y que normalmente se hace en paralelo a todo lo otro.
+
+Y luego hay una parte de informática y desarrollo. ¿Por qué? Pues porque alguien tiene que montar los sistemas para guardar toda esta información, que si alguien se le rompe el ordenador o no se puede conectar al servidor, él nos da una alerta, o sea, pasa cualquier cosa, pues tiene que haber un técnico informático que adivinad quién es, vaya sorpresa soy yo en este caso.
+
+Y además, por cierto, tenemos ventas, que es la persona que se encarga de hablar con las marcas, [ __ ] el teléfono, mandar emails y conseguir que todos esos prerrolls de los vídeos, todos esos anuncios al principio del vídeo, esos resaboración, todo eso se venda para mantener esto con vida, ¿no? Aprovecho para decir que tenemos una serie de líneas rojas que nunca cruzamos, nunca aceptaríamos que este vídeo del Mac, por ejemplo, fuese pagado por Apple, ¿vale? Porque es una review honesta.
+
+Y si fuera así, al principio del vídeo diría, "Este vídeo está patrocinado por Apple y si no lo hiciera, la ley me perseguiría porque eso es ilegal en España." Vale, simplemente que lo sepáis. Bueno, pues en todo este sistema, los últimos 10 años he tenido muchísimos puntos de dolor, o sea, muchas cosas que no han funcionado bien de ninguna manera. El primer problema de todos es que la gente creativa es caótica, o sea, todos los que editamos vídeos, grabamos, escribimos, hacemos todo este tipo de cosas, ¿sí?
+
+Eh, nos gusta la informática, en parte somos informáticos y los informáticos son muy organizados, pero aquí no es el caso. Se nota que es un entorno creativo y es muy difícil predecir las fechas, es difícil predecir cuándo van a seguir las cosas porque la inspiración no siempre viene y las cosas no siempre salen como uno quiere. Y como os decía al principio del vídeo, yo vengo del mundo del desarrollo de software, de la programación.
+
+Por eso, desde el día cero, prácticamente, desde que tuve equipo, empecé a aplicar la metodología agile. Empecé a usar Scram, Gira, Canvans Standup Meetings, todas estas cosas, ¿vale? Si no sabes lo que son, no te preocupes.
+
+Simplemente técnicas que se usan dentro del mundo de desarrollo de software para organizar el trabajo y más o menos nos ha ido bien con muchos peros. Pero luego tengo muchos otros problemas que son muy específicos. O por ejemplo, a mí siempre me hubiese gustado tener un programa hecho a medida que me permita controlar todo el flujo de los vídeos de inicio a fin, incluyendo estadísticas, pudiendo asignar los anuncios directamente a los vídeos, ¿vale?
+
+De forma superfácil y visual. Vamos, poder entrar en una aplicación y tener ahí el briefing de la marca, cuánto va a pagar, cuándo tiene que salir, el guion, el estado de la edición, o sea, todas las cosas relacionadas con un vídeo y cómo va ese vídeo en este momento, pues tenerlo en una aplicación web. Pero claro, hacerte un programa tuyo a medida es algo que para la mayoría de empresas no tiene sentido, porque tienes que contratar un desarrollador que se va a encargar del desarrollo que puede tardar 6 meses o más luego de mantenerlo, evolucionarlo, etcétera, etcétera.
+
+Y eso tiene un coste tan alto que para muchas empresas directamente no se lo pueden permitir. Y este es mi caso. Muchos de estos perfiles es que no me los puedo permitir, o sea, no puedo tener toda la gente que me gustaría tener dentro de la empresa.
+
+Y por eso muchos de los que estamos aquí vamos un poco ahogados, vamos haciendo cosas que a veces no nos tocan y que no hay nadie que haga. Y este es el día a día de la mayoría de empresas pequeñas y medianas en España, ¿vale? Es algo que viven prácticamente todos.
+
+Y aquí es exactamente donde he ido a atacar con la inteligencia artificial. Lo primero que hice fue un análisis financiero de mi empresa, de todos los gastos que tenía, de todo lo que estaba, bueno, perdiendo dinero para deducir exactamente de qué puede ser un gasto o de qué no, pues sí que hace falta una cierta inteligencia. Y ahí fue donde metí el primer LLM.
+
+Le hice analizar los gastos uno por uno y con una serie de herramientas. Esto ya os lo expliqué en otro vídeo, pues podía mirar en mi mail, en una base de datos, en una serie de aplicaciones y cosas, incluso buscar en Google el nombre de la empresa para entender para qué habíamos comprado eso y de esa manera me catalogué todos los gastos desde el inicio de la empresa hasta ahora y me di cuenta de que me estaba gastando una pasta increíble en programas para organizar todo, o sea, que si no es Slack, no sé qué, tal y cual, y decidí, pues, en parte como contenido para el canal, empezarme a quitar todas estas aplicaciones y montar alternativas open source. Me monté el element para el chat, me quité el Slack, lo dejé de pagar, dejé de pagar Notion y me monté outline y el resto de aplicaciones como Gira, que lo usaba para las tareas y algunas otras que teníamos por ahí, decidí integrarlas en Orion.
+
+Como os dije antes, hay un montón de pasos para hacer un vídeo y la verdad es que siempre nos ha costado mucho tener todo bajo control y todo bien organizado y no sentir que es una gran pérdida de tiempo, ¿no? Incluso las pruebas de rendimiento. Nosotros hacemos pruebas de rendimiento en el canal, cogemos ordenadores, los probamos, los probamos a fondo y luego sacamos todos esos números.
+
+Al principio los poníamos en un Excel. Luego creo una aplicación con una base de datos donde los puedes meter. Al final, lo que os decía, no soy programador, pues me hice esta aplicación.
+
+Luego esto genera unas gráficas que aparecen dentro de mis vídeos. Todas las gráficas estas que veis en los vídeos están generadas desde mi base de datos con HTML. Esta ya es una aplicación que desarrollé yo a medida para el canal y a lo largo del último año, 2 años, esta aplicación ha ido creciendo, le he ido metiendo más y más cosas.
+
+En un momento le puse un módulo de inventario, ¿vale? Porque aquí tenemos tantas cosas de tantos años que, bueno, que nos sirven para los vídeos, los usamos para montar ordenadores, para hacer cosas y todo esto pues tiene que estar inventariado, ¿no? Necesito una lista de todo lo que tengo en el almacén.
+
+Así que lo que hice fue crear una aplicación donde tengo el tracking de todo y además una foto de cada elemento con su número de serie y más o menos intentar recordar de dónde salió y para qué lo compramos y si está nuevo o no. Y todo esto no es inteligencia artificial, o sea, todo esto lo programé yo como desarrollador de software antes de la era de la inteligencia artificial. A mí hacer toda esta parte de software, o sea, hacer nuestro programa, eh lo que hacía era que yo me quedase algunos días por la noche, algunos fines de semana hasta muy tarde, programando, cambiando cosas.
+
+Era un poco mi proyecto personal que yo hacía en mi tiempo libre, pero claro, con la inteligencia artificial ya me animé. ¿Qué pasa si le doy mi proyecto a la inteligencia artificial? Y ahí la cosa se empezó a acelerar muchísimo más.
+
+Orion es la forma definitiva y la aplicación central. es la evolución de aquella aplicación que creé al principio para para los benchmarks y que luego fue evolucionando. Bueno, pues Orion a día de hoy es el sistema operativo de todo el canal.
+
+En Orion está toda la operativa de toda la empresa concentrada en un programa y esto pues lo empecé evidentemente desarrollando yo, pero en el momento en el que metí la inteligencia artificial ya la cosa fue muchísimo más rápido. Te estoy hablando de un por 10 fácilmente. A día de hoy todo este flujo está manejado directamente dentro de Orion.
+
+O sea, Orion tiene todo el conocimiento de todo lo que pasa, todas las tareas del equipo, tiene un canvan, tiene las fases de los proyectos, los próximos vídeos que van a salir, maneja el calendario de Google Calendar, está sincronizado con la parte de ventas, pero tengo más software hecho a medida. Como yo os conté en un vídeo, yo ya no grabo con tarjetas, esta cámara que me está grabando ahora mismo y este micrófono están conectados a ese ordenador. Ese ordenador tiene Linux donde está grabando esto directamente en una tarjeta capturadora, cosa que cuando yo termine de grabar termina de subir el último trozo, recompone todo el vídeo y esto ya queda listo para los editores.
+
+No hay tarjetitas ni nada por el estilo, pues hay bastantes partes en las que ya hemos metido software que automatiza, ¿no? Pero hasta aquí, como podéis ver, no hay nada de inteligencia artificial. La única inteligencia artificial que estoy usando, la estoy usando para desarrollo de software IT, ¿vale?
+
+O sea, dentro de todos estos procesos que hace mi empresa, de momento lo que os he contado hasta ahora, simplemente tenemos inteligencia artificial a la hora de manejar los servidores y hacer el desarrollo de software. Esto es algo en que la inteligencia artificial realmente es muy buena, pero que la inteligencia artificial realmente no lo hace sola. Esto es una mentira, ¿vale?
+
+En realidad estoy yo detrás, yo sé lo que quiero montar, sé lo que quiero hacer, sé cómo funciona y yo hablo con la inteligencia artificial y le delegoo tareas. Las cosas que hace realmente no necesitan tanto pensamiento, ¿vale? lo que está montando realmente son aplicaciones bastante estándar, son cosas que están documentadas, que hay manuales que te explican un poco cómo hacerlo, cómo utilizarlo, cómo configurarlo.
+
+No hay muchísima, muchísima creatividad dentro de lo que hace, pero sí que hay un humano detrás que está pensando cómo resolver todos esos problemas. Así que si la IA a día de hoy es mi desarrolladora, todo el resto hasta aquí son automatizaciones, entonces, ¿cómo puedo decir que mi empresa está potenciada por IA? Bueno, pues aquí viene la parte interesante.
+
+Primero que nada, una de las cosas que me preocupaba a la hora de usar inteligencia artificial era tener algún servidor de inteligencia artificial aquí directamente en la oficina. Y efectivamente tengo un servidor de inteligencia artificial y ese servidor ya lo habéis visto en un vídeo del canal. Esta bestia de aquí con un Thread Reaper.
+
+Este Thread Reaper, este es un eh Oye, Janus, he subido un vídeo de un Thread Reaper hace, no sé, unos meses. ¿Me puedes decir qué hardware tenía ese ordenador, por favor? El vídeo era el del Tradriper 9995WX, el PCE bruto de unos 30,000 € La base del ordenador era un procesador MD3riperer de 96 núcleos montado sobre una placa Gigabyte RX50 con memoria RDIN de servidor.
+
+Almacenamiento Samsung 990 Pro líquida custom de Eca Waterblocks. La gráfica no era una gráfica gaming normal, era una RTX Pro 6000. Sus datos importantes son estos.
+
+Tiene 96 GB de memoria de vídeo GDDR7 con corrección de errores, un bus de 512 bits y casi 1,8 teras por segundo de ancho de banda. Con 96 GB de memoria de vídeo puedes cargar modelos y pipelines que en una GeForce normal directamente no caben. Bueno, pues esto que acaba de pasar es porque tenemos dentro de ese mismo servidor donde hay una RTX 6000 Pro, que es la gráfica más avanzada que tiene Nvidia, que puedes pinchar en un PC.
+
+Más allá de ahí tenemos que ir ya por servidores de IA. Pues en este servidor tengo corriendo una base de datos semántica donde están metidos todos mis vídeos de la historia del canal. Cada vez que yo saco un vídeo en el canal, toda la transcripción, contenido y todo lo que ha pasado con ese vídeo se mete dentro de esa base de datos, por lo cual ese ordenador sabe todo lo que hemos hecho, hablado y ha salido en el canal en cualquier momento.
+
+Y esto es superútil, por ejemplo, para lo que acaba de pasar ahora mismo, ¿vale? Yo literalmente no me acordaba qué PC era ese, pero como para muchas otras cosas, mismamente para que un editor le pueda preguntar en cualquier momento dónde exactamente ha salido un producto, en qué vídeo, qué vídeo tiene que utilizar para la persona que hace las ventas saber si hemos hecho ya un vídeo de ese tipo y todo eso está corriendo en ese servidor. Pero también tengo otra herramienta que me hice yo mismo con inteligencia artificial.
+
+Esa herramienta yo le llamo Mindmap, ¿vale? Básicamente yo antes pagaba Miro, que es una aplicación de pago para hacer mapas mentales. Ahora tengo mi propia aplicación, que es esta que estáis viendo, todo el guion que que os estoy leyendo ahora mismo, ¿vale?
+
+lo que os estoy contando. El día de hoy no tengo un guion literal, sino que está basado en todo este árbol que he ido creando yo en base a mis ideas y todo lo que os quería contar. Y bueno, pues esta es una aplicación en la que tengo incluso distintas versiones y tengo un botón que me permite con inteligencia artificial chequear si lo que estoy diciendo está bien o incluso investigar más a fondo un punto.
+
+Pero no solo eso, sino que todo este mapa mental automáticamente genera un guion y todo ese guion acaba automáticamente en cosmos donde yo me puedo ir y luego a partir de ahí en base a esa ese cascarón, ese guion base creado en base a todos mis puntos de mi árbol de ideas, puedo luego si quiero, si quisiera, por ejemplo, en este vídeo no lo he hecho, ¿vale? Pero yo podría terminar de redactarlo y hacerlo de forma muy exacta. Los guiones es algo de lo que me encargo yo desde hace muchos años.
+
+He tenido algún guionista en alguna época, pero a día de hoy pues me encargo yo de esto. Y como veis, tengo una herramienta hecha a medida para esto que encaja perfectamente con mi flujo de trabajo y tiene integrada inteligencia artificial. Y aquí es donde sale el gran debate.
+
+Me he encontrado mucha gente en el día a día que piensa que los creadores de contenido hacemos prácticamente todo con inteligencia artificial, no solo en algunos de vuestros comentarios, sino literalmente por la calle o hablando con amigos. La gente cree que a día de hoy todos los guiones y todo lo que hacemos está creado literalmente por inteligencia artificial. O sea, que yo me voy a chat GPT, le pido, "Hazme un guion de este tema y luego vengo aquí y simplemente lo leo." Y esto es algo en lo cual la a día de hoy, por lo menos, no es suficientemente buena, no es suficientemente buena para hacer los vídeos que yo quiero hacer.
+
+Y estoy totalmente convencido de que la personalidad, la forma de pensar, la forma de hacer las cosas, cómo somos en sí, es algo que que nos hace únicos a los creadores de contenido y es lo que al final hace que la gente nos vea, ¿no? Y de hecho hablé de esto con muchos creadores de contenido, muchos que son al final colegas, ¿no? Les he preguntado a muchos de ellos si usaban la inteligencia artificial para hacer guiones.
+
+Te estoy hablando desde Bybite a Ecomonos. No sé, es que os podría hacer una lista larguísima ahora de gente a la que le he preguntado si usan la inteligencia artificial para sus vídeos y todos me han dicho que lo intentaron, pero que no es suficientemente buena a día de hoy para poder hacer los guiones. La verdad es que la IA hace resultados bastante predecibles, bastante iguales y en mi opinión no sirve hoy en día para esto.
+
+Y ahí es donde el humano justamente aporta valor. Y aunque tú no estés de acuerdo conmigo y creas que la IA pues nos va a reemplazar a todos, que puede ser, ¿vale? Aunque yo creo que el humano seguirá aportando valor, pero puede ser que la nos acabe reemplazando también a los que hacemos contenido.
+
+En mi caso, yo decidí poner aquí la línea, o sea, la línea para mí que no se cruza es esta de aquí. Nosotros en el equipo aportamos valor en la parte creativa. Parece muy sencillo escribir un vídeo sobre un Mac como este, pero hay tantas cosas de las que se puede hablar.
+
+Yo, por ejemplo, la review que hice de los Mac Pros de esta generación, en lugar de centrarme en la potencia, en la pantalla y ese tipo de cosas, hablé de los marcos, hablé de cómo el ángulo de las curvaturas y la forma del chasis que tiene esta nueva generación de MacBook Pro era una alegoría. Hacía referencia a la época en la que Apple era libre de procesadores Intel y trabajaba con Power PC y representaba un poco esta nueva época. Bueno, me centré mucho en la forma del portátil, en el diseño, en la parte de ingeniería, incluso con los nuevos iPhones.
+
+Cuando hablé de los tres nuevos iPhones, pues también dije una cosa que me salió a mí totalmente de la manga y en ningún momento hablé ni siquiera de las cámaras. Vosotros pensaréis que es una idea terrible y la inteligencia artificial también lo piensa. O sea, si yo le pregunto a la parece este vídeo buena idea pues muchas veces me dicen, "No, es una idea terrible, pero luego ese vídeo tiene millones de visitas." Pues esas cosas, esas ida de olla son las que nos hacen a los humanos distintos.
+
+Es la diversidad humana. Esa capacidad de ser únicos, de hacer las cosas de autor, son las que la inteligencia artificial de momento no puede hacer. Tú puedes hacer tareas creativas y apoyarte en la inteligencia artificial para tu arte, pero al final si no tiene ese ingrediente humano, en mi opinión eso no tiene recorrido.
+
+Así que yo aquí marqué una línea. En mi canal los humanos nos encargamos de la parte artística. El arte lo hacemos nosotros.
+
+La IA se encarga de hacer todo lo que a nosotros no nos apetece hacer. Por eso os decía antes que mi empresa es Human First, AI Powered, humanos primero potenciados por inteligencia artificial. Pero esto acaba de empezar.
+
+También tenemos un software de edición donde se usa inteligencia artificial. Yo ahora pues no sé cuánto llevo grabando, os lo voy a decir, ¿vale? Llevo 1 hora 20 minutos diciendo tonterías delante de la cámara.
+
+Esto se lo traga el editor, se lo tiene que tragar entero, cortarlo y sacar un vídeo que dure más o menos media hora sin dejar nada importante fuera. Pero bueno, lo cierto es que yo me equivoco, repito cosas, hay veces que algo no me gusta como suena y él se dedica pues a cortar, cortar, cortar, cortar. Bueno, pues tenemos una aplicación de inteligencia artificial que se mira todo el vídeo, lo transcribe, marca cada palabra, detecta repeticiones, conceptos y quita lo que sobra.
+
+Esto evidentemente no es definitivo. Él luego tiene que hacer una segunda pasada y corregir muchas cosas. Aún no es perfecto, pero le ahorra algo de tiempo.
+
+Eso le genera un proyecto de Da Vinci Resolve, que ya lo tiene cargado directamente en la base de datos, donde además en este mismo proyecto importa en una carpeta todos los productos de los cuales yo he hablado en este vídeo. Por ejemplo, yo ahora mismo he hablado de este Mac. Así que en el proyecto de Da Vinci Resolve hay una carpeta sobre este Mac o Mcs similares donde tiene planos de recurso que si quiere puede utilizar de nuestra propia base de datos porque nosotros tenemos una base de datos de productos que hemos grabado a lo largo de los años y todo eso está cacheado dentro de la base de datos de conocimiento del canal, por lo cual sabe exactamente la ruta de cada uno de los archivos y no es IA en sí, sino que es una automatización, ¿vale?
+
+Al final es software, pero ese software me ayudó la IA a hacerlo, o sea, mi informático. Pero para todo ese otro trabajo de corte que tenemos partes de inteligencia artificial que corren directamente en nuestra A6000 Pro. Somnus es una aplicación que se encarga de escanear todos los vídeos que hay en el Nas.
+
+Coge varias capturas de pantalla de los vídeos, las analiza con inteligencia artificial, en base a la carpeta en la que está deduce de qué producto se trata y se encarga de todos los planos útiles, todos los que se pueden meter en la librería porque son planos de broll, por lo que intuía la IA, a los comprime a una décima parte de su tamaño, manteniendo la máxima calidad posible y los mueve a otra unidad del servidor que está pensada para tener nuestra librería de imágenes de productos y además las indexa para que cuando el editor pues las busque las pueda encontrar. Y gracias a esto tengo todo prácticamente digitalizado, todo lo que tenemos en el almacén, todos los vídeos que hacemos, todo el contenido de los vídeos, los acuerdos, el progreso, las tareas, tarjetas, o sea, tenemos prácticamente todo lo que pasa aquí dentro un clon digital dentro de nuestros servidores, gracias a software hecho a medida y algunas rutinas de agentes que nos ayudan a mantener estos datos y todo eso hace muy fácil que esto exista. Preséntate y dime todo lo que puedes hacer.
+
+Soy tu asistente operativo. Puedo mirar cómo van tus vídeos, tareas, campañas, servidores y documentación. Si me preguntas algo, no me quedo en una respuesta genérica.
+
+Busco en tus herramientas, cruzo datos y te digo que está pasando de verdad. También puedo transcribir audios, mandarte respuestas por WhatsApp, preparar audios, avisar al equipo cuando el contacto está confirmado, buscar cosas que dijiste en vídeos antiguos y recordar decisiones importantes para no repetir errores. La idea es simple.
+
+Tu pregunta se dictas algo rápido y yo me encargo de investigar, resumir, avisar o dejarlo apuntado. Menos caos, más control. Antes os hablé de Orion, que es el sistema operativo de N Gentile, ¿vale?
+
+Es el software que controla todo lo que pasa aquí dentro. Bueno, pues yo no entro prácticamente nunca dentro de Orion, sino que es Janus el que se encarga de manejar a Orion y solo yo tengo acceso a Janus. Janus está basado en Deepsek V4, que corre en la nube en un servidor privado, no es cloud ni nada por el estilo.
+
+Tiene acceso absolutamente a todo lo que tenemos en la empresa. Tiene acceso a todo lo que es Orion, a todos los datos, pero además tiene acceso de lectura a mi correo, a mis calendarios y a unas cuantas cosas más. Todo su flujo de trabajo está dirigido según rutinas muy específicas.
+
+De hecho, los lunes por la mañana, por ejemplo, ejecutamos la rutina de los lunes. Él me plantea los reels que tendrían que haber salido la semana pasada, el vídeo que tendría que haber salido la semana pasada, las tareas que se tendrían que haber hecho, me cuenta lo que ha hecho el equipo, vemos si es realista llegar a sacar ese vídeo. Si no lo es, lo aplazamos y movemos los vídeos.
+
+Analizamos qué vídeos tenemos que sacar. A ver si hay uno más fácil que se pueda mover para esta semana. Tiene en cuenta mi calendario, ¿sabes?
+
+si voy al dentista, si me voy de viaje, si voy a la Comutex ahora, por ejemplo, la semana que viene me voy. Tiene en cuenta un montón de factores que tiene gracias a que todo está digitalizado. Además, tiene acceso a la configuración de toda la infraestructura y puede mandar a nuestro informático, que todavía no le he puesto nombre, le voy a llamar Dimitri, ¿vale?
+
+Puede mandar a Dimitri a arreglar, conectarse a cualquier servidor y mirar cualquier cosa. Y esto Janus lo puede hacer porque todas las aplicaciones que tenemos aquí tienen una puerta trasera. Tiene una puerta trasera que es una API.
+
+La API le permite a Janus hablar con todos estos servicios y Janus tiene una gran cantidad de skills relacionadas con el conocimiento del canal, otras con acceso a los guiones, otra con acceso a la facturación, otra con acceso a las tareas, etcétera, etcétera, etcétera. Evidentemente tiene conexión con moneta. Si yo estoy en un sitio, compro una cosa, le puedo mandar una foto de una factura directamente a Janus y él meterla donde toca dentro de la facturación.
+
+Le puedo preguntar cuántos acuros se cerraron esta semana, puedo planificar los próximos vídeos, le puedo dar una idea y decirle que me cree un template de vídeo y sobre todo que le avise a todo el equipo de esa idea, le pida feedback y ya no sé es un ser todopoderoso que únicamente habla conmigo, pero también la puede hablar con el equipo a través de Fama. Fama es pues otra diosa romana que como veis todos son dioses romanos. Todas las unidades del NAS, todo lo que tenemos aquí son dioses romanos.
+
+Fama se encarga de hacerle follow up al equipo. Yo sé que el equipo pasa de mi cara, no se meten en las tareas, no las miran, no las mueven, no me las tachan. O sea, los artistas son así, tío.
+
+O sea, me cuesta mucho y no quiero estar encima de ellos con el látigo. Así que lo hace fama, fama. Les escribe, les pregunta, ¿cómo vas con esto?
+
+Y simplemente les mandan un audio. Oye, voy así, así, así. Y Fama se encarga de modo las tarjetas actualizar y tener exactamente el progreso de cada proyecto actualizado en todo momento.
+
+Y también hay muchísimos otros proyectos de los que ni siquiera os he hablado. Por ejemplo, la nueva página web que sustituye al Link Tri, que está hecha totalmente con inteligencia artificial. Y luego también hemos lanzado una newsletter, que por cierto, si no te has apuntado, apúntate.
+
+¿Cómo funciona la newsletter? Bueno, pues yo le mando un audio lo largo que quiera a Janus hablándole de un producto que me haya gustado esta semana, reflexiones, cosas que estemos haciendo. Bueno, un poco le hago como si fuera una entrada de un diario.
+
+Janus se encarga de conectar con el servicio de newsletters, que también es un software desarrollado por nosotros. Cuando digo nosotros somos Dimitri y yo. Y en este software se monta una newsletter basada en todo lo que yo dije, que yo tengo que revisarla, cambiar las palabras que no me gusten y directamente enviarla, ¿vale?
+
+Porque justamente si no quisiese yo escribir una newsletter directamente no la mandaría, ¿vale? La gracia de esto es que me apetece contaros más sobre mí. Pero evidentemente el trabajo de montar todo ese servidor, de meterme en la web, de redactar, de preparar distintos recursos, de buscar links, todo esto lo puede hacer una inteligencia artificial.
+
+Tengo una gente que sigue una serie de pasos muy estrictos y monta todo este email para que yo luego lo pueda revisar. Hola, Janus, te mando este audio para preparar la newsletter de mañana, ¿vale? Esta semana ha sido la Comutex.
+
+Comutex, para los que no sepáis, es un evento que se hace en Taiwán todos los años. es una de las ferias de tecnología más importantes del mundo. Está muy enfocada en el mundo de PC, tanto PC gaming como servidores, como chips, ordenadores y todo este tipo de cosas.
+
+Es mi evento favorito, no voy a mentir. Me encanta venir aquí a Taiwán. Y desde hace unos años ya la cosa venía decayendo.
+
+Venía decayendo porque la industria cada vez está avanzando más lento. Y todo esto es posible porque yo tengo procedimientos. Todo lo que hago está procedimentado y lo que hago es que la IA siga mis procedimientos.
+
+Lo que se puede hacer con un procedimiento, con un proceso, con una serie de pasos, lo puedo delegar a la inteligencia artificial. la parte creativa, la parte de pensar, inventar de ya no me apetece hacer esto, ahora el canal va a hablar de esta cosa totalmente distinta o voy a hacer blogs en Estados Unidos o me apetece hablar de inteligencia artificial o me quiero montar un servidor o quiero pasar a Linux, todas estas cosas, esto es la parte humana. Por eso mi empresa es Human First.
+
+Las tareas que son una tortura para los artistas y para los humanos las hace la IA y el resto las hacemos nosotros. Por lo cual la IA me ahorra costes, me libera tiempo y me ahorra problemas y fallos humanos, incluso en ciertas tareas. Y entonces a lo largo de todo este tiempo me fui dando cuenta de una cosa muy importante, una de las preocupaciones más grandes que tiene la gente a día de hoy es que la inteligencia artificial te deje sin trabajo.
+
+No te voy a mentir, las cosas pintan raras, estamos en tiempos un poco extraños y no sé lo que puede llegar a pasar dentro de 10 años. Lo que sí te puedo decir es que lo que yo estoy viendo es que un tío como los conocimientos técnicos suficientes, dedicándole el suficiente tiempo a investigar todo esto, pero sobre todo con una base sólida anterior de cómo funciona mi empresa, de cómo funcionan los sistemas informáticos, de cómo funciona todo esto, pues yo he conseguido implementar una cosa para la que antes hubiese necesitado mucho más tiempo, más gente y más dinero. Ahora con menos tiempo, menos dinero y menos gente, o sea, prácticamente con nadie, lo puedo hacer todo yo.
+
+Y tú podrías pensar que esto significa que hay gente que se va a quedar sin trabajo, pero yo lo que te digo es que yo tampoco iba a contratar a nadie para hacer eso. Literalmente no lo iba a hacer. O sea, iba a seguir trabajando como antes, aunque me costase más.
+
+Esto, ¿qué significa? Pues significa que se abre un nuevo hueco en el mercado. Antes una pequeña empresa como la mía no se podía permitir el lujo de contratar un año a un programador y tenerlo ahí cobrando una pasta, desarrollando un programa simplemente para que mover tarjetas y tareas sea más cómodo, ¿vale?
+
+o para que esté todo centralizado. Este era un gasto difícil de justificar y difícil ver incluso cómo me va a dar esto dinero, ¿no?, algún día. Sin embargo, ahora podría aparecer el perfil de una persona que es técnica, que tiene conocimientos técnicos y que en cuestión de semanas o pocos meses puede automatizar gran parte de las cosas de la empresa, hacer software específico y crear maravillas como lo que tengo yo hoy en día, que me asiste prácticamente en todos los departamentos de la empresa.
+
+Yo creo que este es un poco el futuro de los desarrolladores y los informáticos. implementador de inteligencia artificial o de sistemas o de automatizaciones. Es una nueva profesión a la que se puede dedicar perfectamente una sola persona y abarcar pues grandes procesos dentro de una empresa.
+
+Incluso empresas pequeñas que antes nunca hubiesen ni siquiera soñado de tener sistemas como los que puedes montar hoy en día con la inteligencia artificial. Porque todas estas cosas al final, si os fijáis, en todos los procesos de los que os he hablado, hay humanos de por medio y hace falta un humano que maneje esa máquina. Al final la inteligencia artificial no deja de ser una herramienta.
+
+Yo creo que en parte sí que es verdad que la inteligencia artificial no tengo ninguna duda de que va a afectar al trabajo. Ya está afectando, ya están habiendo despidos masivos, pero por otro lado, viéndole el lado positivo, creo que también está creando una nueva necesidad, un nuevo hueco en el mercado que cualquiera de nosotros puede ocupar realmente, ¿no? Dando servicio a empresas, ayudándoles a implementar un sistema informático de automatización, de inteligencia artificial, tal y como he hecho yo con mi empresa.
+
+Y como os decía al principio del vídeo, si esto os parece interesante, creéis que es algo que os puede interesar aprender a hacer todas estas cosas, desarrollarlas dentro de vuestro proyecto, dentro de vuestra empresa o incluso aprenderla para vosotros, dar este servicio a empresas o a pequeños negocios o incluso empresas grandes, he decidido crear junto a la escuela mastermind una sección pro, una sección pro en la que vamos a hacer una formación intensiva dedicada a enseñar todo lo que he aprendido sobre esto, incluso algunos conceptos de redes, programación, ciberseguridad. Va a ser un programa de unas 10 semanas que voy a impartir personalmente yo con vosotros en directo. No son clases grabadas ni nada por el estilo.
+
+De hecho, va a ser bastante personalizado a los perfiles que entren y además conmigo va a haber otros personajes bastante top del sector. Así que si es algo que os puede interesar os dejaré abajo un link para más información. Y la gran duda que me queda es, ¿realmente cualquiera puede hacer esto?
+
+O sea, ¿qué conocimientos técnicos necesitas para llegar a montar algo por el estilo? Bueno, pues esto es un poco a lo que irá centrada mi formación, pero más allá de eso, un poco lo que me lleva preocupando desde el principio es cómo afecta esto a los programadores, cómo afecta a la industria del desarrollo de software. Bueno, pues esto es algo que llevo investigando muchos meses, he entrevistado a muchas personas, como os decía, he experimentado mucho yo mismo y tengo muchas cosas que contaros al respecto de esto, pero esto lo veremos en otro vídeo.
+
+En fin, si te ha gustado este vídeo, déjame una manito para arriba, suscríbete al canal y nos vemos en el próximo.
