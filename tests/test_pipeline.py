@@ -187,9 +187,11 @@ async def test_carla_uses_profile_voice_and_mapped_platforms(monkeypatch):
     drafts = await pipeline.carla_draft_for_item(item, evaluation, profile)
 
     assert calls["tone"] == "voz punchy"
-    # youtube_short is unsupported -> dropped; only x + bluesky remain.
-    assert set(calls["platforms"]) == {"x", "bluesky"}
+    # youtube_short is now a supported format (subsistema C) -> mapped, not dropped.
+    assert set(calls["platforms"]) == {"x", "bluesky", "youtube_short"}
     assert calls["profile_id"] == "tech-reviewer"
     assert calls["accounts"]["x"] == "x"
     assert calls["accounts"]["bluesky"] == "bluesky"
+    assert calls["accounts"]["youtube_short"] == "youtube"
+    # The fake drafter only returns content for x + bluesky, so 2 drafts persist.
     assert len(drafts) == 2

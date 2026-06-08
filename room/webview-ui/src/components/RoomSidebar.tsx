@@ -4,7 +4,7 @@
 // Only 'oficina' and 'bandeja' are functional today (subsystema E0 — no new
 // features); the rest land in later phases (C, RAG, Plan, etc.).
 
-export type RoomSection = 'oficina' | 'bandeja';
+export type RoomSection = 'oficina' | 'bandeja' | 'videos';
 
 export const SIDEBAR_WIDTH = 190;
 
@@ -18,7 +18,7 @@ interface NavItem {
 const SECTIONS: NavItem[] = [
   { id: 'oficina', emoji: '🏢', label: 'Oficina', enabled: true },
   { id: 'bandeja', emoji: '📥', label: 'Bandeja', enabled: true },
-  { id: 'videos', emoji: '🎬', label: 'Videos & Guiones', enabled: false },
+  { id: 'videos', emoji: '🎬', label: 'Videos & Guiones', enabled: true },
   { id: 'guias', emoji: '📚', label: 'Guías & Mentoring', enabled: false },
   { id: 'rag', emoji: '💬', label: 'Preguntar', enabled: false },
   { id: 'plan', emoji: '🗓️', label: 'Plan semanal', enabled: false },

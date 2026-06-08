@@ -27,8 +27,12 @@ PLATFORM_PROMPTS = {
     "x":        {"limit_chars": 280},
     "linkedin": {"limit_chars": 1300},
     "bluesky":  {"limit_chars": 300},
-    # Long-form blog draft: no hard character cap (0 = unbounded).
-    "blog":     {"limit_chars": 0},
+    # Long-form drafts: no hard character cap (0 = unbounded).
+    "blog":          {"limit_chars": 0},
+    # YouTube SCRIPTS (not posts) — produced with the script-writing framework
+    # from docs/research/youtube-scripts/flow-guiones.md.
+    "youtube_long":  {"limit_chars": 0},
+    "youtube_short": {"limit_chars": 0},
 }
 
 LANG_LABELS = {"es": "Spanish (es-MX register)", "en": "English"}
@@ -80,6 +84,34 @@ def build_platform_prompt(
             "Write a complete long-form BLOG DRAFT (several paragraphs, with an "
             "intro, body, and closing). Return ONLY the article text as a plain "
             "string. Markdown headings are allowed; no code fences."
+        )
+    elif platform == "youtube_short":
+        platform_line = "platform: youtube_short (vertical short-form VIDEO SCRIPT, ~30-60s)"
+        format_line = (
+            "Write a SHORT-FORM VIDEO SCRIPT, sentence by sentence — every second "
+            "must earn attention because the viewer is scrolling. Structure: "
+            "(1) HOOK in the first 1-3 seconds: state the topic bluntly, ideally "
+            "with a recognizable name or a striking number; (2) a supporting hook "
+            "that subverts expectations; (3) set the scene in 1-2 sentences of "
+            "context; (4) raise the stake (turn curiosity into investment); "
+            "(5) tease the payoff without revealing it; (6) deliver the PAYOFF in "
+            "the final third, then stop immediately; (7) a CTA tied to the viewer's "
+            "action; (8) loop the ending back to the opening line. No filler — every "
+            "line leads to the payoff. Return ONLY the script as plain text; you may "
+            "prefix beats with short [bracketed] labels. No code fences."
+        )
+    elif platform == "youtube_long":
+        platform_line = "platform: youtube_long (long-form VIDEO SCRIPT, spoken cadence)"
+        format_line = (
+            "Write a LONG-FORM VIDEO SCRIPT. Structure: HOOK — state the topic and "
+            "confirm the title's promise, state the common belief about it, flip it "
+            "with a contrarian take, then give proof plus a plan of what's covered. "
+            "BODY — lead with your SECOND-best point, then the best, then the rest; "
+            "for each point give context, then application with concrete examples, "
+            "then why it matters; add a small re-hook between points. OUTRO — "
+            "summarize, recall the problem solved, end on a high note with a CTA to "
+            "another video. Conversational, spoken cadence. Return ONLY the script "
+            "as plain text; markdown section headers are allowed, no code fences."
         )
     else:
         platform_line = f"platform: {platform} (char limit {limit})"
