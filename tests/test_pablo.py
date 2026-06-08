@@ -130,3 +130,22 @@ async def test_publish_draft_postiz_500_returns_error(monkeypatch):
     result = await pablo.publish_draft("d1")
     assert result.ok is False
     assert "postiz" in result.error.lower()
+
+
+def test_resolve_integration_id_env_interpolation(monkeypatch):
+    from observatory.agents import pablo as pablo_mod
+    from observatory.profiles.loader import load_accounts
+
+    load_accounts.cache_clear()
+    monkeypatch.setenv("POSTIZ_BLUESKY", "bsky-integration-123")
+    # accounts.yaml: bluesky -> "${POSTIZ_BLUESKY}"
+    assert pablo_mod.resolve_integration_id("bluesky") == "bsky-integration-123"
+    load_accounts.cache_clear()
+
+
+def test_resolve_integration_id_uncabled_and_unknown():
+    from observatory.agents import pablo as pablo_mod
+
+    # x is declared but uncabled (empty id); 'missing' is not an alias at all.
+    assert pablo_mod.resolve_integration_id("x") == ""
+    assert pablo_mod.resolve_integration_id("missing") == ""

@@ -32,6 +32,22 @@ class PabloResult:
     error: Optional[str] = None
 
 
+def resolve_integration_id(account_alias: str) -> str:
+    """Map a draft's account alias to a Postiz integration id. Returns "" when
+    the alias is unknown or not yet cabled. Supports ${ENV} interpolation."""
+    import os
+
+    from observatory.profiles.loader import resolve_account
+
+    account = resolve_account(account_alias)
+    if account is None:
+        return ""
+    integration = (account.postiz_integration_id or "").strip()
+    if integration.startswith("${") and integration.endswith("}"):
+        return os.environ.get(integration[2:-1], "")
+    return integration
+
+
 def _fail(draft_id: str, platform: str, error: str) -> PabloResult:
     event_log.append_event(
         "pablo", "pablo.failed",
@@ -48,15 +64,23 @@ async def publish_draft(draft_id: str) -> PabloResult:
 
     meta = draft["metadata"]
     platform = meta.get("platform", "")
+    account = meta.get("account", "")
     content = draft["document"]
 
-    integration_attr = PLATFORM_INTEGRATION_ENV.get(platform)
-    if integration_attr is None:
-        return _fail(draft_id, platform, f"unsupported platform in Slice 1: {platform!r}")
+    # Primary: resolve via the draft's account alias. Fallback: legacy per-platform
+    # settings lookup so the already-deployed Bluesky flow keeps working.
+    integration_id = resolve_integration_id(account) if account else ""
+    if not integration_id:
+        integration_attr = PLATFORM_INTEGRATION_ENV.get(platform)
+        if integration_attr is None and not account:
+            return _fail(draft_id, platform, f"unsupported platform: {platform!r}")
+        integration_id = getattr(settings, integration_attr, "") if integration_attr else ""
 
-    integration_id = getattr(settings, integration_attr, "")
     if not integration_id or not settings.postiz_api_key:
-        return _fail(draft_id, platform, "Postiz not configured (api key / integration id missing)")
+        return _fail(
+            draft_id, platform,
+            f"account {account or platform!r} not cabled (integration id / api key missing)",
+        )
 
     # Postiz public API (v2.11.x) requires date + tags, and each value entry
     # must carry an image array (empty for text-only posts).
